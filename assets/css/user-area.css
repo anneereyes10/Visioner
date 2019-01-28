@@ -1,0 +1,20 @@
+
+
+.content_wrapper{
+				width:1000px;
+				margin:auto;
+				background:white;
+				}
+
+#content_area{
+			width:800px;
+			float:left;
+			background:pink;
+			}
+
+#sidebar{
+			width:200px;
+			background:black;
+			float:right;
+}
+
