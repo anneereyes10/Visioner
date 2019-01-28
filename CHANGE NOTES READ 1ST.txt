@@ -1,0 +1,140 @@
+change-notes
+-----------------------------------------
+New:
+
+v3
+ -  added new .php file inside user folder 
+ -  added edit_profile.php
+v3.2
+ -  added check_payment.php [INC]
+ -  added check_date.php [INC]
+ -  added change_pass.php [COMPLETE / NO DESIGN]
+ v3.3
+  - added administrator folder
+	- login.php [COMPLETE/REDESIGN]
+	- index.php [content location needs fixing(sa baba sya lumalabas)]
+	- view_customers.php [INC/ needs more functions(change status/accept appointment + search bar)]
+	- logout.php [COMPLETE]
+V3.4 - By annnnne
+- Instead of Side Navigation, I added a dropdown list under 'Account' Buttons
+- Fixed Google map in Contact.php
+- Fixed form boxes Login and Sign Up
+- Fixed form boxes Change Password chuchu ganda na niyan :P
+- WOOOOH okay na rin yung edit profile. Form includes: Email, Full Name, Date, Address, Mobile # :D 
+
+V3.4a
+- fixed all the info needed to edit sa edit information (inalis ko na email kase irrelevant kase panglogin nila yun)
+- ADMIN Side
+	- view_customers.php
+	- search_customers.php
+	- payments.php
+	- edit_payment.php
+-updated db.sql file!!!
+
+v3.4b
+-integrated new design of admin panel
+-small fixes on linking on new design
+-db revised version PLS INSTALL
+
+v3.4c
+-modals integrated on admin side (for customers side- CHECK)
+-fully working view all customers (DONE) [CHECK DESIGN NEED TO ALIGN CORRECT]
+-full working Search and results for customers (DONE) [CHECK DESIGN NEED TO ALIGN CORRECT]
+-fully working modify payments (add/edit/delete DONE)[CHECK DESIGN NEED TO ALIGN CORRECT]
+-added new links for appointments (NO CODE YET)
+- PLS INSTALL NEW SQL 
+ 
+v3.5
+-working payment on user-admin side.
+-file uploading is working.
+-NEW SQL PLS INSTALL
+
+v3.6 
+
+Administrator UI design changes only :D 
+- Dropdown list for navigation buttons 
+		> Payments 
+		> Appointmens
+- view_customers fixed buttons
+- fixed modal label header 
+
+v3.7 wala kwenta yung updates ko =))
+- yung gallery lang sa footer inayos :D 
+- "Under Construction" sign sa gallery.php
+- Changed carousel photos (para di stretchy tignan yung photos sa slides)
+
+v3.7A 
+-payments user-admin fully done (need to fix button sizes)
+-intergrated everything new
+-new sql INSTALL!
+
+v3.8 
+- Reduced button sizes edit_profile.php
+
+v3.9
+-finished all payment-appointment admin/user side
+-user/check_date.php is done !!!!!!!!!!!!!!(PLS HANAP KAYO WAY TO CHANGE ITSURA NG DATEPICKER)!!!!!!!!!
+- admin new .php files
+	-new/pending/finished appointments pages on admins are all done
+-404.php available for use. (needs redesign ata)
+
+-CREATED subfolder builddesign - dito ilalagay na yung mismong designbuild naten.
+
+-always install new db.sql inside the folder
+
+v3.9a
+-start design&build part of website 1st part is ongoing 
+
+
+v4.0
+-finished the upload part for user and admin
+	-builddesign/upload.php
+		-can now upload
+	-administrator/user_uploads.php
+		-can now accept/deny
+-currently ongoing services
+-design&build part need help
+-TO-DO(Alfer): aayusin ko all exceptions(if statements and overall functionality of the website).
+-TO-DO(Jaaj/Anne) : Need help on design AND the design&build part on how to do the process DYNAMICALLY WITH PHP CODING. Also on the Calendar if u can give a better version.
+-!!!!!!!new SQL!!!!!!
+
+v4.0a
+-interactions of upload on user/admin side okay
+-interactions of transaction page of user undergoing
+-admin panel needs total new look on alot of pages
+-di ko pa nasasaksak gawa ni jaaj mamaya ko na gabi lagay
+
+v4.1
+-upload is done 
+-services is almost done(kulang yung admin side editing/adding)
+-kunyare may customization
+-admin panel still needs new adjusting, will finish by end of next week.
+-lots of changes on sql PLEASE INSTALL NEW SQL
+-----------------------------------------
+TO DO:
+
+!!!!!!!!!!!!!!!!!!!!!!   ALWAYS INSTALL NEW VERSION DB          !!!!!!!!!!!!!!!
+
+JAAJ -
+1. Ituloy pagreview sa php, watch mo UDemy na course pa din.
+2. Gumawa ako improvised version of appointment muna if tinesting niyo website. Find a larger datepicker. kahet di na dynamic na pwede lagyan loob mismo, basta bigger calendar.
+3. Pag natapos mo na calendar, help me on builddesign, refer to User Requirements.docx para maintindihan mo gusto naten mangyare sa part ng website na yun.
+3.1. find a way to create a dynamic cart or basta yung sa website na dapat mangyare pag pumili ng item may dynamic na calculator sa gilid to find the total.
+
+ANNE - 
+1. docu before frid plsss
+2. Pagandahin pa yung website, fix button sizes, if possible put borders sa content para umayos itsura. 
+3. Fix links if ever may mali, etc. basta everything sa external website kaw na bahala.
+4. if gusto mo tumulong sa php, start now on this course - https://www.udemy.com/ecommerce-website-in-php-mysqli/
+
+ALFER - 
+1. hawak ko yung changes if may papabago kayo, always tell me if may masasagasaan kayong php na line para masabi ko if go kase baka biglang di gumana yan.
+2. full designbuild i'll be holding this part, expecting help din kase marami tayo gagawin dito.
+3. database designing and schema ako bahala.
+4. admin panel workingf on.
+
+WAG MAHIYA MAGTANONG IF MAY NA ENCOUNTER PROBLEMA PAG TINETEST. 
+
+
+
+
