@@ -77,19 +77,19 @@ function cleaner(name){
         document.getElementById("Room").innerHTML = '';
         document.getElementById("Parts").innerHTML = '';
         document.getElementById("Material").innerHTML = '';
-        document.getElementById("Upgrade").innerHTML = '';
+        // document.getElementById("Upgrade").innerHTML = '';
         break;
       case "Floor":
         document.getElementById("Parts").innerHTML = '';
         document.getElementById("Material").innerHTML = '';
-        document.getElementById("Upgrade").innerHTML = '';
+        // document.getElementById("Upgrade").innerHTML = '';
         break;
       case "Room":
         document.getElementById("Material").innerHTML = '';
-        document.getElementById("Upgrade").innerHTML = '';
+        // document.getElementById("Upgrade").innerHTML = '';
         break;
       case "Parts":
-        document.getElementById("Upgrade").innerHTML = '';
+        // document.getElementById("Upgrade").innerHTML = '';
         break;
       default:
         break;

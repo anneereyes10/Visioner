@@ -441,66 +441,102 @@ function displayMaterial($RoomPartId){
 	$mdlPM = new PartMaterialModel();
 	$clsImage = new Image();
 	$mdlImage = new ImageModel();
+	$clsUP = new UserProject();
+	$mdlUP = new UserProjectModel();
 
   $lstPM = $clsPM->GetByRoomPart_Id($RoomPartId);
-
-  foreach ($lstPM as $mdlPM) {
-		$mdlMaterial = $clsMaterial->GetById($mdlPM->getMaterial_Id());
-    $imgLocation = "";
-    $lstImage = $clsImage->GetByDetail("material",$mdlMaterial->getId(),"original");
-
-    foreach($lstImage as $mdlImage){
-      $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-    }
-    ?>
-		<div class="thumbnail col-md-3">
-			<a href="#partmaterial<?php echo $mdlPM->getId(); ?>" data-toggle="modal">
-				<div
-					class="img-featured"
-					style="background-image: url('<?php echo $imgLocation; ?>');"
-					alt="<?php echo $mdlMaterial->getName(); ?>"
-				></div>
-			</a>
-			<div class="dot-hr"></div>
-			<div class="caption">
-				<center>
-					<label class="radio-jumee">
-						<input type="radio" style="margin:0px;" name="material" onchange="selMaterial(<?php echo $mdlPM->getId().','.$RoomPartId; ?>);"><br>
-						<strong>
-							<?php echo $mdlMaterial->getName(); ?>
-						</strong>
-					</label>
-				</center>
-			</div>
-		</div>
+	?>
 
 
-		<div class="modal fade" id="partmaterial<?php echo $mdlPM->getId(); ?>" role="dialog">
-			<div class="modal-dialog">
+<div class="well well-lg col-md-12">
+	<strong>Material Options</strong><br><br>
+	<div>
 
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title"><?php echo $mdlMaterial->getName(); ?></h4>
-					</div>
-					<div class="modal-body text-center">
-						<img src="<?php echo $imgLocation; ?>" alt="material" style="width:50%">
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<?php
+		  foreach ($lstPM as $mdlPM) {
+				$mdlMaterial = $clsMaterial->GetById($mdlPM->getMaterial_Id());
+		    $imgLocation = "";
+		    $lstImage = $clsImage->GetByDetail("material",$mdlMaterial->getId(),"original");
+
+		    foreach($lstImage as $mdlImage){
+		      $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
+		    }
+		    ?>
+				<div class="thumbnail col-md-3">
+					<a href="#partmaterial<?php echo $mdlPM->getId(); ?>" data-toggle="modal">
+						<div
+							class="img-featured"
+							style="background-image: url('<?php echo $imgLocation; ?>');"
+							alt="<?php echo $mdlMaterial->getName(); ?>"
+						></div>
+					</a>
+					<div class="dot-hr"></div>
+					<div class="caption">
+						<center>
+							<label class="radio-jumee">
+								<input
+									type="radio"
+									style="margin:0px;"
+									name="material"
+									onchange="selMaterial(<?php echo $mdlPM->getId().','.$RoomPartId; ?>);"
+									<?php
+										$mdlUP->setProject_Id($_SESSION['projectId']);
+										$mdlUP->setPartMaterial_Id($mdlPM->getId());
+										$mdlUP->setMaterialUpgrade_Id('0');
+										if ($clsUP->IsExist($mdlUP)) {
+											echo 'checked';
+										}
+									?>
+								><br>
+								<strong>
+									<?php echo $mdlMaterial->getName(); ?>
+								</strong>
+							</label>
+						</center>
 					</div>
 				</div>
+
+
+				<div class="modal fade" id="partmaterial<?php echo $mdlPM->getId(); ?>" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title"><?php echo $mdlMaterial->getName(); ?></h4>
+							</div>
+							<div class="modal-body text-center">
+								<img src="<?php echo $imgLocation; ?>" alt="material" style="width:50%">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+		  <?php
+		  }
+		  if (empty($lstPM)) {
+		    echo 'No Material Attached';
+		  }
+			?>
+
+      </div>
+    </div>
+
+		<div class="well well-lg col-md-12">
+			<strong>Upgrade Options</strong><br><br>
+			<div id="Upgrade">
+				<?php
+				displayUpgrade($mdlPM->getId(),$RoomPartId,false);
+				?>
 			</div>
 		</div>
-  <?php
-  }
-  if (empty($lstPM)) {
-    echo 'No Material Attached';
-  }
+	<?php
 }
 
-function displayUpgrade($partMaterialId,$RoomPartId){
+function displayUpgrade($partMaterialId,$RoomPartId,$add = true){
 	$clsUpgrade = new Upgrade();
 	$mdlUpgrade = new UpgradeModel();
 	$clsMU = new MaterialUpgrade();
@@ -510,11 +546,13 @@ function displayUpgrade($partMaterialId,$RoomPartId){
 	$clsUP = new UserProject();
 	$mdlUP = new UserProjectModel();
 
-	$clsUP->DeleteMaterialChange($_SESSION['projectId'],$RoomPartId);
-	$mdlUP->setProject_Id($_SESSION['projectId']);
-	$mdlUP->setPartMaterial_Id($partMaterialId);
-	$mdlUP->setMaterialUpgrade_Id('');
-	$clsUP->Add($mdlUP);
+	if ($add) {
+		$clsUP->DeleteMaterialChange($_SESSION['projectId'],$RoomPartId);
+		$mdlUP->setProject_Id($_SESSION['projectId']);
+		$mdlUP->setPartMaterial_Id($partMaterialId);
+		$mdlUP->setMaterialUpgrade_Id('');
+		$clsUP->Add($mdlUP);
+	}
 
   $lstMU = $clsMU->GetByPartMaterial_Id($partMaterialId);
 
@@ -539,7 +577,23 @@ function displayUpgrade($partMaterialId,$RoomPartId){
 			<div class="caption">
 				<center>
 					<label class="radio-jumee">
-						<input type="radio" style="margin:0px;" name="upgrade" onchange="selUpgrade(<?php echo $mdlMU->getId().",".$partMaterialId; ?>);"><br>
+						<input
+							type="radio"
+							style="margin:0px;"
+							name="upgrade"
+							onchange="selUpgrade(<?php echo $mdlMU->getId().",".$partMaterialId; ?>);"
+							<?php
+
+								$mdlUP->setProject_Id($_SESSION['projectId']);
+								$mdlUP->setPartMaterial_Id($partMaterialId);
+								$mdlUP->setMaterialUpgrade_Id($mdlMU->getId());
+								if ($clsUP->IsExist($mdlUP)) {
+									echo 'checked';
+								}else{
+									echo $_SESSION['projectId'].",".$mdlMU->getId().",".$partMaterialId;
+								}
+							?>
+						><br>
 						<strong>
 							<?php echo $mdlUpgrade->getName(); ?>
 						</strong>
