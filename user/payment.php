@@ -11,6 +11,8 @@ require_once ("../App_Code/ProjectModel.php");
 $msg = "";
 $err = "";
 
+echo date_format(date_create('0000-00-00'),"Y-m-d");
+
 if(isset($_POST['AppointmentDate'])){
 
 	$err .= $clsFn->setForm('AppointmentDate',$mdlPayment,true);
@@ -419,7 +421,22 @@ $name=$row_pro['full_name'];
 														if($mdlPayment->getReceiptStatus() == 0) {
 															echo "Pending";
 														} elseif($mdlPayment->getReceiptStatus() == 1) {
-															if ($mdlPayment->getAppointmentDate() == '0000-00-00') {
+															if ($mdlPayment->getAppointmentStatus() == 1) {
+																	?>
+																	<div class="alert alert-success">
+																	  <strong>Appointment Approved!</strong>
+																	</div>
+																	<?php
+																	echo 'Appointment Date: '.$mdlPayment->getAppointmentDate();
+															} elseif ($mdlPayment->getAppointmentStatus() == 2) {
+																?>
+																<div class="alert alert-warning">
+																  <strong>Sorry!</strong> Date <?php echo $mdlPayment->getAppointmentDate(); ?> is unavailable for appointment.
+																</div>
+																<input type='date' class='form-control' id='inputAppointmentDate<?php echo $mdlPayment->getId();?>' name='AppointmentDate' value=''>
+																<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $mdlPayment->getId();?>)">Set Appointment</button>
+																<?php
+															} elseif ($mdlPayment->getAppointmentDate() == '0000-00-00') {
 																?>
 																<input type='date' class='form-control' id='inputAppointmentDate<?php echo $mdlPayment->getId();?>' name='AppointmentDate' value=''>
 																<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $mdlPayment->getId();?>)">Set Appointment</button>

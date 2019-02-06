@@ -28,6 +28,8 @@
       <span>Appointments</span>
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+      <h6 class="dropdown-header">Appointments</h6>
+      <a class="dropdown-item" href="ViewAppointment.php">View Appointments</a>
       <h6 class="dropdown-header">Pending Appointments</h6>
       <a class="dropdown-item" href="index.php?new_appointments">New Appointments</a>
       <a class="dropdown-item" href="index.php?pending_appointments">Pending Appointments</a>

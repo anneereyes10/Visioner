@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("functions/functions.php");
-include("includes/db.php"); 
+include("includes/db.php");
 ?>
 <!DOCTYPE>
 <html>
@@ -30,11 +30,11 @@ include("includes/db.php");
         <link href="assets/fonts/icon-7-stroke/css/pe-icon-7-stroke.css" rel="stylesheet">
         <link href="assets/fonts/icon-7-stroke/css/helper.css" rel="stylesheet">
         <link href="assets/css/animate.css" rel="stylesheet" media="screen">
-        <link rel="stylesheet" href="assets/css/bootstrap-select.min.css"> 
+        <link rel="stylesheet" href="assets/css/bootstrap-select.min.css">
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="assets/css/icheck.min_all.css">
         <link rel="stylesheet" href="assets/css/price-range.css">
-        <link rel="stylesheet" href="assets/css/owl.carousel.css">  
+        <link rel="stylesheet" href="assets/css/owl.carousel.css">
         <link rel="stylesheet" href="assets/css/owl.theme.css">
         <link rel="stylesheet" href="assets/css/owl.transitions.css">
         <link rel="stylesheet" href="assets/css/style.css">
@@ -68,7 +68,7 @@ include("includes/db.php");
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
         <!--End top header -->
 
         <nav class="navbar navbar-default ">
@@ -87,7 +87,7 @@ include("includes/db.php");
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse yamm" id="navigation">
                     <div class="button navbar-right">
-                         
+
 						<?php
 						if(isset($_SESSION['user_email']))
 						{
@@ -117,16 +117,16 @@ include("includes/db.php");
 						<div class="btn-group">
 						<button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.open('index.php?login', '_self')" data-wow-delay="0.5s">Account</button>
 						</div>
-						
+
 						<?php
 						}
 						?>
-						
+
 					<div class="btn-group">
-						
+
                         <button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('builddesign/start.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
 						</div>
-						
+
                     </div>
                     <ul class="main-nav nav navbar-nav navbar-right">
 						<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="index.php?about">About</a></li>
@@ -138,31 +138,31 @@ include("includes/db.php");
             </div><!-- /.container-fluid -->
         </nav>
         <!-- End of nav bar -->
-		
 
 
 
-        <div class="page-head"> 
+
+        <div class="page-head">
             <div class="container">
                 <div class="row">
                     <div class="page-head-content">
-                        <h1 class="page-title">Register</h1>               
+                        <h1 class="page-title">Register</h1>
                     </div>
                 </div>
             </div>
         </div>
         <!-- End page header -->
- 
+
 
         <!-- register-area -->
                 <div class="register-area" style="background-color: rgb(249, 249, 249);">
             <div class="container">
-				
-	<!-- Register Area --> 
+
+	<!-- Register Area -->
                 <div class="col-md-6">
-                    <div class="box-for overflow">                         
+                    <div class="box-for overflow">
                         <div class="col-md-12 col-xs-12 login-blocks">
-                            <h2>Register : </h2> 
+                            <h2>Register : </h2>
                             <form action="register.php" method="post" enctype="multipart/form-data">
 								<div class="form-group">
                                     <label for="email">Full Name</label>
@@ -180,14 +180,14 @@ include("includes/db.php");
                                     <input type="submit" class="btn btn-default" name="register" value="Register" />
                                 </div>
                             </form>
-                            
+
                         </div>
-                        
+
                     </div>
                 </div>
-		
+
             </div>
-        </div>      		
+        </div>
 
     <!-- Footer area-->
         <div class="footer-area">
@@ -215,15 +215,15 @@ include("includes/db.php");
                                 <h4>Quick links </h4>
                                 <div class="footer-title-line"></div>
                                 <ul class="footer-menu">
-                                    <li><a href="index.php?about">About</a>  </li> 
-                                    <li><a href="index.php?services">Service</a>  </li> 
-                                    <li><a href="index.php?login">Login</a></li> 
-                                    <li><a href="index.php?contact">Contact</a></li> 
-                                    
+                                    <li><a href="index.php?about">About</a>  </li>
+                                    <li><a href="index.php?services">Service</a>  </li>
+                                    <li><a href="index.php?login">Login</a></li>
+                                    <li><a href="index.php?contact">Contact</a></li>
+
                                 </ul>
                             </div>
                         </div>
-						
+
                         <div class="col-md-3 col-sm-6 wow fadeInRight animated">
                             <div class="single-footer">
                                 <h4>Gallery</h4>
@@ -237,13 +237,13 @@ include("includes/db.php");
                                             <span class="blg-date">View</span>
 
                                         </div>
-										
+
                                         <div class="col-md-8  col-sm-8 col-xs-8  blg-entry">
-                                            <h6> <a href="index.php?gallery">Project I</a></h6> 
+                                            <h6> <a href="index.php?gallery">Project I</a></h6>
                                             <p style="line-height: 17px; padding: 8px 2px;">View Gallery</p>
                                         </div>
-                                    </li> 
-							
+                                    </li>
+
                                     <li>
                                         <div class="col-md-3 col-sm-4 col-xs-4 blg-thumb p0">
                                             <a href="index.php?gallery">
@@ -253,10 +253,10 @@ include("includes/db.php");
 
                                         </div>
                                         <div class="col-md-8  col-sm-8 col-xs-8  blg-entry">
-                                            <h6> <a href="index.php?gallery">Project II </a></h6> 
+                                            <h6> <a href="index.php?gallery">Project II </a></h6>
                                             <p style="line-height: 17px; padding: 8px 2px;">View Gallery</p>
                                         </div>
-                                    </li> 
+                                    </li>
 
                                     <li>
                                         <div class="col-md-3 col-sm-4 col-xs-4 blg-thumb p0">
@@ -267,17 +267,17 @@ include("includes/db.php");
 
                                         </div>
                                         <div class="col-md-8  col-sm-8 col-xs-8  blg-entry">
-                                            <h6> <a href="index.php?gallery">Project III</a></h6> 
+                                            <h6> <a href="index.php?gallery">Project III</a></h6>
                                             <p style="line-height: 17px; padding: 8px 2px;">View Gallery</p>
                                         </div>
-                                    </li> 
+                                    </li>
 
 
                                 </ul>
                             </div>
                         </div>
-						
-						
+
+
                         <div class="col-md-3 col-sm-6 wow fadeInRight animated">
                             <div class="single-footer news-letter">
                                 <h4>Stay in touch</h4>
@@ -292,15 +292,15 @@ include("includes/db.php");
                                         </span>
                                     </div>
                                     <!-- /input-group -->
-                                </form> 
+                                </form>
 
-                                <div class="social pull-right"> 
+                                <div class="social pull-right">
                                     <ul>
-                                        
+
                                         <li><a class="wow fadeInUp animated" href="https://www.facebook.com/Visioner-Design-and-Builders-432801973461175/" data-wow-delay="0.2s"><i class="fa fa-facebook"></i></a></li>
                                         <li><a class="wow fadeInUp animated" href="https://www.facebook.com/Visioner-Design-and-Builders-432801973461175/" data-wow-delay="0.4s"><i class="fa fa-instagram"></i></a></li>
-                                        
-                                    </ul> 
+
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -313,15 +313,15 @@ include("includes/db.php");
                 <div class="container">
                     <div class="row">
                         <div class="pull-left">
-                            <span> (C) <a href="https://www.facebook.com/Visioner-Design-and-Builders-432801973461175/">Visioner Design and Builders</a> , All rights reserved 2018  </span> 
-                        </div> 
-                        <div class="bottom-menu pull-right"> 
-                            <ul> 
+                            <span> (C) <a href="https://www.facebook.com/Visioner-Design-and-Builders-432801973461175/">Visioner Design and Builders</a> , All rights reserved 2018  </span>
+                        </div>
+                        <div class="bottom-menu pull-right">
+                            <ul>
                                 <li><a class="wow fadeInUp animated" href="index.php?home" data-wow-delay="0.2s">Home</a></li>
                                 <li><a class="wow fadeInUp animated" href="index.php?gallery" data-wow-delay="0.3s">Gallery</a></li>
                                 <li><a class="wow fadeInUp animated" href="privacypolicy.html" data-wow-delay="0.4s">Privacy Policy</a></li>
                                 <li><a class="wow fadeInUp animated" href="index.php?contact" data-wow-delay="0.6s">Contact</a></li>
-                            </ul> 
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -333,7 +333,7 @@ include("includes/db.php");
 
         <script src="assets/js/modernizr-2.6.2.min.js"></script>
 
-        <script src="assets/js/jquery-1.10.2.min.js"></script> 
+        <script src="assets/js/jquery-1.10.2.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="assets/js/bootstrap-select.min.js"></script>
         <script src="assets/js/bootstrap-hover-dropdown.js"></script>
@@ -356,27 +356,53 @@ include("includes/db.php");
 
 	if(isset($_POST['register']))
 	{
-	
-		
+
+
 		$ip = getIP();
 		$u_email = $_POST['u_email'];
 		$u_pass = $_POST['u_pass'];
 		$u_name = $_POST['u_name'];
-		
-		$insert_user = "insert into user_account(ip_address,user_email,user_pass,full_name) values('$ip','$u_email','$u_pass','$u_name')";
+    $hashcode = md5($ip . $u_email);
+		$insert_user = "insert into user_account_p(ip_address,user_email,user_pass,full_name,hashcode) values('$ip','$u_email','$u_pass','$u_name','$hashcode')";
 		$insert_payment = "insert into payment_status(user_id, user_email, type_selected, pay_status,payment_image) values(LAST_INSERT_ID(),'$u_email','None','None','None')";
 		$insert_transaction="insert into transaction_type(user_id,user_email,ip_address,transaction_type) values(LAST_INSERT_ID(),'$u_email','$ip','None')";
 		$insert_appointment = "insert into appointment(user_id, user_email, appointment_status, appointment_date,appointment_made) values (LAST_INSERT_ID(),'$u_email', 'None', '0000-00-00','0000-00-00')";
-		$run_user = mysqli_query($con, $insert_user); 
+		$run_user = mysqli_query($con, $insert_user);
 		$run_payment = mysqli_query($con, $insert_payment);
 		$run_appointment = mysqli_query($con, $insert_appointment);
 		$run_trans = mysqli_query($con, $insert_transaction);
+
+    	ini_set( 'display_errors', 1 );
+    	error_reporting( E_ALL );
+
+    	$from 		= "donotreply@visioner.com";
+    	$to 			= $u_email;
+    	$subject 	= "Confirmation Email";
+
+    	$headers = "From: " . $from . "\r\n";
+    	$headers .= "Reply-To: ". $from . "\r\n";
+    	$headers .= "MIME-Version: 1.0\r\n";
+    	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+
+    	$message = 	'<html>';
+    	$message .= 	'<body>';
+
+    	$message .= 	'<center>';
+    	$message .= 	'<a href="https://visionerdesignandbuilders.com/confirmemail.php?u='.$hashcode.'&e='.$u_email.'">Click here</a> to verify your email.<br />';
+    	$message .= 	'or go to this link https://visionerdesignandbuilders.com/confirmemail.php?u='.$hashcode.'&e='.$u_email.'<br />';
+    	$message .= 	'</center>';
+
+    	$message .= 	'</body>';
+    	$message .= '</html>';
+
+    	mail($to, $subject, $message, $headers);
+
 		if($run_user and $run_payment and $run_appointment and $run_trans)
 		{
 			$_SESSION['user_email']=$u_email;
-			
-			echo "<script>alert('Account has been created successfully, redirecting to information page!')</script>";
-			echo "<script>window.open('user/user_account.php?edit_profile','_self')</script>";
+
+			echo "<script>alert('Account has been created successfully! Check your email to verify your account.')</script>";
+			// echo "<script>window.open('user/user_account.php?edit_profile','_self')</script>";
 		}
 	}
 ?>

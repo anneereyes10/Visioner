@@ -49,7 +49,7 @@ require_once ("../App_Code/ImageModel.php");
           document.getElementById("status_"+PaymentId).innerHTML = "Approved";
         }
       };
-      url = "../Ajax/ViewPayment.php";
+      url = "../Ajax/ViewAppointment.php";
       url += "?call=Approved";
       url += "&Id=" + PaymentId;
       xmlhttp.open("GET", url, true);
@@ -68,7 +68,7 @@ require_once ("../App_Code/ImageModel.php");
           document.getElementById("status_"+PaymentId).innerHTML = "Declined";
         }
       };
-      url = "../Ajax/ViewPayment.php";
+      url = "../Ajax/ViewAppointment.php";
       url += "?call=Declined";
       url += "&Id=" + PaymentId;
       xmlhttp.open("GET", url, true);
@@ -89,7 +89,7 @@ require_once ("../App_Code/ImageModel.php");
 						<div class="col-12">
 							<div class="panel">
 								<div class="panel-heading">
-									<h3 class="panel-title">Payments</h3>
+									<h3 class="panel-title">Appointments</h3>
 								</div>
 								<div class="panel-body">
                   <table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -98,7 +98,7 @@ require_once ("../App_Code/ImageModel.php");
                         <th>Image</th>
                         <th>User_Id</th>
                         <th>Project</th>
-                        <th>Payment Date</th>
+                        <th>Appointment Date</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
@@ -108,14 +108,14 @@ require_once ("../App_Code/ImageModel.php");
                         <th>Image</th>
                         <th>User_Id</th>
                         <th>Project</th>
-                        <th>Payment Date</th>
+                        <th>Appointment Date</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
                     </tfoot>
                     <tbody>
                       <?php
-                      $lstPayment = $clsPayment->Get();
+                      $lstPayment = $clsPayment->GetByReceiptStatus(1);
 
                       foreach($lstPayment as $mdlPayment)
                       {
@@ -136,12 +136,12 @@ require_once ("../App_Code/ImageModel.php");
                         </td>
                         <td><?php echo $clsUser->GetNameById($clsProject->GetUser_IdById($mdlPayment->getProject_Id())); ?></td>
                         <td><?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?></td>
-                        <td><?php echo $mdlPayment->getReceiptDate(); ?></td>
+                        <td><?php echo $mdlPayment->getAppointmentDate(); ?></td>
                         <td id="status_<?php echo $mdlPayment->getId();?>">
                           <?php
-                          if($mdlPayment->getReceiptStatus() == 0){
+                          if($mdlPayment->getAppointmentStatus() == 0){
                             echo "Pending";
-                          } elseif($mdlPayment->getReceiptStatus() == 1){
+                          } elseif($mdlPayment->getAppointmentStatus() == 1){
                             echo "Aprroved";
                           } else {
                             echo "Declined";
@@ -153,6 +153,9 @@ require_once ("../App_Code/ImageModel.php");
                             <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">Declined</button>
                         </td>
 
+
+
+
                       </tr>
                       <?php
                       } ?>
@@ -162,6 +165,11 @@ require_once ("../App_Code/ImageModel.php");
 							</div>
 						</div>
 					</div>
+
+
+
+
+
 
         </div>
         <?php include 'footer.php'; ?>

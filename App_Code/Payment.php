@@ -12,6 +12,8 @@ class Payment{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
+		$ap = (empty($mdl->getsqlAppointmentDate()))?'':date_format(date_create($mdl->getsqlAppointmentDate()),"Y-m-d");
+
 		$sql = "INSERT INTO `".$this->table."`
 				(
 					`Project_Id`,
@@ -24,7 +26,7 @@ class Payment{
 					'".$mdl->getsqlProject_Id()."',
 					'".date_format(date_create($mdl->getsqlReceiptDate()),"Y-m-d")."',
 					'".$mdl->getsqlReceiptStatus()."',
-					'".date_format(date_create($mdl->getsqlAppointmentDate()),"Y-m-d")."',
+					'".$ap."',
 					'".$mdl->getsqlAppointmentStatus()."'
 
 				)";
@@ -92,7 +94,8 @@ class Payment{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$sql="UPDATE `".$this->table."` SET
-			`Payment_AppointmentDate`='".$mdl->getAppointmentDate()."'
+			`Payment_AppointmentDate`='".$mdl->getAppointmentDate()."',
+			`Payment_AppointmentStatus`='0'
 			WHERE `Payment_Id`='".$mdl->getId()."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -196,6 +199,23 @@ class Payment{
 		mysqli_close($conn);
 
 		return $this->ModelTransfer($result);
+	}
+
+	public function GetByReceiptStatus($value=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+
+		$sql="SELECT * FROM `".$this->table."`
+				WHERE `Payment_ReceiptStatus` = '".$value."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
 	}
 
 	public function SetImage($image,$id){
