@@ -97,7 +97,7 @@ include("../functions/functions.php");
 						<button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
 							<ul class="dropdown-menu">
                                 <li><a href="../user/user_account.php?edit_profile">Edit Information</a></li>
-                                <li><a href="../user/payment.php">Check Payment</a></li>
+                                <li><a href="../user/user_account.php?check_payment">Check Payment</a></li>
                                 <li><a href="../user/user_account.php?check_date">Check Appointment Date</a></li>
                                 <li><a href="../user/user_account.php?change_password">Change Password</a></li>
 								<li><a href="../user/logout.php">Logout</a></li>
