@@ -133,7 +133,7 @@ if(isset($_POST['Name'])){
   									</div>
   									<div class="row mb-2">
   										<div class="col-12">
-  											<label class="form-control-label" for="inputSize">Size</label>
+  											<label class="form-control-label" for="inputSize">Size (in sqm)</label>
   											<input type="number" class="form-control" id="inputSize" name="Size" placeholder="Size" value="<?php echo $mdlLayout->getSize(); ?>" onblur="checkInput('inputSize')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>

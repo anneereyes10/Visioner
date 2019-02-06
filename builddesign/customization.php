@@ -405,7 +405,7 @@ $err = "";
                             <div class="col-md-12">
                               <div class="row">
                                 <div class="col-md-12">
-                                  <label><strong>Size</strong></label>
+                                  <label><strong>Size</strong> (sqm)</label>
                                 </div>
                               </div>
                               <div class="row">
