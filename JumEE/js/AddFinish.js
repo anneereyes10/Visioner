@@ -176,6 +176,25 @@ function selUpgrade(id,pm) {
   url += "?call=upgradeselect";
   url += "&Id=" + id;
   url += "&PartMaterial_Id=" + pm;
+  url += "&empty=false";
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
+
+}
+
+function selUpgradeE(id,pm) {
+  cleaner("Upgrade");
+  highlight_item("MaterialUpgrade_"+id);
+
+  var xmlhttp = new XMLHttpRequest();
+  var url = "";
+  var btn = "";
+  xmlhttp.onreadystatechange = function() {};
+  url = "../Ajax/AddFinish.php";
+  url += "?call=upgradeselect";
+  url += "&Id=" + id;
+  url += "&PartMaterial_Id=" + pm;
+  url += "&empty=true";
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 

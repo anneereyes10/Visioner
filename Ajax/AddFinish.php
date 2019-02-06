@@ -55,7 +55,7 @@ switch ($call){
 		break;
 	}
 	case 'upgradeselect':	{
-		displayUpgradeSelect($_GET['Id'],$_GET['PartMaterial_Id']);
+		displayUpgradeSelect($_GET['Id'],$_GET['PartMaterial_Id'],$_GET['empty']);
 		break;
 	}
 
@@ -370,7 +370,25 @@ function displayUpgrade($partMaterialId,$RoomPart_Id){
 	$clsFI->Add($mdlFI);
 
   $lstMU = $clsMU->GetByPartMaterial_Id($partMaterialId);
+?>
+<div class="col-md-2 col-sm-3 mb-10 p-0">
+	<a
+		href="javascript:void(0);"
+		onclick="selUpgradeE(<?php echo  $mdlMU->getId() . "," . $partMaterialId; ?>);"
+		class="card shadow featured bg-light"
+		style="color:#666;"
+		id="MaterialUpgrade_0"
+	>
+		<div class="card-body">
+			<h5 class="card-title">No Upgrades</h5>
+			<p class="card-text">
+				Set to no upgrades connected to Material
+			</p>
+		</div>
+	</a>
+</div>
 
+<?php
   foreach ($lstMU as $mdlMU) {
 		$mdlUpgrade = $clsUpgrade->GetById($mdlMU->getUpgrade_Id());
     $imgLocation = "";
@@ -408,16 +426,21 @@ function displayUpgrade($partMaterialId,$RoomPart_Id){
   }
 }
 
-function displayUpgradeSelect($materialUpgradeId,$PartMaterial_Id){
+function displayUpgradeSelect($materialUpgradeId,$PartMaterial_Id,$empty){
 	$clsFI = new FinishItem();
 	$mdlFI = new FinishItemModel();
 
-	$clsFI->DeleteUpgradeChange($_SESSION['Finish_Id'],$PartMaterial_Id);
-	$mdlFI->setFinish_Id($_SESSION['Finish_Id']);
-	$mdlFI->setLayout_Id($_SESSION['Layout_Id']);
-	$mdlFI->setPartMaterial_Id($PartMaterial_Id);
-	$mdlFI->setMaterialUpgrade_Id($materialUpgradeId);
-	$clsFI->Add($mdlFI);
+	$clsFI->DeleteUpgradeChange($_SESSION['Finish_Id'],$_SESSION['Layout_Id'],$PartMaterial_Id);
+	if ($empty=='false') {
+		$mdlFI->setFinish_Id($_SESSION['Finish_Id']);
+		$mdlFI->setLayout_Id($_SESSION['Layout_Id']);
+		$mdlFI->setPartMaterial_Id($PartMaterial_Id);
+		$mdlFI->setMaterialUpgrade_Id($materialUpgradeId);
+		$clsFI->Add($mdlFI);
+			echo 'add';
+	}else{
+		echo 'deleted only';
+	}
 }
 
 

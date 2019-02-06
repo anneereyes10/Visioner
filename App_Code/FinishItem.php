@@ -151,8 +151,7 @@ class FinishItem{
 
 	}
 
-	public function DeleteUpgradeChange($Finish_Id,$PartMaterial_Id){
-
+	public function DeleteUpgradeChange($Finish_Id,$Layout_Id,$PartMaterial_Id){
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$Finish_Id = mysqli_real_escape_string($conn,$Finish_Id);
@@ -160,7 +159,9 @@ class FinishItem{
 		$sql="DELETE FROM `".$this->table."`
 			WHERE `PartMaterial_Id` = '".$PartMaterial_Id."'
 			AND `MaterialUpgrade_Id` != '0'
-			AND `Finish_Id` != '".$Finish_Id."'";
+			AND `Layout_Id` = '".$Layout_Id."'
+			AND `Finish_Id` = '".$Finish_Id."'";
+			echo $sql;
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
