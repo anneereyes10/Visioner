@@ -2,7 +2,7 @@
 $clsFloorRoom = new FloorRoom();
 class FloorRoom{
 
-	private $table = "FloorRoom";
+	private $table = "floorroom";
 
 	public function __construct(){}
 

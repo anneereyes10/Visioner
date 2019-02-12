@@ -11,8 +11,6 @@ require_once ("../App_Code/ProjectModel.php");
 $msg = "";
 $err = "";
 
-echo date_format(date_create('0000-00-00'),"Y-m-d");
-
 if(isset($_POST['AppointmentDate'])){
 
 	$err .= $clsFn->setForm('AppointmentDate',$mdlPayment,true);
