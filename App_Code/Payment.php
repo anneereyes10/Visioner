@@ -1,6 +1,6 @@
 <?php
+require_once ("PaymentModel.php");
 $clsPayment = new Payment();
-
 class Payment{
 
 	private $table = "payment";
@@ -11,31 +11,24 @@ class Payment{
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
-
-		$ap = (empty($mdl->getsqlAppointmentDate()))?'':date_format(date_create($mdl->getsqlAppointmentDate()),"Y-m-d");
-
 		$sql = "INSERT INTO `".$this->table."`
-				(
-					`Project_Id`,
-					`Payment_ReceiptDate`,
-					`Payment_ReceiptStatus`,
-					`Payment_AppointmentDate`,
-					`Payment_AppointmentStatus`
-					-- `Payment_Description`
-				) VALUES (
-					'".$mdl->getsqlProject_Id()."',
-					'".date_format(date_create($mdl->getsqlReceiptDate()),"Y-m-d")."',
-					'".$mdl->getsqlReceiptStatus()."',
-					'".$ap."',
-					'".$mdl->getsqlAppointmentStatus()."'
-
-				)";
-
+			(
+				`Project_Id`,
+				`Payment_ReceiptDate`,
+				`Payment_ReceiptStatus`,
+				`Payment_AppointmentDate`,
+				`Payment_AppointmentStatus`
+			) VALUES (
+				'".$mdl->getsqlProject_Id()."',
+				'".$mdl->getsqlReceiptDate()."',
+				'".$mdl->getsqlReceiptStatus()."',
+				'".$mdl->getsqlAppointmentDate()."',
+				'".$mdl->getsqlAppointmentStatus()."'
+			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
 
 		mysqli_close($conn);
-
 		return $id;
 	}
 
@@ -43,63 +36,133 @@ class Payment{
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
-
 		$sql="UPDATE `".$this->table."` SET
-			`Project_Id`='".$mdl->getsqlProject_Id()."',
-			`Payment_ReceiptDate`='".date_format(date_create($mdl->getsqlReceiptDate()),"Y-m-d")."',
-			`Payment_ReceiptStatus`='".$mdl->getsqlReceiptStatus()."',,
-			`Payment_AppointmentDate`='".date_format(date_create($mdl->getsqlAppointmentDate()),"Y-m-d")."',
-			`Payment_AppointmentStatus`='".$mdl->getsqlAppointmentStatus()."',
-			`Payment_Status`='".$mdl->getsqlStatus()."'
-			WHERE `Payment_Id`='".$mdl->getsqlId()."'";
+				 `Project_Id`='".$mdl->getsqlProject_Id()."',
+				 `Payment_ReceiptDate`='".$mdl->getsqlReceiptDate()."',
+				 `Payment_ReceiptStatus`='".$mdl->getsqlReceiptStatus()."',
+				 `Payment_AppointmentDate`='".$mdl->getsqlAppointmentDate()."',
+				 `Payment_AppointmentStatus`='".$mdl->getsqlAppointmentStatus()."',
+				 `Payment_Status`='".$mdl->getsqlStatus()."'
+		 WHERE `Payment_Id`='".$mdl->getsqlId()."'";
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
-		mysqli_close($conn);
+		 mysqli_close($conn);
 	}
 
-	public function UpdateReceiptStatus($id,$status){
+	public function UpdateProject_Id($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
+		$value = mysqli_real_escape_string($conn,$value);
 		$id = mysqli_real_escape_string($conn,$id);
-		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Payment_ReceiptStatus`='".$status."'
-			WHERE `Payment_Id`='".$id."'";
+			`Project_Id`='".$value."'
+			WHERE `Payment_Id` = '".$id."'";
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateAppointmentStatus($id,$status){
+	public function UpdateReceiptDate($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
+		$value = mysqli_real_escape_string($conn,$value);
 		$id = mysqli_real_escape_string($conn,$id);
-		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Payment_AppointmentStatus`='".$status."'
-			WHERE `Payment_Id`='".$id."'";
+			`Payment_ReceiptDate`='".$value."'
+			WHERE `Payment_Id` = '".$id."'";
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateAppointmentDate($mdl){
+	public function UpdateReceiptStatus($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
 		$sql="UPDATE `".$this->table."` SET
-			`Payment_AppointmentDate`='".$mdl->getAppointmentDate()."',
-			`Payment_AppointmentStatus`='0'
-			WHERE `Payment_Id`='".$mdl->getId()."'";
+			`Payment_ReceiptStatus`='".$value."'
+			WHERE `Payment_Id` = '".$id."'";
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
+	}
+
+	public function UpdateAppointmentDate($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Payment_AppointmentDate`='".$value."'
+			WHERE `Payment_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdateAppointmentStatus($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Payment_AppointmentStatus`='".$value."'
+			WHERE `Payment_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdateStatus($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Payment_Status`='".$value."'
+			WHERE `Payment_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function Delete($id){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$id = mysqli_real_escape_string($conn,$id);
+		$sql="DELETE FROM `".$this->table."`
+			WHERE `Payment_Id` = '".$id."'";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+			mysqli_close($conn);
+
 	}
 
 	public function IsExist($mdl){
@@ -110,54 +173,35 @@ class Payment{
 		$val = false;
 		$msg = "";
 
-		$sql = "SELECT `Payment_Id` FROM `".$this->table."` AS `count`
-				WHERE
-				`Payment_Id` != '".$mdl->getsqlId()."' AND
-				`Project_Id` = '".$mdl->getsqlProject_Id()."'";
+
+		// Project_Id
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`Payment_Id` != '".$mdl->getsqlId()."'AND
+			`Project_Id` = '".$mdl->getsqlProject_Id()."'
+		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$num_rows = mysqli_num_rows($result);
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputProject_Id\")'>Project</a>: Already Paid</p>";
+			$val = true;
+		}
+
 
 		mysqli_close($conn);
 
-		if($num_rows > 0)
-		{
-			return true;
-		}
+		return array("val"=>"$val","msg"=>"$msg");
 
-		return false;
 	}
 
-	public function IsDateTaken($Payment_Id, $Payment_AppointmentDate){
+	public function Get($status=0){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
-		$val = false;
-		$msg = "";
-
-		$sql = "SELECT `Payment_Id` FROM `".$this->table."` AS `count`
-				WHERE
-				`Payment_Id` != '".$Payment_Id."' AND
-				`Payment_AppointmentDate` = '".$Payment_AppointmentDate."'";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$num_rows = mysqli_num_rows($result);
-
-		mysqli_close($conn);
-
-		if($num_rows > 0)
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	public function Get(){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$sql="SELECT * FROM `".$this->table."`";
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Payment_Status` = '".$status."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
@@ -184,15 +228,161 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetById($id){
+	public function GetProject_IdById($id,$status=0){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
+		$value = "";
 		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Project_Id` FROM `".$this->table."`
+		WHERE `Payment_Id` = '".$id."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Project_Id'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetReceiptDateById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Payment_ReceiptDate` FROM `".$this->table."`
+		WHERE `Payment_Id` = '".$id."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Payment_ReceiptDate'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetReceiptStatusById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Payment_ReceiptStatus` FROM `".$this->table."`
+		WHERE `Payment_Id` = '".$id."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Payment_ReceiptStatus'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetAppointmentDateById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Payment_AppointmentDate` FROM `".$this->table."`
+		WHERE `Payment_Id` = '".$id."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Payment_AppointmentDate'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetAppointmentStatusById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Payment_AppointmentStatus` FROM `".$this->table."`
+		WHERE `Payment_Id` = '".$id."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Payment_AppointmentStatus'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetStatusById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Payment_Status` FROM `".$this->table."`
+		WHERE `Payment_Id` = '".$id."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Payment_Status'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetById($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-				WHERE `Payment_Id` = '".$id."'";
+		WHERE `Payment_Id` = '".$value."'
+		AND `Payment_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -201,15 +391,131 @@ class Payment{
 		return $this->ModelTransfer($result);
 	}
 
-	public function GetByReceiptStatus($value=0){
+	public function GetByProject_Id($value,$status=0){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
 		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-				WHERE `Payment_ReceiptStatus` = '".$value."'";
+		WHERE `Project_Id` = '".$value."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByReceiptDate($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Payment_ReceiptDate` = '".$value."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByReceiptStatus($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Payment_ReceiptStatus` = '".$value."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByAppointmentDate($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Payment_AppointmentDate` = '".$value."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByAppointmentStatus($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Payment_AppointmentStatus` = '".$value."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByDateCreated($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Payment_DateCreated` = '".$value."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByStatus($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Payment_Status` = '".$value."'
+		AND `Payment_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -219,10 +525,10 @@ class Payment{
 	}
 
 	public function SetImage($image,$id){
-		$val = true; // true - upload success | false - upload failed
-		$msg = ""; // error message
-		$clsImage = new Image();
 
+		$val = true;
+		$msg = "";
+		$clsImage = new Image();
 		if(isset($image["name"]) && ($image["name"]!=""))
 		{
 			$result = $clsImage->Upload($image,$this->table,$id);
@@ -230,7 +536,6 @@ class Payment{
 				$msg = $result[0];
 			}
 		}
-
 		return array("val"=>$val,"msg"=>$msg);
 	}
 
@@ -245,20 +550,18 @@ class Payment{
 	}
 
 	public function ListTransfer($result){
-
 		$lst = array();
 		while($row = mysqli_fetch_array($result))
 		{
 			$mdl = new PaymentModel();
 			$mdl = $this->ToModel($row);
-			array_push($lst, $mdl);
+			array_push($lst,$mdl);
 		}
 		return $lst;
 	}
 
 	public function ToModel($row){
 		$mdl = new PaymentModel();
-
 		$mdl->setId((isset($row['Payment_Id'])) ? $row['Payment_Id'] : '');
 		$mdl->setProject_Id((isset($row['Project_Id'])) ? $row['Project_Id'] : '');
 		$mdl->setReceiptDate((isset($row['Payment_ReceiptDate'])) ? $row['Payment_ReceiptDate'] : '');
@@ -269,6 +572,4 @@ class Payment{
 		$mdl->setStatus((isset($row['Payment_Status'])) ? $row['Payment_Status'] : '');
 		return $mdl;
 	}
-
 }
-?>

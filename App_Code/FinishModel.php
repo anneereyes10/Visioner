@@ -7,6 +7,7 @@ class FinishModel{
 
 	public function __construct(){}
 
+	//Id
 	public function getId(){
 		return $this->Id;
 	}
@@ -20,9 +21,11 @@ class FinishModel{
 	}
 
 	public function setId($Id){
-	$this->Id = $Id;
+		$this->Id = $Id;
 	}
 
+
+	//Name
 	public function getName(){
 		return $this->Name;
 	}
@@ -36,7 +39,8 @@ class FinishModel{
 	}
 
 	public function setName($Name){
-	$this->Name = $Name;
+		$this->Name = $Name;
 	}
+
 
 }

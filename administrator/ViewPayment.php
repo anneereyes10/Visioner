@@ -149,8 +149,8 @@ require_once ("../App_Code/ImageModel.php");
                           ?>
                         </td>
                         <td>
-                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Approved</button>
-                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">Declined</button>
+                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Yes</button>
+                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">No</button>
                         </td>
 
                       </tr>

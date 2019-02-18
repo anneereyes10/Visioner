@@ -3,15 +3,16 @@ $mdlUpgrade = new UpgradeModel();
 class UpgradeModel{
 
 	private $Id = "";
+	private $Part_Id = "";
 	private $Name = "";
 	private $Description = "";
 	private $Price = "";
 	private $DateCreated = "";
 	private $Status = "";
 
-
 	public function __construct(){}
 
+	//Id
 	public function getId(){
 		return $this->Id;
 	}
@@ -29,6 +30,25 @@ class UpgradeModel{
 	}
 
 
+	//Part_Id
+	public function getPart_Id(){
+		return $this->Part_Id;
+	}
+
+	public function getsqlPart_Id(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->Part_Id);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setPart_Id($Part_Id){
+		$this->Part_Id = $Part_Id;
+	}
+
+
+	//Name
 	public function getName(){
 		return $this->Name;
 	}
@@ -46,6 +66,7 @@ class UpgradeModel{
 	}
 
 
+	//Description
 	public function getDescription(){
 		return $this->Description;
 	}
@@ -62,6 +83,8 @@ class UpgradeModel{
 		$this->Description = $Description;
 	}
 
+
+	//Price
 	public function getPrice(){
 		return $this->Price;
 	}
@@ -79,6 +102,7 @@ class UpgradeModel{
 	}
 
 
+	//DateCreated
 	public function getDateCreated(){
 		return $this->DateCreated;
 	}
@@ -96,6 +120,7 @@ class UpgradeModel{
 	}
 
 
+	//Status
 	public function getStatus(){
 		return $this->Status;
 	}
@@ -111,5 +136,6 @@ class UpgradeModel{
 	public function setStatus($Status){
 		$this->Status = $Status;
 	}
+
 
 }

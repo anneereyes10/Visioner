@@ -63,7 +63,7 @@ if(isset($_POST['Project_Id'])){
 
   if($err == ""){
     $duplicate = $clsPayment->IsExist($mdlPayment);
-    if($duplicate){
+    if($duplicate['val']){
       $msg .= '
       <div class="alert alert-danger alert-dismissible" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">

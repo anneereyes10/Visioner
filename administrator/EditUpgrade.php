@@ -20,6 +20,7 @@ if(isset($_POST['Name'])){
 
 	$err .= $clsFn->setForm('Name',$mdlUpgrade,true);
 	$err .= $clsFn->setForm('Description',$mdlUpgrade,true);
+	$err .= $clsFn->setForm('Price',$mdlUpgrade,true);
 
 	if($err == ""){
 		$duplicate = $clsUpgrade->IsExist($mdlUpgrade);

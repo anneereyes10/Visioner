@@ -1,4 +1,5 @@
 <?php
+require_once ("ProjectModel.php");
 $clsProject = new Project();
 class Project{
 
@@ -14,18 +15,18 @@ class Project{
 			(
 				`User_Id`,
 				`Project_Name`,
-				`Layout_Id`
+				`Plan_Id`
 			) VALUES (
-				 '".$mdl->getsqlUser_Id()."',
-				 '".$mdl->getsqlName()."',
-				 '".$mdl->getsqlLayout_Id()."'
-			 )";
-		 $result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		 $id = mysqli_insert_id($conn);
+				'".$mdl->getsqlUser_Id()."',
+				'".$mdl->getsqlName()."',
+				'".$mdl->getsqlPlan_Id()."'
+			)";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$id = mysqli_insert_id($conn);
 
-		 mysqli_close($conn);
-		 return $id;
-	 }
+		mysqli_close($conn);
+		return $id;
+	}
 
 	public function Update($mdl){
 
@@ -34,7 +35,7 @@ class Project{
 		$sql="UPDATE `".$this->table."` SET
 				 `User_Id`='".$mdl->getsqlUser_Id()."',
 				 `Project_Name`='".$mdl->getsqlName()."',
-				 `Layout_Id`='".$mdl->getsqlLayout_Id()."',
+				 `Plan_Id`='".$mdl->getsqlPlan_Id()."',
 				 `Project_Status`='".$mdl->getsqlStatus()."'
 		 WHERE `Project_Id`='".$mdl->getsqlId()."'";
 
@@ -58,8 +59,6 @@ class Project{
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
 	}
 
 	public function UpdateName($id,$value){
@@ -77,11 +76,9 @@ class Project{
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
 	}
 
-	public function UpdateLayout_Id($id,$value){
+	public function UpdatePlan_Id($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -90,7 +87,7 @@ class Project{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Layout_Id`='".$value."'
+			`Plan_Id`='".$value."'
 			WHERE `Project_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -113,8 +110,6 @@ class Project{
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
 	}
 
 	public function Delete($id){
@@ -134,34 +129,41 @@ class Project{
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
+
 		$val = false;
 		$msg = "";
-		$sql = "SELECT * FROM `".$this->table."` AS `count`
+
+
+
+		// Project_Name
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
 			`Project_Id` != '".$mdl->getsqlId()."'AND
-			`User_Id` = '".$mdl->getsqlUser_Id()."'AND
-			`Project_Name` = '".$mdl->getsqlName()."'AND
-			`Layout_Id` = '".$mdl->getsqlLayout_Id()."'";
+			`Project_Name` = '".$mdl->getsqlName()."' AND
+			`User_Id` = '".$mdl->getsqlUser_Id()."'
+		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$num_rows = mysqli_num_rows($result);
-
-			mysqli_close($conn);
-
-		if($num_rows > 0)
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
 		{
-			return true;
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputName\")'>Name</a>: " . $mdl->getName() . "</p>";
+			$val = true;
 		}
 
-		return false;
+
+		mysqli_close($conn);
+
+		return array("val"=>"$val","msg"=>"$msg");
+
 	}
 
-	public function Get(){
+	public function Get($status=0){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
-		$sql="SELECT * FROM `".$this->table."`";
-
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Project_Status` = '".$status."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
@@ -217,7 +219,7 @@ class Project{
 		return $value;
 	}
 
-	public function GetLayout_IdById($id,$status=0){
+	public function GetPlan_IdById($id,$status=0){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -226,14 +228,14 @@ class Project{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Layout_Id` FROM `".$this->table."`
+		$sql="SELECT `Plan_Id` FROM `".$this->table."`
 		WHERE `Project_Id` = '".$id."'
 		AND `Project_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Layout_Id'];
+			$value = $row['Plan_Id'];
 		}
 
 		mysqli_close($conn);
@@ -322,7 +324,7 @@ class Project{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByLayout_Id($value,$status=0){
+	public function GetByPlan_Id($value,$status=0){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -331,7 +333,7 @@ class Project{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Layout_Id` = '".$value."'
+		WHERE `Plan_Id` = '".$value."'
 		AND `Project_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -420,7 +422,7 @@ class Project{
 		$mdl->setId((isset($row['Project_Id'])) ? $row['Project_Id'] : '');
 		$mdl->setUser_Id((isset($row['User_Id'])) ? $row['User_Id'] : '');
 		$mdl->setName((isset($row['Project_Name'])) ? $row['Project_Name'] : '');
-		$mdl->setLayout_Id((isset($row['Layout_Id'])) ? $row['Layout_Id'] : '');
+		$mdl->setPlan_Id((isset($row['Plan_Id'])) ? $row['Plan_Id'] : '');
 		$mdl->setDateCreated((isset($row['Project_DateCreated'])) ? $row['Project_DateCreated'] : '');
 		$mdl->setStatus((isset($row['Project_Status'])) ? $row['Project_Status'] : '');
 		return $mdl;

@@ -1,6 +1,6 @@
 <?php
 
-$con = mysqli_connect("localhost","root","","designbuild");
+$con = mysqli_connect("localhost","root","","designbuild3");
 
 if (mysqli_connect_errno())
 {
@@ -13,7 +13,7 @@ if (mysqli_connect_errno())
 function getIP()
 {
 	$ip=$_SERVER['REMOTE_ADDR'];
-	
+
 	if(!empty($_SERVER['HTTP_CLIENT_IP']))
 	{
 		$ip=$_SERVER['HTTP_CLIENT_IP'];
@@ -21,7 +21,7 @@ function getIP()
 	{
 		$ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
 	}
-	
+
 	return $ip;
 }
 

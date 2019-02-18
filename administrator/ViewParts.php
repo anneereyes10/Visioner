@@ -98,6 +98,7 @@ require_once ("../App_Code/ImageModel.php");
 											<tr>
                         <th>Image</th>
 												<th>Name</th>
+												<th>Area</th>
 												<th>Action</th>
 											</tr>
 										</thead>
@@ -105,6 +106,7 @@ require_once ("../App_Code/ImageModel.php");
 											<tr>
                         <th>Image</th>
 												<th>Name</th>
+												<th>Area</th>
 												<th>Action</th>
 											</tr>
 										</tfoot>
@@ -128,6 +130,7 @@ require_once ("../App_Code/ImageModel.php");
                           ?>
                         </td>
 												<td><?php echo $mdlParts->getName(); ?></td>
+												<td><?php echo $mdlParts->getArea(); ?></td>
 												<td>
 
 													<a href="DisplayParts.php?Id=<?php echo $mdlParts->getId(); ?>" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" title="View">

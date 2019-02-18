@@ -9,7 +9,7 @@ class Database{
 		$dbhost = 'localhost';
 		$dbuser = 'root';
 		$dbpass = '';
-		$dbname = 'designbuild';
+		$dbname = 'designbuild3';
 
 		$this->conn = mysqli_connect($dbhost, $dbuser, $dbpass,$dbname) or die("Connection Error");
 	}

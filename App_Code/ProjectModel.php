@@ -5,12 +5,13 @@ class ProjectModel{
 	private $Id = "";
 	private $User_Id = "";
 	private $Name = "";
-	private $Layout_Id = "";
+	private $Plan_Id = "";
 	private $DateCreated = "";
 	private $Status = "";
 
 	public function __construct(){}
 
+	//Id
 	public function getId(){
 		return $this->Id;
 	}
@@ -24,9 +25,11 @@ class ProjectModel{
 	}
 
 	public function setId($Id){
-	$this->Id = $Id;
+		$this->Id = $Id;
 	}
 
+
+	//User_Id
 	public function getUser_Id(){
 		return $this->User_Id;
 	}
@@ -40,9 +43,11 @@ class ProjectModel{
 	}
 
 	public function setUser_Id($User_Id){
-	$this->User_Id = $User_Id;
+		$this->User_Id = $User_Id;
 	}
 
+
+	//Name
 	public function getName(){
 		return $this->Name;
 	}
@@ -56,25 +61,29 @@ class ProjectModel{
 	}
 
 	public function setName($Name){
-	$this->Name = $Name;
+		$this->Name = $Name;
 	}
 
-	public function getLayout_Id(){
-		return $this->Layout_Id;
+
+	//Plan_Id
+	public function getPlan_Id(){
+		return $this->Plan_Id;
 	}
 
-	public function getsqlLayout_Id(){
+	public function getsqlPlan_Id(){
 		$Database = new Database();
 		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Layout_Id);
+		$value = mysqli_real_escape_string($conn,$this->Plan_Id);
 		mysqli_close($conn);
 		return $value;
 	}
 
-	public function setLayout_Id($Layout_Id){
-	$this->Layout_Id = $Layout_Id;
+	public function setPlan_Id($Plan_Id){
+		$this->Plan_Id = $Plan_Id;
 	}
 
+
+	//DateCreated
 	public function getDateCreated(){
 		return $this->DateCreated;
 	}
@@ -88,9 +97,11 @@ class ProjectModel{
 	}
 
 	public function setDateCreated($DateCreated){
-	$this->DateCreated = $DateCreated;
+		$this->DateCreated = $DateCreated;
 	}
 
+
+	//Status
 	public function getStatus(){
 		return $this->Status;
 	}
@@ -104,7 +115,8 @@ class ProjectModel{
 	}
 
 	public function setStatus($Status){
-	$this->Status = $Status;
+		$this->Status = $Status;
 	}
+
 
 }

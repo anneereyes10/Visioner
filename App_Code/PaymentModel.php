@@ -11,10 +11,9 @@ class PaymentModel{
 	private $DateCreated = "";
 	private $Status = "";
 
-
-
 	public function __construct(){}
 
+	//Id
 	public function getId(){
 		return $this->Id;
 	}
@@ -32,6 +31,7 @@ class PaymentModel{
 	}
 
 
+	//Project_Id
 	public function getProject_Id(){
 		return $this->Project_Id;
 	}
@@ -49,6 +49,7 @@ class PaymentModel{
 	}
 
 
+	//ReceiptDate
 	public function getReceiptDate(){
 		return $this->ReceiptDate;
 	}
@@ -66,6 +67,7 @@ class PaymentModel{
 	}
 
 
+	//ReceiptStatus
 	public function getReceiptStatus(){
 		return $this->ReceiptStatus;
 	}
@@ -83,6 +85,7 @@ class PaymentModel{
 	}
 
 
+	//AppointmentDate
 	public function getAppointmentDate(){
 		return $this->AppointmentDate;
 	}
@@ -100,6 +103,7 @@ class PaymentModel{
 	}
 
 
+	//AppointmentStatus
 	public function getAppointmentStatus(){
 		return $this->AppointmentStatus;
 	}
@@ -117,6 +121,7 @@ class PaymentModel{
 	}
 
 
+	//DateCreated
 	public function getDateCreated(){
 		return $this->DateCreated;
 	}
@@ -134,6 +139,7 @@ class PaymentModel{
 	}
 
 
+	//Status
 	public function getStatus(){
 		return $this->Status;
 	}
@@ -149,4 +155,6 @@ class PaymentModel{
 	public function setStatus($Status){
 		$this->Status = $Status;
 	}
+
+
 }

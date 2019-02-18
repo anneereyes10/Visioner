@@ -36,9 +36,28 @@ $e = $_GET['e'];
     $sqli="DELETE FROM `user_account_p`
 				WHERE `user_id` = '".$userID."'";
 		$result=mysqli_query($con,$sqli) or die(mysqli_error($con));
-    echo 'Email Verified';
+    // echo 'Email Verified ';
+		?>
+		<center>
+		<h2>Email Verified!</h2> <br />
+		Please wait while we redirect you to login page. <br/>
+		<br/ >
+		if the page does not reload, please click this <a href="index.php?login">link</a>.
+	</center>
+			<meta http-equiv="refresh" content="3;url=index.php?login">
+		<?php
   }else{
-    echo 'Link is either used or not accessible';
+    // echo 'Link is either used or not accessible';
+
+		?>
+		<center>
+	Link is either used or not accessible <br />
+		Please wait while we redirect you to login page. <br/>
+		<br/ >
+		if the page does not reload, please click this <a href="index.php?login">link</a>.
+</center>
+			<meta http-equiv="refresh" content="3;url=index.php?login">
+		<?php
   }
 
 	mysqli_close($con);

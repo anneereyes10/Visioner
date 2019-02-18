@@ -1,25 +1,25 @@
 
-function filterLayout() {
-  cleaner("Layout");
+function filterPlan() {
+  cleaner("Plan");
   var xmlhttp = new XMLHttpRequest();
   var url = "";
-  var Size_Min      = document.getElementById("Layout_Size_Min").value;
-  var Size_Max      = document.getElementById("Layout_Size_Max").value;
-  var Price_Min     = document.getElementById("Layout_Price_Min").value;
-  var Price_Max     = document.getElementById("Layout_Price_Max").value;
-  var Bedroom_Min   = document.getElementById("Layout_Bedroom_Min").value;
-  var Bedroom_Max   = document.getElementById("Layout_Bedroom_Max").value;
-  var Bathroom_Min  = document.getElementById("Layout_Bathroom_Min").value;
-  var Bathroom_Max  = document.getElementById("Layout_Bathroom_Max").value;
-  var Parking_Min   = document.getElementById("Layout_Parking_Min").value;
-  var Parking_Max   = document.getElementById("Layout_Parking_Max").value;
+  var Size_Min      = document.getElementById("Plan_Size_Min").value;
+  var Size_Max      = document.getElementById("Plan_Size_Max").value;
+  var Price_Min     = document.getElementById("Plan_Price_Min").value;
+  var Price_Max     = document.getElementById("Plan_Price_Max").value;
+  var Bedroom_Min   = document.getElementById("Plan_Bedroom_Min").value;
+  var Bedroom_Max   = document.getElementById("Plan_Bedroom_Max").value;
+  var Bathroom_Min  = document.getElementById("Plan_Bathroom_Min").value;
+  var Bathroom_Max  = document.getElementById("Plan_Bathroom_Max").value;
+  var Parking_Min   = document.getElementById("Plan_Parking_Min").value;
+  var Parking_Max   = document.getElementById("Plan_Parking_Max").value;
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Layout").innerHTML = this.responseText;
+      document.getElementById("Plan").innerHTML = this.responseText;
     }
   };
   url = "../Ajax/Customization.php";
-  url += "?call=filterLayout";
+  url += "?call=filterPlan";
   url += "&Size_Min="     + Size_Min;
   url += "&Size_Max="     + Size_Max;
   url += "&Price_Min="    + Price_Min;
@@ -39,14 +39,56 @@ function addProject() {
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var name = document.getElementById("inputProject_Name").value;
-  var dateNow = Date.now();
-  var dateOut = new Date(Date.now()).toLocaleString();
+  var msg = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      // var table = $('#example').DataTable();
-      // table.row.add([name,dateOut]).draw();
-      // document.getElementById("msg_Project").innerHTML = this.responseText;
-      location.reload();
+      if (this.responseText == "duplicate") {
+        msg = `
+          <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+          <span class="sr-only">Close</span>
+          </button>
+          <h4>Duplicate of Information Detected. </h4>
+          <p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(inputName)'>Name</a>: `+name+`</p>
+          </div>
+        `;
+        document.getElementById("msg_Project").innerHTML = msg;
+      } else if (this.responseText == "missing") {
+        msg = `
+          <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+          <span class="sr-only">Close</span>
+          </button>
+          <h6>
+            Project Name missing.
+          </h6>
+          </div>
+        `;
+        document.getElementById("msg_Project").innerHTML = msg;
+      } else {
+        msg = `
+          <div class="alert alert-success alert-dismissible" role="alert">
+  	      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  	      <span aria-hidden="true">×</span>
+  	      <span class="sr-only">Close</span>
+  	      </button>
+  	      <h6>
+  	        Successfully Added New Plan.
+  	      </h6>
+  	      </div>
+        `;
+        document.getElementById("msg_Project").innerHTML = msg;
+
+        var action = `
+          <a href="customization.php?project=`+this.responseText+`" class="btn btn-next btn-primary"> Select </a>
+          <button class="btn btn-primary w-full" onclick="DeleteProject(`+this.responseText+`);"> Delete </button>
+        `;
+        var table = $('#example').DataTable();
+        table.row.add([name,action]).draw();
+      }
+      // location.reload();
     }
   };
   url = "../Ajax/Customization.php";
@@ -73,19 +115,19 @@ function DeleteProject(ProjectId) {
 
 function cleaner(name){
   switch(name) {
-      case "Layout":
-        document.getElementById("Room").innerHTML = '';
-        document.getElementById("Parts").innerHTML = '';
-        document.getElementById("Material").innerHTML = '';
+      case "Plan":
+        document.getElementById("Category").innerHTML = '';
+        document.getElementById("Part").innerHTML = '';
+        // document.getElementById("Material").innerHTML = '';
         // document.getElementById("Upgrade").innerHTML = '';
         break;
-      case "Floor":
-        document.getElementById("Parts").innerHTML = '';
-        document.getElementById("Material").innerHTML = '';
+      case "Category":
+        document.getElementById("Part").innerHTML = '';
+        // document.getElementById("Material").innerHTML = '';
         // document.getElementById("Upgrade").innerHTML = '';
         break;
       case "Room":
-        document.getElementById("Material").innerHTML = '';
+        // document.getElementById("Material").innerHTML = '';
         // document.getElementById("Upgrade").innerHTML = '';
         break;
       case "Parts":
@@ -116,37 +158,35 @@ function selFinish(Finish_Id,Project_Id) {
   xmlhttp.send();
 
 }
-function selLayout(id) {
-  cleaner("Layout");
+function selPlan(id) {
+  cleaner("Plan");
   var xmlhttp = new XMLHttpRequest();
   var url = "";
-  var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Floor").innerHTML = this.responseText;
+      document.getElementById("Category").innerHTML = this.responseText;
     }
   };
   url = "../Ajax/Customization.php";
-  url += "?call=floor";
+  url += "?call=category";
   url += "&Id=" + id;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 
 }
 
-function selFloor(id) {
-  cleaner("Floor");
-
+function selCategory() {
+  cleaner("Category");
+  var id = document.getElementById("selcategory").value;
   var xmlhttp = new XMLHttpRequest();
   var url = "";
-  var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Room").innerHTML = this.responseText;
+      document.getElementById("Part").innerHTML = this.responseText;
     }
   };
   url = "../Ajax/Customization.php";
-  url += "?call=room";
+  url += "?call=part";
   url += "&Id=" + id;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
@@ -173,6 +213,7 @@ function selRoom(id) {
 }
 
 function selParts(id) {
+  console.log(id);
   cleaner("Parts");
 
   var xmlhttp = new XMLHttpRequest();
@@ -199,14 +240,12 @@ function selMaterial(id,rp) {
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Upgrade").innerHTML = this.responseText;
       getItems();
     }
   };
   url = "../Ajax/Customization.php";
-  url += "?call=upgrade";
+  url += "?call=addMaterial";
   url += "&Id=" + id;
-  url += "&rp=" + rp;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 
@@ -222,9 +261,8 @@ function selUpgrade(id,pm) {
     getItems();
   };
   url = "../Ajax/Customization.php";
-  url += "?call=upgradeselect";
+  url += "?call=addUpgrade";
   url += "&Id=" + id;
-  url += "&PartMaterial_Id=" + pm;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }

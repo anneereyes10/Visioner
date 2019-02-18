@@ -1,49 +1,26 @@
 <?php
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/FinishItem.php");
-require_once ("../App_Code/FinishItemModel.php");
-require_once ("../App_Code/Layout.php");
-require_once ("../App_Code/LayoutModel.php");
-require_once ("../App_Code/LayoutFloor.php");
-require_once ("../App_Code/LayoutFloorModel.php");
-require_once ("../App_Code/Floor.php");
-require_once ("../App_Code/FloorModel.php");
-require_once ("../App_Code/FloorRoom.php");
-require_once ("../App_Code/FloorRoomModel.php");
-require_once ("../App_Code/Room.php");
-require_once ("../App_Code/RoomModel.php");
-require_once ("../App_Code/RoomPart.php");
-require_once ("../App_Code/RoomPartModel.php");
-require_once ("../App_Code/Parts.php");
-require_once ("../App_Code/PartsModel.php");
-require_once ("../App_Code/PartMaterial.php");
-require_once ("../App_Code/PartMaterialModel.php");
+require_once ("../App_Code/Plan.php");
+require_once ("../App_Code/Category.php");
+require_once ("../App_Code/Part.php");
 require_once ("../App_Code/Material.php");
-require_once ("../App_Code/MaterialModel.php");
-require_once ("../App_Code/MaterialUpgrade.php");
-require_once ("../App_Code/MaterialUpgradeModel.php");
 require_once ("../App_Code/Upgrade.php");
-require_once ("../App_Code/UpgradeModel.php");
 require_once ("../App_Code/Image.php");
-require_once ("../App_Code/ImageModel.php");
 
 $call = $_GET['call'];
 
 switch ($call){
-	case 'layout':	{
-		displayLayout($_GET['Id']);
+	case 'plan':	{
+		displayPlan($_GET['Id']);
 		break;
 	}
-	case 'floor':	{
-		displayFloor($_GET['Id']);
+	case 'category':	{
+		displayCategory($_GET['Id']);
 		break;
 	}
-	case 'room':	{
-		displayRoom($_GET['Id']);
-		break;
-	}
-	case 'parts':	{
-		displayParts($_GET['Id']);
+	case 'part':	{
+		displayPart($_GET['Id']);
 		break;
 	}
 	case 'material':	{
@@ -51,24 +28,32 @@ switch ($call){
 		break;
 	}
 	case 'upgrade':	{
-		displayUpgrade($_GET['Id'],$_GET['RoomPart_Id']);
+		displayUpgrade($_GET['Id']);
 		break;
 	}
 	case 'upgradeselect':	{
 		displayUpgradeSelect($_GET['Id'],$_GET['PartMaterial_Id'],$_GET['empty']);
 		break;
 	}
+	case 'selectMaterial': {
+		selectMaterial($_GET['Id']);
+		break;
+	}
+	case 'selectUpgrade': {
+		selectUpgrade($_GET['Id']);
+		break;
+	}
 
-	case 'addfloor':	{
-		addFloor($_GET['LayoutId'],$_GET['FloorId']);
+	case 'addcategory':	{
+		addCategory($_GET['PlanId'],$_GET['CategoryId']);
 		break;
 	}
 	case 'addroom':	{
-		addRoom($_GET['LayoutFloorId'],$_GET['RoomId']);
+		addRoom($_GET['PlanCategoryId'],$_GET['RoomId']);
 		break;
 	}
-	case 'addparts':	{
-		addParts($_GET['FloorRoomId'],$_GET['PartsId']);
+	case 'addpart':	{
+		addPart($_GET['CategoryRoomId'],$_GET['PartId']);
 		break;
 	}
 	case 'addmaterial':	{
@@ -80,16 +65,16 @@ switch ($call){
 		break;
 	}
 
-	case 'deletefloor':	{
-		deleteFloor($_GET['LayoutFloorId']);
+	case 'deletecategory':	{
+		deleteCategory($_GET['PlanCategoryId']);
 		break;
 	}
 	case 'deleteroom': {
-		deleteRoom($_GET['FloorRoomId']);
+		deleteRoom($_GET['CategoryRoomId']);
 		break;
 	}
-	case 'deleteparts': {
-		deleteParts($_GET['RoomPartsId']);
+	case 'deletepart': {
+		deletePart($_GET['RoomPartId']);
 		break;
 	}
 	case 'deletematerial': {
@@ -101,8 +86,8 @@ switch ($call){
 		break;
 	}
 
-	case 'showfloor':	{
-		showFloor($_GET['Id']);
+	case 'showcategory':	{
+		showCategory($_GET['Id']);
 		break;
 	}
 	case 'showroom':	{
@@ -125,17 +110,17 @@ switch ($call){
 
 
 /* DISPLAY----------------------------------------------------- DISPLAY */
-function displayLayout($finishId){
+function displayPlan($finishId){
 	$_SESSION['Finish_Id'] = $finishId;
-	$clsLayout = new Layout();
-	$mdlLayout = new LayoutModel();
+	$clsPlan = new Plan();
+	$mdlPlan = new PlanModel();
 	$clsImage = new Image();
 	$mdlImage = new ImageModel();
-	$lstLayout = $clsLayout->Get();
+	$lstPlan = $clsPlan->Get();
 
-  foreach ($lstLayout as $mdlLayout) {
+  foreach ($lstPlan as $mdlPlan) {
     $imgLocation = "";
-    $lstImage = $clsImage->GetByDetail("layout",$mdlLayout->getId(),"original");
+    $lstImage = $clsImage->GetByDetail("plan",$mdlPlan->getId(),"original");
     foreach($lstImage as $mdlImage){
       $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
     }
@@ -143,297 +128,211 @@ function displayLayout($finishId){
     <div class="col-md-2 col-sm-3 mb-10 p-0">
       <a
 				href="javascript:void(0);"
-				onclick="selLayout(<?php echo $mdlLayout->getId(); ?>);"
+				onclick="selPlan(<?php echo $mdlPlan->getId(); ?>);"
 				class="card shadow featured bg-light"
 				style="color:#666;"
-				id="Layout_<?php echo $mdlLayout->getId(); ?>"
+				id="Plan_<?php echo $mdlPlan->getId(); ?>"
 			>
         <div
         	class="card-img-top img-featured"
         	style="background-image: url('<?php echo $imgLocation; ?>')"
-        	alt="<?php echo $mdlLayout->getName(); ?>"
+        	alt="<?php echo $mdlPlan->getName(); ?>"
 				>
       	</div>
         <div class="card-body">
-          <h5 class="card-title"><?php echo $mdlLayout->getName(); ?></h5>
-          <p class="card-text"><?php echo $mdlLayout->getDescription(); ?></p>
+          <h5 class="card-title"><?php echo $mdlPlan->getName(); ?></h5>
+          <p class="card-text"><?php echo $mdlPlan->getDescription(); ?></p>
         </div>
       </a>
     </div>
   <?php
   }
-  if (empty($lstLayout)) {
-    echo 'No Layout Attached';
+  if (empty($lstPlan)) {
+    echo 'No Plan Attached';
   }
 }
 
-function displayFloor($layoutId){
-	$_SESSION['Layout_Id'] = $layoutId;
-	$clsFloor = new Floor();
-	$mdlFloor = new FloorModel();
-	$clsLF = new LayoutFloor();
-	$mdlLF = new LayoutFloorModel();
+function displayCategory($planId){
+	$_SESSION['Plan_Id'] = $planId;
+	$clsCategory = new Category();
+	$mdlCategory = new CategoryModel();
 	$clsImage = new Image();
 	$mdlImage = new ImageModel();
-	$lstLF = $clsLF->GetByLayout_Id($layoutId);
+	$lstCategory = $clsCategory->GetByPlan_Id($planId);
 
-  foreach ($lstLF as $mdlLF) {
-		$mdlFloor = $clsFloor->GetById($mdlLF->getFloor_Id());
-    $imgLocation = "";
-    $lstImage = $clsImage->GetByDetail("floor",$mdlFloor->getId(),"original");
-    foreach($lstImage as $mdlImage){
-      $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-    }
-    ?>
-    <div class="col-md-2 col-sm-3 mb-10 p-0">
-      <a
+  if (empty($mdlCategory)) {
+    echo 'No Category Attached';
+  }else{
+		foreach ($lstCategory as $mdlCategory) {
+			?>
+			<div class="col-md-2 col-sm-3 mb-10 p-0">
+				<a
 				href="javascript:void(0);"
-				onclick="selFloor(<?php echo $mdlLF->getId(); ?>);"
+				onclick="selCategory(<?php echo $mdlCategory->getId(); ?>);"
 				class="card shadow featured bg-light"
 				style="color:#666;"
-				id="LayoutFloor_<?php echo $mdlLF->getId(); ?>"
-			>
-        <div
-        	class="card-img-top img-featured"
-        	style="background-image: url('<?php echo $imgLocation; ?>')"
-        	alt="<?php echo $mdlFloor->getName(); ?>"
+				id="Category_<?php echo $mdlCategory->getId(); ?>"
 				>
-      	</div>
-        <div class="card-body">
-          <h5 class="card-title"><?php echo $mdlFloor->getName(); ?></h5>
-          <p class="card-text"><?php echo $mdlFloor->getDescription(); ?></p>
-        </div>
-      </a>
-    </div>
-  <?php
-  }
-  if (empty($lstLF)) {
-    echo 'No Floor Attached';
-  }
+					<div class="card-body">
+						<h5 class="card-title"><?php echo $mdlCategory->getName(); ?></h5>
+					</div>
+				</a>
+			</div>
+			<?php
+		}
+	}
 }
 
-function displayRoom($layoutFloorId){
-	$clsRoom = new Room();
-	$mdlRoom = new RoomModel();
-	$clsFR = new FloorRoom();
-	$mdlFR = new FloorRoomModel();
+function displayPart($categoryId){
+	$clsPart = new Part();
+	$mdlPart = new PartModel();
 	$clsImage = new Image();
 	$mdlImage = new ImageModel();
 
-  $lstFR = $clsFR->GetByLayoutFloor_Id($layoutFloorId);
+  $lstPart = $clsPart->GetByCategory_Id($categoryId);
 
-  foreach ($lstFR as $mdlFR) {
-		$mdlRoom = $clsRoom->GetById($mdlFR->getRoom_Id());
-    $imgLocation = "";
-    $lstImage = $clsImage->GetByDetail("room",$mdlRoom->getId(),"original");
-
-    foreach($lstImage as $mdlImage){
-      $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-    }
-    ?>
-    <div class="col-md-2 col-sm-3 mb-10 p-0">
-      <a
-				href="javascript:void(0);"
-				onclick="selRoom(<?php echo $mdlFR->getId(); ?>);"
-				class="card shadow featured bg-light"
-				style="color:#666;"
-				id="FloorRoom_<?php echo $mdlFR->getId(); ?>"
-			>
-        <div
-	        class="card-img-top img-featured"
-	        style="background-image: url('<?php echo $imgLocation; ?>')"
-	        alt="<?php echo $mdlRoom->getName(); ?>"
-        ></div>
-        <div class="card-body">
-          <h5 class="card-title"><?php echo $mdlRoom->getName(); ?></h5>
-          <p class="card-text">
-            <?php echo $mdlRoom->getDescription(); ?>
-          </p>
-        </div>
-      </a>
-    </div>
-  <?php
-  }
-  if (empty($lstFR)) {
-    echo 'No Room Attached';
-  }
-}
-
-function displayParts($floorRoomId){
-	$clsParts = new Parts();
-	$mdlParts = new PartsModel();
-	$clsRP = new RoomPart();
-	$mdlRP = new RoomPartModel();
-	$clsImage = new Image();
-	$mdlImage = new ImageModel();
-
-  $lstRP = $clsRP->GetByFloorRoom_Id($floorRoomId);
-
-  foreach ($lstRP as $mdlRP) {
-		$mdlParts = $clsParts->GetById($mdlRP->getParts_Id());
-    $imgLocation = "";
-    $lstImage = $clsImage->GetByDetail("parts",$mdlParts->getId(),"original");
-
-    foreach($lstImage as $mdlImage){
-      $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-    }
-    ?>
-    <div class="col-md-2 col-sm-3 mb-10 p-0">
-      <a
-				href="javascript:void(0);"
-				onclick="selParts(<?php echo $mdlRP->getId(); ?>);"
-				class="card shadow featured bg-light"
-				style="color:#666;"
-				id="RoomPart_<?php echo $mdlRP->getId(); ?>"
-			>
-        <div
-	        class="card-img-top img-featured"
-	        style="background-image: url('<?php echo $imgLocation; ?>')"
-	        alt="<?php echo $mdlParts->getName(); ?>"
-        ></div>
-        <div class="card-body">
-          <h5 class="card-title"><?php echo $mdlParts->getName(); ?></h5>
-          <p class="card-text">
-            <?php echo $mdlParts->getDescription(); ?>
-          </p>
-        </div>
-      </a>
-    </div>
-  <?php
-  }
-  if (empty($lstRP)) {
+  if (empty($lstPart)) {
     echo 'No Part Attached';
-  }
+  }else{
+		foreach ($lstPart as $mdlPart) {
+			?>
+			<div class="col-md-2 col-sm-3 mb-10 p-0">
+				<a
+				href="javascript:void(0);"
+				onclick="selPart(<?php echo $mdlPart->getId(); ?>);"
+				class="card shadow featured bg-light"
+				style="color:#666;"
+				id="Part_<?php echo $mdlPart->getId(); ?>"
+				>
+					<div class="card-body">
+						<h5 class="card-title"><?php echo $mdlPart->getName(); ?></h5>
+					</div>
+				</a>
+			</div>
+			<?php
+		}
+	}
 }
 
-function displayMaterial($RoomPartId){
+function displayMaterial($PartId){
 	$clsMaterial = new Material();
 	$mdlMaterial = new MaterialModel();
-	$clsPM = new PartMaterial();
-	$mdlPM = new PartMaterialModel();
-	$clsImage = new Image();
-	$mdlImage = new ImageModel();
-
-  $lstPM = $clsPM->GetByRoomPart_Id($RoomPartId);
-
-  foreach ($lstPM as $mdlPM) {
-		$mdlMaterial = $clsMaterial->GetById($mdlPM->getMaterial_Id());
-    $imgLocation = "";
-    $lstImage = $clsImage->GetByDetail("material",$mdlMaterial->getId(),"original");
-
-    foreach($lstImage as $mdlImage){
-      $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-    }
-    ?>
-    <div class="col-md-2 col-sm-3 mb-10 p-0">
-      <a
-				href="javascript:void(0);"
-				onclick="selMaterial(<?php echo $mdlPM->getId() . "," . $RoomPartId; ?>);"
-				class="card shadow featured bg-light"
-				style="color:#666;"
-				id="PartMaterial_<?php echo $mdlPM->getId(); ?>"
-			>
-        <div
-	        class="card-img-top img-featured"
-	        style="background-image: url('<?php echo $imgLocation; ?>')"
-	        alt="<?php echo $mdlMaterial->getName(); ?>"
-        ></div>
-        <div class="card-body">
-          <h5 class="card-title"><?php echo $mdlMaterial->getName(); ?></h5>
-          <p class="card-text">
-            <?php echo $mdlMaterial->getDescription(); ?>
-          </p>
-        </div>
-      </a>
-    </div>
-  <?php
-  }
-  if (empty($lstPM)) {
-    echo 'No Material Attached';
-  }
-}
-
-function displayUpgrade($partMaterialId,$RoomPart_Id){
 	$clsFI = new FinishItem();
 	$mdlFI = new FinishItemModel();
-	$clsUpgrade = new Upgrade();
-	$mdlUpgrade = new UpgradeModel();
-	$clsMU = new MaterialUpgrade();
-	$mdlMU = new MaterialUpgradeModel();
 	$clsImage = new Image();
 	$mdlImage = new ImageModel();
 
-	$clsFI->DeleteMaterialChange($_SESSION['Finish_Id'],$RoomPart_Id);
-	$mdlFI->setFinish_Id($_SESSION['Finish_Id']);
-	$mdlFI->setLayout_Id($_SESSION['Layout_Id']);
-	$mdlFI->setPartMaterial_Id($partMaterialId);
-	$clsFI->Add($mdlFI);
+  $lstMaterial = $clsMaterial->GetByPart_Id($PartId);
 
-  $lstMU = $clsMU->GetByPartMaterial_Id($partMaterialId);
-?>
-<div class="col-md-2 col-sm-3 mb-10 p-0">
-	<a
-		href="javascript:void(0);"
-		onclick="selUpgradeE(<?php echo  $mdlMU->getId() . "," . $partMaterialId; ?>);"
-		class="card shadow featured bg-light"
-		style="color:#666;"
-		id="MaterialUpgrade_0"
-	>
-		<div class="card-body">
-			<h5 class="card-title">No Upgrades</h5>
-			<p class="card-text">
-				Set to no upgrades connected to Material
-			</p>
-		</div>
-	</a>
-</div>
+  if (empty($lstMaterial)) {
+    echo 'No Material Attached';
+  }else{
+		foreach ($lstMaterial as $mdlMaterial) {
+			$imgLocation = "";
+			$lstImage = $clsImage->GetByDetail("material",$mdlMaterial->getId(),"original");
 
-<?php
-  foreach ($lstMU as $mdlMU) {
-		$mdlUpgrade = $clsUpgrade->GetById($mdlMU->getUpgrade_Id());
-    $imgLocation = "";
-    $lstImage = $clsImage->GetByDetail("upgrade",$mdlUpgrade->getId(),"original");
+			foreach($lstImage as $mdlImage){
+				$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
+			}
 
-    foreach($lstImage as $mdlImage){
-      $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-    }
-    ?>
-    <div class="col-md-2 col-sm-3 mb-10 p-0">
-      <a
+			$mdlFI->setFinish_Id($_SESSION['Finish_Id']);
+			$mdlFI->setPlan_Id($_SESSION['Plan_Id']);
+			$mdlFI->setMaterial_Id($mdlMaterial->getId());
+			$mdlFI->setUpgrade_Id('0');
+			$addedCss = ' bg-light';
+			if ($clsFI->IsExist($mdlFI)) {
+				$addedCss = ' text-white bg-info';
+			}
+			?>
+			<div class="col-md-2 col-sm-3 mb-10 p-0">
+				<a
 				href="javascript:void(0);"
-				onclick="selUpgrade(<?php echo $mdlMU->getId() . "," . $partMaterialId; ?>);"
-				class="card shadow featured bg-light"
+				onclick="selMaterial(<?php echo $mdlMaterial->getId() . "," . $PartId; ?>);"
+				class="card shadow featured <?php echo $addedCss;?>"
 				style="color:#666;"
-				id="MaterialUpgrade_<?php echo $mdlMU->getId(); ?>"
-			>
-        <div
-	        class="card-img-top img-featured"
-	        style="background-image: url('<?php echo $imgLocation; ?>')"
-	        alt="<?php echo $mdlUpgrade->getName(); ?>"
-        ></div>
-        <div class="card-body">
-          <h5 class="card-title"><?php echo $mdlUpgrade->getName(); ?></h5>
-          <p class="card-text">
-            <?php echo $mdlUpgrade->getDescription(); ?>
-          </p>
-        </div>
-      </a>
-    </div>
-  <?php
-  }
-  if (empty($lstMU)) {
+				id="Material_<?php echo $mdlMaterial->getId(); ?>"
+				>
+					<div
+					class="card-img-top img-featured"
+					style="background-image: url('<?php echo $imgLocation; ?>')"
+					alt="<?php echo $mdlMaterial->getName(); ?>"
+					></div>
+					<div class="card-body">
+						<h5 class="card-title"><?php echo $mdlMaterial->getName(); ?></h5>
+						<p class="card-text">
+							<?php echo $mdlMaterial->getDescription(); ?>
+						</p>
+					</div>
+				</a>
+			</div>
+			<?php
+		}
+	}
+}
+
+function displayUpgrade($PartId){
+	$clsUpgrade = new Upgrade();
+	$mdlUpgrade = new UpgradeModel();
+	$clsFI = new FinishItem();
+	$mdlFI = new FinishItemModel();
+	$clsImage = new Image();
+	$mdlImage = new ImageModel();
+
+  $lstUpgrade = $clsUpgrade->GetByPart_Id($PartId);
+
+  if (empty($lstUpgrade)) {
     echo 'No Upgrade Attached';
-  }
+  }else{
+		foreach ($lstUpgrade as $mdlUpgrade) {
+			$imgLocation = "";
+			$lstImage = $clsImage->GetByDetail("upgrade",$mdlUpgrade->getId(),"original");
+
+			foreach($lstImage as $mdlImage){
+				$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
+			}
+			$mdlFI->setFinish_Id($_SESSION['Finish_Id']);
+			$mdlFI->setPlan_Id($_SESSION['Plan_Id']);
+			$mdlFI->setMaterial_Id('0');
+			$mdlFI->setUpgrade_Id($mdlUpgrade->getId());
+			$addedCss = ' bg-light';
+			if ($clsFI->IsExist($mdlFI)) {
+				$addedCss = ' text-white bg-info';
+			}
+			?>
+			<div class="col-md-2 col-sm-3 mb-10 p-0">
+				<a
+				href="javascript:void(0);"
+				onclick="selUpgrade(<?php echo $mdlUpgrade->getId(); ?>);"
+				class="card shadow featured <?php echo $addedCss; ?>"
+				style="color:#666;"
+				id="Upgrade_<?php echo $mdlUpgrade->getId(); ?>"
+				>
+					<div
+					class="card-img-top img-featured"
+					style="background-image: url('<?php echo $imgLocation; ?>')"
+					alt="<?php echo $mdlUpgrade->getName(); ?>"
+					></div>
+					<div class="card-body">
+						<h5 class="card-title"><?php echo $mdlUpgrade->getName(); ?></h5>
+						<p class="card-text">
+							<?php echo $mdlUpgrade->getDescription(); ?>
+						</p>
+					</div>
+				</a>
+			</div>
+			<?php
+		}
+	}
 }
 
 function displayUpgradeSelect($materialUpgradeId,$PartMaterial_Id,$empty){
 	$clsFI = new FinishItem();
 	$mdlFI = new FinishItemModel();
 
-	$clsFI->DeleteUpgradeChange($_SESSION['Finish_Id'],$_SESSION['Layout_Id'],$PartMaterial_Id);
+	$clsFI->DeleteUpgradeChange($_SESSION['Finish_Id'],$_SESSION['Plan_Id'],$PartMaterial_Id);
 	if ($empty=='false') {
 		$mdlFI->setFinish_Id($_SESSION['Finish_Id']);
-		$mdlFI->setLayout_Id($_SESSION['Layout_Id']);
+		$mdlFI->setPlan_Id($_SESSION['Plan_Id']);
 		$mdlFI->setPartMaterial_Id($PartMaterial_Id);
 		$mdlFI->setMaterialUpgrade_Id($materialUpgradeId);
 		$clsFI->Add($mdlFI);
@@ -443,24 +342,51 @@ function displayUpgradeSelect($materialUpgradeId,$PartMaterial_Id,$empty){
 	}
 }
 
+function selectMaterial($Material_Id){
+	$clsFI = new FinishItem();
+	$mdlFI = new FinishItemModel();
+	$clsM = new Material();
+	$mdlFI->setFinish_Id($_SESSION['Finish_Id']);
+	$mdlFI->setPlan_Id($_SESSION['Plan_Id']);
+	$mdlFI->setMaterial_Id($Material_Id);
+	$mdlFI->setUpgrade_Id('0');
+
+	$clsFI->DeleteMaterialChange($_SESSION['Finish_Id'],$_SESSION['Plan_Id'],$clsM->GetPart_IdById($Material_Id));
+
+	$clsFI->Add($mdlFI);
+}
+
+function selectUpgrade($Upgrade_Id){
+	$clsFI = new FinishItem();
+	$mdlFI = new FinishItemModel();
+	$clsU = new Upgrade();
+	$mdlFI->setFinish_Id($_SESSION['Finish_Id']);
+	$mdlFI->setPlan_Id($_SESSION['Plan_Id']);
+	$mdlFI->setMaterial_Id('0');
+	$mdlFI->setUpgrade_Id($Upgrade_Id);
+
+	$clsFI->DeleteUpgradeChange($_SESSION['Finish_Id'],$_SESSION['Plan_Id'],$clsU->GetPart_IdById($Upgrade_Id));
+
+	$clsFI->Add($mdlFI);
+}
 
 /* SHOW ----------------------------------------------------- SHOW */
-function showFloor($layoutId){
-	$clsLayout = new Layout();
-	$mdlLayout = new LayoutModel();
-	$clsLayoutFloor = new LayoutFloor();
-	$mdlLayoutFloor = new LayoutFloorModel();
-	$clsFloor = new Floor();
-	$mdlFloor = new FloorModel();
+function showCategory($planId){
+	$clsPlan = new Plan();
+	$mdlPlan = new PlanModel();
+	$clsPlanCategory = new PlanCategory();
+	$mdlPlanCategory = new PlanCategoryModel();
+	$clsCategory = new Category();
+	$mdlCategory = new CategoryModel();
 	$clsImage = new Image();
 	$mdlImage = new ImageModel();
 
-	$mdlLayout = $clsLayout->GetById($layoutId);
+	$mdlPlan = $clsPlan->GetById($planId);
 
-	$lstFloor = $clsFloor->GetFloorNotLayout($layoutId);
+	$lstCategory = $clsCategory->GetCategoryNotPlan($planId);
 	?>
 	<div class="modal-header">
-		<h5 class="modal-title">Manage Floor</h5>
+		<h5 class="modal-title">Manage Category</h5>
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">×</span>
 		</button>
@@ -468,7 +394,7 @@ function showFloor($layoutId){
 	<div class="modal-body">
 		<div class="row">
 			<div class="col-md-12">
-				<h5>Layout Details</h5>
+				<h5>Plan Details</h5>
 			</div>
 		</div>
 		<div class="row">
@@ -476,14 +402,14 @@ function showFloor($layoutId){
 				Name
 			</div>
 			<div class="col-md-8">
-				<?php echo $mdlLayout->getName(); ?>
+				<?php echo $mdlPlan->getName(); ?>
 			</div>
 		</div>
 		<div class="row" style="margin-top:20px;">
 			<div class="col-lg-6 col-md-12" style="overflow-x:auto;">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Layout Floor</h3>
+						<h3 class="panel-title">Plan Category</h3>
 					</div>
 					<div class="panel-body">
 						<table id="table1" class="table table-striped table-bordered" style="width:100%">
@@ -503,15 +429,15 @@ function showFloor($layoutId){
 							</tfoot>
 							<tbody>
 								<?php
-								$lstLayoutFloor = $clsLayoutFloor->GetByLayout_Id($mdlLayout->getId());
-								foreach($lstLayoutFloor as $mdlLayoutFloor)
+								$lstPlanCategory = $clsPlanCategory->GetByPlan_Id($mdlPlan->getId());
+								foreach($lstPlanCategory as $mdlPlanCategory)
 								{
 									?>
 									<tr>
 										<td>
 											<?php
 											$imgLocation = "";
-											$lstImage = $clsImage->GetByDetail("floor",$mdlLayoutFloor->getFloor_Id(),"original");
+											$lstImage = $clsImage->GetByDetail("category",$mdlPlanCategory->getCategory_Id(),"original");
 											foreach($lstImage as $mdlImage){
 												$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
 											}
@@ -520,9 +446,9 @@ function showFloor($layoutId){
 											}
 											?>
 										</td>
-										<td><?php echo $clsFloor->GetNameById($mdlLayoutFloor->getFloor_Id()); ?></td>
+										<td><?php echo $clsCategory->GetNameById($mdlPlanCategory->getCategory_Id()); ?></td>
 										<td>
-											<a href="JavaScript:void(0);" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" title="Remove" onclick="deleteFloor(<?php echo $mdlLayoutFloor->getId().",".$mdlLayout->getId(); ?>);">
+											<a href="JavaScript:void(0);" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" title="Remove" onclick="deleteCategory(<?php echo $mdlPlanCategory->getId().",".$mdlPlan->getId(); ?>);">
 												<i class="fa fa-trash" aria-hidden="true"></i>
 											</a>
 										</td>
@@ -539,7 +465,7 @@ function showFloor($layoutId){
 			<div class="col-lg-6 col-md-12">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Floor</h3>
+						<h3 class="panel-title">Category</h3>
 					</div>
 					<div class="panel-body" style="overflow-x:auto;">
 						<table id="table2" class="table table-striped table-bordered" style="width:100%">
@@ -559,15 +485,15 @@ function showFloor($layoutId){
 							</tfoot>
 							<tbody>
 								<?php
-								$lstFloor = $clsFloor->GetFloorNotLayout($mdlLayout->getId());
-								foreach($lstFloor as $mdlFloor)
+								$lstCategory = $clsCategory->GetCategoryNotPlan($mdlPlan->getId());
+								foreach($lstCategory as $mdlCategory)
 								{
 									?>
 									<tr>
 										<td>
 											<?php
 											$imgLocation = "";
-											$lstImage = $clsImage->GetByDetail("floor",$mdlFloor->getId(),"original");
+											$lstImage = $clsImage->GetByDetail("category",$mdlCategory->getId(),"original");
 											foreach($lstImage as $mdlImage){
 												$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
 											}
@@ -576,9 +502,9 @@ function showFloor($layoutId){
 											}
 											?>
 										</td>
-										<td><?php echo $mdlFloor->getName(); ?></td>
+										<td><?php echo $mdlCategory->getName(); ?></td>
 										<td>
-											<a href="JavaScript:void(0);" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" title="Add"  onclick="addFloor(<?php echo  $mdlLayout->getId() . "," . $mdlFloor->getId(); ?>);showFloor(<?php echo $layoutId; ?>);">
+											<a href="JavaScript:void(0);" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" title="Add"  onclick="addCategory(<?php echo  $mdlPlan->getId() . "," . $mdlCategory->getId(); ?>);showCategory(<?php echo $planId; ?>);">
 												<i class="fa fa-plus" aria-hidden="true"></i>
 											</a>
 										</td>
@@ -598,189 +524,23 @@ function showFloor($layoutId){
 	<?php
 }
 
-function showRoom($layoutfloorId){
-	$clsLF = new LayoutFloor();
-	$clsFloor = new Floor();
-	$mdlFloor = new FloorModel();
-	$clsFR = new FloorRoom();
-	$mdlFR = new FloorRoomModel();
-	$clsRoom = new Room();
-	$mdlRoom = new RoomModel();
-	$clsImage = new Image();
-	$mdlImage = new ImageModel();
-
-	$mdlLF = $clsLF->GetById($layoutfloorId);
-	$mdlFloor = $clsFloor->GetById($mdlLF->getFloor_Id());
-	$lstRoom = $clsRoom->GetNotFloor_Id($mdlFloor->getId());
-	?>
-	<div class="modal-header">
-		<h5 class="modal-title">Manage Room</h5>
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">×</span>
-		</button>
-	</div>
-	<div class="modal-body">
-		<div class="row">
-			<div class="col-md-12">
-				<h5>Floor Details</h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4">
-				Name
-			</div>
-			<div class="col-md-8">
-				<?php echo $mdlFloor->getName(); ?>
-			</div>
-		</div>
-		<div class="row" style="margin-top:20px;">
-			<div class="col-lg-6 col-md-12" style="overflow-x:auto;">
-				<div class="panel">
-					<div class="panel-heading">
-						<h3 class="panel-title">Floor Room</h3>
-					</div>
-					<div class="panel-body">
-						<table id="table1" class="table table-striped table-bordered" style="width:100%">
-							<thead>
-								<tr>
-									<th>Image</th>
-									<th>Name</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tfoot>
-								<tr>
-									<th>Image</th>
-									<th>Name</th>
-									<th>Action</th>
-								</tr>
-							</tfoot>
-							<tbody>
-								<?php
-								$lstFR = $clsFR->GetByLayoutFloor_Id($mdlLF->getId());
-								foreach($lstFR as $mdlFR)
-								{
-									$mdlRoom = $clsRoom->GetById($mdlFR->getRoom_Id());
-									?>
-									<tr>
-										<td>
-											<?php
-											$imgLocation = "";
-											$lstImage = $clsImage->GetByDetail("room",$mdlRoom->getId(),"original");
-											foreach($lstImage as $mdlImage){
-												$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-											}
-											if ($imgLocation != '') {
-												echo '<img src="'.$imgLocation.'" style="max-width:100px;max-height:100px;">';
-											}
-											?>
-										</td>
-										<td><?php echo $mdlRoom->getName(); ?></td>
-										<td>
-											<a
-												href="JavaScript:void(0);"
-												class="btn btn-sm btn-icon btn-pure btn-default"
-												data-toggle="tooltip"
-												title="Remove"
-												onclick="deleteRoom(<?php echo $mdlFR->getId().",".$mdlLF->getId(); ?>);"
-											>
-												<i class="fa fa-trash" aria-hidden="true"></i>
-											</a>
-										</td>
-									</tr>
-									<?php
-								} ?>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-
-
-			<div class="col-lg-6 col-md-12">
-				<div class="panel">
-					<div class="panel-heading">
-						<h3 class="panel-title">Room</h3>
-					</div>
-					<div class="panel-body" style="overflow-x:auto;">
-						<table id="table2" class="table table-striped table-bordered" style="width:100%">
-							<thead>
-								<tr>
-									<th>Image</th>
-									<th>Name</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tfoot>
-								<tr>
-									<th>Image</th>
-									<th>Name</th>
-									<th>Action</th>
-								</tr>
-							</tfoot>
-							<tbody>
-								<?php
-								$lstRoom = $clsRoom->GetNotFloor_Id($mdlFloor->getId());
-								foreach($lstRoom as $mdlRoom)
-								{
-									?>
-									<tr>
-										<td>
-											<?php
-											$imgLocation = "";
-											$lstImage = $clsImage->GetByDetail("room",$mdlRoom->getId(),"original");
-											foreach($lstImage as $mdlImage){
-												$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-											}
-											if ($imgLocation != '') {
-												echo '<img src="'.$imgLocation.'" style="max-width:100px;max-height:100px;">';
-											}
-											?>
-										</td>
-										<td><?php echo $mdlRoom->getName(); ?></td>
-										<td>
-											<a
-												href="JavaScript:void(0);"
-												class="btn btn-sm btn-icon btn-pure btn-default"
-												data-toggle="tooltip" title="Add"
-												onclick="addRoom(<?php echo  $mdlLF->getId().",".$mdlRoom->getId(); ?>);"
-											>
-												<i class="fa fa-plus" aria-hidden="true"></i>
-											</a>
-										</td>
-									</tr>
-									<?php
-								} ?>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	</div>
-	<?php
-}
-
-function showPart($floorroomId){
-	$clsFR = new FloorRoom();
+function showPart($categoryroomId){
+	$clsFR = new CategoryRoom();
 	$clsRoom = new Room();
 	$mdlRoom = new RoomModel();
 	$clsRP = new RoomPart();
 	$mdlRP = new RoomPartModel();
-	$clsParts = new Parts();
-	$mdlParts = new PartsModel();
+	$clsPart = new Part();
+	$mdlPart = new PartModel();
 	$clsImage = new Image();
 	$mdlImage = new ImageModel();
 
-	$mdlFR = $clsFR->GetById($floorroomId);
+	$mdlFR = $clsFR->GetById($categoryroomId);
 	$mdlRoom = $clsRoom->GetById($mdlFR->getRoom_Id());
-	$lstParts = $clsParts->GetNotRoom_Id($mdlRoom->getId());
+	$lstPart = $clsPart->GetNotRoom_Id($mdlRoom->getId());
 	?>
 	<div class="modal-header">
-		<h5 class="modal-title">Manage Parts</h5>
+		<h5 class="modal-title">Manage Part</h5>
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">×</span>
 		</button>
@@ -803,7 +563,7 @@ function showPart($floorroomId){
 			<div class="col-lg-6 col-md-12" style="overflow-x:auto;">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Room Parts</h3>
+						<h3 class="panel-title">Room Part</h3>
 					</div>
 					<div class="panel-body">
 						<table id="table1" class="table table-striped table-bordered" style="width:100%">
@@ -823,16 +583,16 @@ function showPart($floorroomId){
 							</tfoot>
 							<tbody>
 								<?php
-								$lstRP = $clsRP->GetByFloorRoom_Id($mdlFR->getId());
+								$lstRP = $clsRP->GetByCategoryRoom_Id($mdlFR->getId());
 								foreach($lstRP as $mdlRP)
 								{
-									$mdlParts = $clsParts->GetById($mdlRP->getParts_Id());
+									$mdlPart = $clsPart->GetById($mdlRP->getPart_Id());
 									?>
 									<tr>
 										<td>
 											<?php
 											$imgLocation = "";
-											$lstImage = $clsImage->GetByDetail("parts",$mdlParts->getId(),"original");
+											$lstImage = $clsImage->GetByDetail("part",$mdlPart->getId(),"original");
 											foreach($lstImage as $mdlImage){
 												$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
 											}
@@ -841,14 +601,14 @@ function showPart($floorroomId){
 											}
 											?>
 										</td>
-										<td><?php echo $mdlParts->getName(); ?></td>
+										<td><?php echo $mdlPart->getName(); ?></td>
 										<td>
 											<a
 												href="JavaScript:void(0);"
 												class="btn btn-sm btn-icon btn-pure btn-default"
 												data-toggle="tooltip"
 												title="Remove"
-												onclick="deleteParts(<?php echo $mdlRP->getId().",".$mdlFR->getId(); ?>);"
+												onclick="deletePart(<?php echo $mdlRP->getId().",".$mdlFR->getId(); ?>);"
 											>
 												<i class="fa fa-trash" aria-hidden="true"></i>
 											</a>
@@ -866,7 +626,7 @@ function showPart($floorroomId){
 			<div class="col-lg-6 col-md-12">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Parts</h3>
+						<h3 class="panel-title">Part</h3>
 					</div>
 					<div class="panel-body" style="overflow-x:auto;">
 						<table id="table2" class="table table-striped table-bordered" style="width:100%">
@@ -886,15 +646,15 @@ function showPart($floorroomId){
 							</tfoot>
 							<tbody>
 								<?php
-								$lstParts = $clsParts->GetNotRoom_Id($mdlRoom->getId());
-								foreach($lstParts as $mdlParts)
+								$lstPart = $clsPart->GetNotRoom_Id($mdlRoom->getId());
+								foreach($lstPart as $mdlPart)
 								{
 									?>
 									<tr>
 										<td>
 											<?php
 											$imgLocation = "";
-											$lstImage = $clsImage->GetByDetail("parts",$mdlParts->getId(),"original");
+											$lstImage = $clsImage->GetByDetail("part",$mdlPart->getId(),"original");
 											foreach($lstImage as $mdlImage){
 												$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
 											}
@@ -903,13 +663,13 @@ function showPart($floorroomId){
 											}
 											?>
 										</td>
-										<td><?php echo $mdlParts->getName(); ?></td>
+										<td><?php echo $mdlPart->getName(); ?></td>
 										<td>
 											<a
 												href="JavaScript:void(0);"
 												class="btn btn-sm btn-icon btn-pure btn-default"
 												data-toggle="tooltip" title="Add"
-												onclick="addParts(<?php echo  $mdlFR->getId().",".$mdlParts->getId(); ?>);"
+												onclick="addPart(<?php echo  $mdlFR->getId().",".$mdlPart->getId(); ?>);"
 											>
 												<i class="fa fa-plus" aria-hidden="true"></i>
 											</a>
@@ -932,8 +692,8 @@ function showPart($floorroomId){
 
 function showMaterial($roompartId){
 	$clsRP = new RoomPart();
-	$clsParts = new Parts();
-	$mdlParts = new PartsModel();
+	$clsPart = new Part();
+	$mdlPart = new PartModel();
 	$clsPM = new PartMaterial();
 	$mdlPM = new PartMaterialModel();
 	$clsMaterial = new Material();
@@ -942,8 +702,8 @@ function showMaterial($roompartId){
 	$mdlImage = new ImageModel();
 
 	$mdlRP = $clsRP->GetById($roompartId);
-	$mdlParts = $clsParts->GetById($mdlRP->getParts_Id());
-	$lstMaterial = $clsMaterial->GetNotParts_Id($mdlParts->getId());
+	$mdlPart = $clsPart->GetById($mdlRP->getPart_Id());
+	$lstMaterial = $clsMaterial->GetNotPart_Id($mdlPart->getId());
 	?>
 	<div class="modal-header">
 		<h5 class="modal-title">Manage Material</h5>
@@ -954,7 +714,7 @@ function showMaterial($roompartId){
 	<div class="modal-body">
 		<div class="row">
 			<div class="col-md-12">
-				<h5>Parts Details</h5>
+				<h5>Part Details</h5>
 			</div>
 		</div>
 		<div class="row">
@@ -962,14 +722,14 @@ function showMaterial($roompartId){
 				Name
 			</div>
 			<div class="col-md-8">
-				<?php echo $mdlParts->getName(); ?>
+				<?php echo $mdlPart->getName(); ?>
 			</div>
 		</div>
 		<div class="row" style="margin-top:20px;">
 			<div class="col-lg-6 col-md-12" style="overflow-x:auto;">
 				<div class="panel">
 					<div class="panel-heading">
-						<h3 class="panel-title">Floor Room</h3>
+						<h3 class="panel-title">Category Room</h3>
 					</div>
 					<div class="panel-body">
 						<table id="table1" class="table table-striped table-bordered" style="width:100%">
@@ -1052,7 +812,7 @@ function showMaterial($roompartId){
 							</tfoot>
 							<tbody>
 								<?php
-								$lstMaterial = $clsMaterial->GetNotParts_Id($mdlParts->getId());
+								$lstMaterial = $clsMaterial->GetNotPart_Id($mdlPart->getId());
 								foreach($lstMaterial as $mdlMaterial)
 								{
 									?>
@@ -1264,31 +1024,22 @@ function showUpgrade($partmaterialId){
 
 /* ADD ----------------------------------------------------- ADD */
 
-function addFloor($layoutId,$floorId){
-	$cls = new LayoutFloor();
-	$mdl = new LayoutFloorModel();
-	$mdl->setLayout_Id($layoutId);
-	$mdl->setFloor_Id($floorId);
+function addCategory($planId,$categoryId){
+	$cls = new PlanCategory();
+	$mdl = new PlanCategoryModel();
+	$mdl->setPlan_Id($planId);
+	$mdl->setCategory_Id($categoryId);
 	$cls->Add($mdl);
-	displayFloor($layoutId);
+	displayCategory($planId);
 }
 
-function addRoom($layoutFloorId,$roomId){
-	$cls = new FloorRoom();
-	$mdl = new FloorRoomModel();
-	$mdl->setLayoutFloor_Id($layoutFloorId);
-	$mdl->setRoom_Id($roomId);
-	$cls->Add($mdl);
-	displayRoom($layoutFloorId);
-}
-
-function addParts($floorRoomId,$partId){
+function addPart($categoryRoomId,$partId){
 	$cls = new RoomPart();
 	$mdl = new RoomPartModel();
-	$mdl->setFloorRoom_Id($floorRoomId);
-	$mdl->setParts_Id($partId);
+	$mdl->setCategoryRoom_Id($categoryRoomId);
+	$mdl->setPart_Id($partId);
 	$cls->Add($mdl);
-	displayParts($floorRoomId);
+	displayPart($categoryRoomId);
 }
 
 function addMaterial($roomPartId,$materialId){
@@ -1311,25 +1062,18 @@ function addUpgrade($partMaterialId,$upgradeId){
 
 /* DELETE ----------------------------------------------------- DELETE */
 
-function deleteFloor($id){
-	$cls = new LayoutFloor();
-	$rId = $cls->GetLayout_IdById($id);
+function deleteCategory($id){
+	$cls = new PlanCategory();
+	$rId = $cls->GetPlan_IdById($id);
 	$cls->Delete($id);
-	displayFloor($rId);
+	displayCategory($rId);
 }
 
-function deleteRoom($id){
-	$cls = new FloorRoom();
-	$rId = $cls->GetLayoutFloor_IdById($id);
-	$cls->Delete($id);
-	displayRoom($rId);
-}
-
-function deleteParts($id){
+function deletePart($id){
 	$cls = new RoomPart();
-	$rId = $cls->GetFloorRoom_IdById($id);
+	$rId = $cls->GetCategoryRoom_IdById($id);
 	$cls->Delete($id);
-	displayParts($rId);
+	displayPart($rId);
 }
 
 function deleteMaterial($id){

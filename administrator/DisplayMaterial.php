@@ -1,13 +1,7 @@
 <?php
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Material.php");
-require_once ("../App_Code/MaterialModel.php");
-require_once ("../App_Code/Upgrade.php");
-require_once ("../App_Code/UpgradeModel.php");
-require_once ("../App_Code/MaterialUpgrade.php");
-require_once ("../App_Code/MaterialUpgradeModel.php");
 require_once ("../App_Code/Image.php");
-require_once ("../App_Code/ImageModel.php");
 
 $msg = "";
 $err = "";
@@ -148,13 +142,12 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
                   <div class="row mb-2">
                     <div class="form-group col-md-12 text-center">
 											<?php
-											$imgLocation = "";
 											$lstImage = $clsImage->GetByDetail("material",$mdlMaterial->getId(),"original");
 											foreach($lstImage as $mdlImage){
-												$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
+												echo '<img src="../'.$clsImage->ToLocation($mdlImage).'" style="max-height:200px;">';
 											}
 											?>
-                      <img src="<?php echo $imgLocation; ?>" style="max-height:200px;">
+
                     </div>
                   </div>
                   <div class="row">
@@ -176,11 +169,8 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-3 offset-sm-3">
+                    <div class="col-sm-4 offset-sm-4">
                       <a href="EditMaterial.php?Id=<?php echo $mdlMaterial->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
-                    </div>
-                    <div class="col-sm-3">
-                      <a href="EditMaterial.php?Id=<?php echo $mdlMaterial->getId(); ?>" id="submit" class="btn btn-danger w-100" data-toggle="modal" data-target="#ModalWrapper" onclick="deleteShow(<?php echo $mdlMaterial->getId(); ?>);">Delete</a>
                     </div>
                   </div>
                 </div>

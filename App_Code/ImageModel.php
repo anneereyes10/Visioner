@@ -8,11 +8,11 @@ class ImageModel{
 	private $TableId = "";
 	private $Size = "";
 	private $DateCreated = "";
-	private $Status = ""; // 0 - active, 1 - inactive
-
+	private $Status = "";
 
 	public function __construct(){}
 
+	//Id
 	public function getId(){
 		return $this->Id;
 	}
@@ -30,7 +30,7 @@ class ImageModel{
 	}
 
 
-
+	//Name
 	public function getName(){
 		return $this->Name;
 	}
@@ -48,7 +48,7 @@ class ImageModel{
 	}
 
 
-
+	//Table
 	public function getTable(){
 		return $this->Table;
 	}
@@ -66,6 +66,7 @@ class ImageModel{
 	}
 
 
+	//TableId
 	public function getTableId(){
 		return $this->TableId;
 	}
@@ -83,7 +84,7 @@ class ImageModel{
 	}
 
 
-
+	//Size
 	public function getSize(){
 		return $this->Size;
 	}
@@ -101,7 +102,7 @@ class ImageModel{
 	}
 
 
-
+	//DateCreated
 	public function getDateCreated(){
 		return $this->DateCreated;
 	}
@@ -119,7 +120,7 @@ class ImageModel{
 	}
 
 
-
+	//Status
 	public function getStatus(){
 		return $this->Status;
 	}

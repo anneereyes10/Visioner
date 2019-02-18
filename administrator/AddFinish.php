@@ -2,25 +2,18 @@
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Finish.php");
-require_once ("../App_Code/FinishModel.php");
-require_once ("../App_Code/Layout.php");
-require_once ("../App_Code/LayoutModel.php");
-require_once ("../App_Code/Floor.php");
-require_once ("../App_Code/FloorModel.php");
-require_once ("../App_Code/Room.php");
-require_once ("../App_Code/RoomModel.php");
-require_once ("../App_Code/Parts.php");
-require_once ("../App_Code/PartsModel.php");
+require_once ("../App_Code/FinishItem.php");
+require_once ("../App_Code/Plan.php");
+require_once ("../App_Code/Category.php");
+require_once ("../App_Code/Part.php");
 require_once ("../App_Code/Material.php");
-require_once ("../App_Code/MaterialModel.php");
 require_once ("../App_Code/Upgrade.php");
-require_once ("../App_Code/UpgradeModel.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
 
 
 $lstFinish = $clsFinish->Get();
-$lstLayout = $clsLayout->Get();
+$lstPlan = $clsPlan->Get();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -111,30 +104,30 @@ $lstLayout = $clsLayout->Get();
 										</div>
 
 										<!-- <div class="panel-heading">
-											<h4 class="panel-title">Select Layout</h4>
+											<h4 class="panel-title">Select Plan</h4>
 										</div>
 										<div class="panel-body mb-4">
 											<div class="row">
 												<div class="col-xs-12" style="width:100% !important;">
 													<div class="card-deck">
-														<div class="row" style="width:100% !important;" id="Layout">
+														<div class="row" style="width:100% !important;" id="Plan">
 															<?php
-		                          foreach ($lstLayout as $mdlLayout) {
+		                          foreach ($lstPlan as $mdlPlan) {
 		                            $imgLocation = "";
-		                            $lstImage = $clsImage->GetByDetail("layout",$mdlLayout->getId(),"original");
+		                            $lstImage = $clsImage->GetByDetail("layout",$mdlPlan->getId(),"original");
 		                            foreach($lstImage as $mdlImage){
 		                              $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
 		                            }
 		                            ?>
 																<div class="col-md-2 col-sm-3 mb-10 p-0 mt-4">
-																	<a href="javascript:void(0);" onclick="selLayout(<?php echo $mdlLayout->getId(); ?>);" class="card shadow featured bg-light" style="color:#666;" id="Layout_<?php echo $mdlLayout->getId(); ?>">
-																		<div class="card-img-top img-featured" style="background-image: url('<?php echo $imgLocation; ?>')" alt="<?php echo $mdlLayout->getName(); ?>"></div>
+																	<a href="javascript:void(0);" onclick="selPlan(<?php echo $mdlPlan->getId(); ?>);" class="card shadow featured bg-light" style="color:#666;" id="Plan_<?php echo $mdlPlan->getId(); ?>">
+																		<div class="card-img-top img-featured" style="background-image: url('<?php echo $imgLocation; ?>')" alt="<?php echo $mdlPlan->getName(); ?>"></div>
 																		<div class="card-body">
 																			<h5 class="card-title">
-																				<?php echo $mdlLayout->getName(); ?>
+																				<?php echo $mdlPlan->getName(); ?>
 																			</h5>
 																			<p class="card-text">
-																				<?php echo $mdlLayout->getDescription(); ?>
+																				<?php echo $mdlPlan->getDescription(); ?>
 																			</p>
 																		</div>
 																	</a>
@@ -149,13 +142,13 @@ $lstLayout = $clsLayout->Get();
 										</div>
 
                     <div class="panel-heading">
-											<h4 class="panel-title">Select Layout</h4>
+											<h4 class="panel-title">Select Plan</h4>
 										</div>
 										<div class="panel-body mb-4">
 											<div class="row">
 												<div class="col-xs-12" style="width:100% !important;">
 													<div class="card-deck">
-														<div class="row" style="width:100% !important;" id="Layout">
+														<div class="row" style="width:100% !important;" id="Plan">
 														</div>
 													</div>
 												</div>
@@ -163,13 +156,13 @@ $lstLayout = $clsLayout->Get();
 										</div>
 
 										<div class="panel-heading">
-											<h4 class="panel-title">Select Floor</h4>
+											<h4 class="panel-title">Select Category</h4>
 										</div>
 										<div class="panel-body mb-4">
 											<div class="row">
 												<div class="col-xs-12" style="width:100% !important;">
 													<div class="card-deck">
-														<div class="row" style="width:100% !important;" id="Floor">
+														<div class="row" style="width:100% !important;" id="Category">
 														</div>
 													</div>
 												</div>
@@ -177,61 +170,49 @@ $lstLayout = $clsLayout->Get();
 										</div>
 
 										<div class="panel-heading">
-											<h4 class="panel-title">Select Room</h4>
+											<h4 class="panel-title">Select Part</h4>
 										</div>
 										<div class="panel-body mb-4">
 											<div class="row">
 												<div class="col-xs-12" style="width:100% !important;">
 													<div class="card-deck">
-														<div class="row" style="width:100% !important;" id="Room">
+														<div class="row" style="width:100% !important;" id="Part">
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 
-										<div class="panel-heading">
-											<h4 class="panel-title">Select Parts</h4>
-										</div>
-										<div class="panel-body mb-4">
-											<div class="row">
-												<div class="col-xs-12" style="width:100% !important;">
-													<div class="card-deck">
-														<div class="row" style="width:100% !important;" id="Parts">
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
+                    <div class="panel-body m-4">
+                      <div class="panel-heading">
+  											<h6 class="panel-title">Select Material</h6>
+  										</div>
+  										<div class="panel-body mb-4">
+  											<div class="row">
+  												<div class="col-xs-12" style="width:100% !important;">
+  													<div class="card-deck">
+  														<div class="row" style="width:100% !important;" id="Material">
+  														</div>
+  													</div>
+  												</div>
+  											</div>
+  										</div>
 
-                    <div class="panel-heading">
-											<h4 class="panel-title">Select Material</h4>
-										</div>
-										<div class="panel-body mb-4">
-											<div class="row">
-												<div class="col-xs-12" style="width:100% !important;">
-													<div class="card-deck">
-														<div class="row" style="width:100% !important;" id="Material">
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-
-                    <div class="panel-heading">
-											<h4 class="panel-title">Select Upgrade</h4>
-										</div>
-										<div class="panel-body mb-4">
-											<div class="row">
-												<div class="col-xs-12" style="width:100% !important;">
-													<div class="card-deck">
-														<div class="row" style="width:100% !important;" id="Upgrade">
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+                      <div class="panel-heading">
+  											<h6 class="panel-title">Select Upgrade</h6>
+  										</div>
+  										<div class="panel-body mb-4">
+  											<div class="row">
+  												<div class="col-xs-12" style="width:100% !important;">
+  													<div class="card-deck">
+  														<div class="row" style="width:100% !important;" id="Upgrade">
+  														</div>
+  													</div>
+  												</div>
+  											</div>
+  										</div>
+  									</div>
+                  </div>
 								</div>
 							</div>
 						</div>

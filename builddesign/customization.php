@@ -8,37 +8,19 @@ require_once ("../App_Code/ProjectModel.php");
 require_once ("../App_Code/UserProject.php");
 require_once ("../App_Code/UserProjectModel.php");
 require_once ("../App_Code/Image.php");
-require_once ("../App_Code/ImageModel.php");
 
-require_once ("../App_Code/Layout.php");
-require_once ("../App_Code/LayoutModel.php");
-require_once ("../App_Code/LayoutFloor.php");
-require_once ("../App_Code/LayoutFloorModel.php");
-require_once ("../App_Code/Floor.php");
-require_once ("../App_Code/FloorModel.php");
-require_once ("../App_Code/FloorRoom.php");
-require_once ("../App_Code/FloorRoomModel.php");
-require_once ("../App_Code/Room.php");
-require_once ("../App_Code/RoomModel.php");
-require_once ("../App_Code/RoomPart.php");
-require_once ("../App_Code/RoomPartModel.php");
-require_once ("../App_Code/Parts.php");
-require_once ("../App_Code/PartsModel.php");
-require_once ("../App_Code/PartMaterial.php");
-require_once ("../App_Code/PartMaterialModel.php");
+require_once ("../App_Code/Plan.php");
+require_once ("../App_Code/Category.php");
+require_once ("../App_Code/Part.php");
 require_once ("../App_Code/Material.php");
-require_once ("../App_Code/MaterialModel.php");
-require_once ("../App_Code/MaterialUpgrade.php");
-require_once ("../App_Code/MaterialUpgradeModel.php");
 require_once ("../App_Code/Upgrade.php");
-require_once ("../App_Code/UpgradeModel.php");
 
 $clsFn->IsLogged();
 
 $_SESSION['projectId'] = (empty($_GET['project']) ?'':$_GET['project']);
-$initialLayoutId = $clsProject->GetLayout_IdById($_SESSION['projectId']);
+$initialPlanId = $clsProject->GetPlan_IdById($_SESSION['projectId']);
 $lstFinish = $clsFinish->Get();
-$lstLayout = $clsLayout->Get();
+$lstPlan = $clsPlan->Get();
 
 $msg = "";
 $err = "";
@@ -113,7 +95,7 @@ $err = "";
   </style>
 </head>
 
-<body onload="getItems();<?php echo (empty($initialLayoutId))?'':'selLayout('.$initialLayoutId.');'; ?>">
+<body onload="getItems();<?php echo (empty($initialPlanId))?'':'selPlan('.$initialPlanId.');'; ?>">
 
   <?php include "header.php"; ?>
 
@@ -167,14 +149,12 @@ $err = "";
                               <thead>
                                 <tr>
                                   <th>Project Name</th>
-                                  <th>Date Created</th>
                                   <th></th>
                                 </tr>
                               </thead>
                               <tfoot>
                                 <tr>
                                   <th>Project Name</th>
-                                  <th>Date Created</th>
                                   <th></th>
                                 </tr>
                               </tfoot>
@@ -184,11 +164,9 @@ $err = "";
 
                                 foreach($lstProject as $mdlProject)
                                 {
-                                  $Project_Date = date_format(date_create($mdlProject->getDateCreated()),"m/d/Y, g:i:s A");
                                 ?>
                                 <tr>
                                   <td><?php echo $mdlProject->getName(); ?></td>
-                                  <td><?php echo $Project_Date; ?></td>
                                   <td>
                                     <a href="customization.php?project=<?php echo $mdlProject->getId(); ?>" class="btn btn-next btn-primary"> Select </a>
                                     <button class="btn btn-primary w-full" onclick="DeleteProject(<?php echo $mdlProject->getId(); ?>);"> Delete </button>
@@ -216,26 +194,25 @@ $err = "";
 
 
 
-                      <!-- Flooring Options -->
-                      <div class="well well-lg col-md-12" id="Layout">
+                      <!-- Categorying Options -->
+                      <div class="well well-lg col-md-12" id="Plan">
                         <strong>Plan Options</strong><br><br>
 
 
 
                         <?php
-                        foreach ($lstLayout as $mdlLayout) {
+                        foreach ($lstPlan as $mdlPlan) {
                           $imgLocation = "";
-                          $lstImage = $clsImage->GetByDetail("layout",$mdlLayout->getId(),"original");
+                          $lstImage = $clsImage->GetByDetail("plan",$mdlPlan->getId(),"original");
                           foreach($lstImage as $mdlImage){
                             $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
                           }
                           ?>
                             <div class="thumbnail col-md-3">
-                              <a href="#plan<?php echo $mdlLayout->getId(); ?>" data-toggle="modal">
-                                <div class="img-featured" style="background-image: url('<?php echo $imgLocation; ?>');" alt="<?php echo $mdlLayout->getName(); ?>"></div>
+                              <a href="#plan<?php echo $mdlPlan->getId(); ?>" data-toggle="modal">
+                                <div class="img-featured" style="background-image: url('<?php echo $imgLocation; ?>');" alt="<?php echo $mdlPlan->getName(); ?>"></div>
                               </a>
                               <div class="dot-hr"></div>
-                              <!-- <div class="caption" click="alert('hello')"> -->
                               <div class="caption">
                                 <center>
                                   <label class="radio-jumee">
@@ -243,12 +220,12 @@ $err = "";
                                       type="radio"
                                       style="margin:0px;"
                                       name="plan"
-                                      onchange="selLayout(<?php echo $mdlLayout->getId(); ?>);getItems();"
-                                      <?php echo ($mdlLayout->getId() == $clsProject->GetLayout_IdById($_SESSION['projectId']))?'checked':''; ?>
+                                      onchange="selPlan(<?php echo $mdlPlan->getId(); ?>);getItems();"
+                                      <?php echo ($mdlPlan->getId() == $clsProject->GetPlan_IdById($_SESSION['projectId']))?'checked':''; ?>
                                     />
                                     <br>
                                     <strong>
-                                      <?php echo $mdlLayout->getName(); ?>
+                                      <?php echo $mdlPlan->getName(); ?>
                                     </strong>
                                   </label>
                                 </center>
@@ -257,17 +234,24 @@ $err = "";
                             </div>
 
 
-                            <div class="modal fade" id="plan<?php echo $mdlLayout->getId(); ?>" role="dialog">
+                            <div class="modal fade" id="plan<?php echo $mdlPlan->getId(); ?>" role="dialog">
                               <div class="modal-dialog">
 
                                 <!-- Modal content-->
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title"><?php echo $mdlLayout->getName(); ?></h4>
+                                    <h4 class="modal-title"><?php echo $mdlPlan->getName(); ?></h4>
                                   </div>
                                   <div class="modal-body text-center">
-                                    <img src="<?php echo $imgLocation; ?>" alt="plan" style="width:50%">
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <img src="<?php echo $imgLocation; ?>" alt="plan" style="width:50%">
+                                      </div>
+                                      <div class="col-md-6">
+                                        <?php echo $mdlPlan->getDescription(); ?>
+                                      </div>
+                                    </div>
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -306,27 +290,6 @@ $err = "";
                                 </center>
                               </div>
                             </div>
-
-
-                            <div class="modal fade" id="plan<?php echo $mdlLayout->getId(); ?>" role="dialog">
-                              <div class="modal-dialog">
-
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title"><?php echo $mdlLayout->getName(); ?></h4>
-                                  </div>
-                                  <div class="modal-body text-center">
-                                    <img src="<?php echo $imgLocation; ?>" alt="plan" style="width:50%">
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
                             <?php
                           }
                           ?>
@@ -334,45 +297,18 @@ $err = "";
                       </div>
 
 
-                      <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-                      <!-- Floor Options -->
                       <div class="well well-lg col-md-12">
-                        <strong>Floor Options</strong><br><br>
-                        <div id="Floor">
+                        <strong>Category Options</strong><br><br>
+                        <div id="Category">
 
                         </div>
                       </div>
-                      <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
-                      <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-                      <!-- Room Options -->
                       <div class="well well-lg col-md-12">
-                        <strong>Room Options</strong><br><br>
-                        <div id="Room">
+                        <strong>Part Options</strong><br><br>
+                        <div id="Part">
 
                         </div>
-                      </div>
-                      <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-                      <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-                      <!-- Parts Options -->
-                      <div class="well well-lg col-md-12">
-                        <strong>Parts Options</strong><br><br>
-                        <div id="Parts">
-
-                        </div>
-                      </div>
-                      <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-                      <div id="Material">
-                        <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-                        <!-- Material Options -->
-
-                        <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-                        <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-                        <!-- Upgrade Options -->
-                        <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
                       </div>
 
 
@@ -410,10 +346,10 @@ $err = "";
                               </div>
                               <div class="row">
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Size_Min" class="form-control radius" placeholder="Min" />
+                                  <input type="number" id="Plan_Size_Min" class="form-control radius" placeholder="Min" />
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Size_Max" class="form-control radius" placeholder="Max" />
+                                  <input type="number" id="Plan_Size_Max" class="form-control radius" placeholder="Max" />
                                 </div>
                               </div>
                                 <div class="row">
@@ -423,10 +359,10 @@ $err = "";
                                 </div>
                               <div class="row">
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Price_Min" class="form-control radius" placeholder="Min" />
+                                  <input type="number" id="Plan_Price_Min" class="form-control radius" placeholder="Min" />
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Price_Max" class="form-control radius" placeholder="Max" />
+                                  <input type="number" id="Plan_Price_Max" class="form-control radius" placeholder="Max" />
                                 </div>
                               </div>
                                 <div class="row">
@@ -436,10 +372,10 @@ $err = "";
                                 </div>
                               <div class="row">
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Bedroom_Min" class="form-control radius" placeholder="Min" />
+                                  <input type="number" id="Plan_Bedroom_Min" class="form-control radius" placeholder="Min" />
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Bedroom_Max" class="form-control radius" placeholder="Max" />
+                                  <input type="number" id="Plan_Bedroom_Max" class="form-control radius" placeholder="Max" />
                                 </div>
                               </div>
                                 <div class="row">
@@ -449,10 +385,10 @@ $err = "";
                                 </div>
                               <div class="row">
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Bathroom_Min" class="form-control radius" placeholder="Min" />
+                                  <input type="number" id="Plan_Bathroom_Min" class="form-control radius" placeholder="Min" />
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Bathroom_Max" class="form-control radius" placeholder="Max" />
+                                  <input type="number" id="Plan_Bathroom_Max" class="form-control radius" placeholder="Max" />
                                 </div>
                               </div>
                                 <div class="row">
@@ -462,15 +398,15 @@ $err = "";
                                 </div>
                               <div class="row">
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Parking_Min" class="form-control radius" placeholder="Min" />
+                                  <input type="number" id="Plan_Parking_Min" class="form-control radius" placeholder="Min" />
                                 </div>
                                 <div class="col-md-6">
-                                  <input type="number" id="Layout_Parking_Max" class="form-control radius" placeholder="Max" />
+                                  <input type="number" id="Plan_Parking_Max" class="form-control radius" placeholder="Max" />
                                 </div>
                               </div>
                               <div class="row" style="padding-top: 10px;">
                                 <div class="col-md-12">
-                                  <a id="filter" class="btn form-control radius" onclick="filterLayout();">Search</a>
+                                  <a id="filter" class="btn form-control radius" onclick="filterPlan();">Search</a>
                                 </div>
                               </div>
                             </div>
@@ -509,145 +445,6 @@ $err = "";
                   <div class="row">
                     <div class="col-sm-12">
 
-<!--
-                      <div id="basket" class="col-lg-12">
-                        <div class="box mt-0 pb-0 no-horizontal-padding">
-                          <form method="get" action="">
-                            <div class="table-responsive">
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th>Layout</th>
-                                    <th>Floor</th>
-                                    <th>Room</th>
-                                    <th>Parts</th>
-                                    <th>Material</th>
-                                    <th>Upgrade</th>
-                                    <th>Unit price</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <?php
-                                  $totalPrice = 0;
-                                  $FinalProj = (empty($_GET['finalP']))?'0':$_GET['finalP'];
-                                  $Layout_Id = $clsProject->GetLayout_IdById($FinalProj);
-                                  $mdlLayout = $clsLayout->GetById($Layout_Id);
-                                  ?>
-                                  <tr>
-                                    <td><?php echo $mdlLayout->getName(); ?></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                  </tr>
-                                  <?php
-                                  $lstLayoutFloor = $clsLayoutFloor->GetByLayout_Id($Layout_Id);
-                                  foreach ($lstLayoutFloor as $mdlLayoutFloor){
-                                    $mdlFloor = $clsFloor->GetById($mdlLayoutFloor->getFloor_Id());
-                                    ?>
-                                    <tr>
-                                      <td></td>
-                                      <td><?php echo $mdlFloor->getName(); ?></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                    </tr>
-                                    <?php
-                                    $lstFloorRoom = $clsFloorRoom->GetByLayoutFloor_Id($mdlLayoutFloor->getId());
-                                		foreach ($lstFloorRoom as $mdlFloorRoom) {
-                                      $mdlRoom = $clsRoom->GetById($mdlFloorRoom->getRoom_Id());
-                                      ?>
-                                      <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td><?php echo $mdlRoom->getName(); ?></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                      </tr>
-                                      <?php
-                                			$lstRoomPart = $clsRoomPart->GetByFloorRoom_Id($mdlFloorRoom->getId());
-                                			foreach ($lstRoomPart as $mdlRoomPart) {
-                                				$mdlPart = $clsParts->GetById($mdlRoomPart->getParts_Id());
-                                        ?>
-                                        <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td><?php echo $mdlPart->getName(); ?></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                        </tr>
-                                        <?php
-                                        $lstPartMaterial = $clsPartMaterial->GetByRoomPart_Id($mdlRoomPart->getId());
-                                				foreach ($lstPartMaterial as $mdlPartMaterial) {
-
-                                					$mdlUserProject->setProject_Id($FinalProj);
-                                					$mdlUserProject->setPartMaterial_Id($mdlPartMaterial->getId());
-                                					$mdlUserProject->setMaterialUpgrade_Id('0');
-                                					if ($clsUserProject->IsExist($mdlUserProject)) {
-                                						$mdlMaterial = $clsMaterial->GetById($mdlPartMaterial->getMaterial_Id());
-                                						$totalPrice += $mdlMaterial->getPrice();
-                                            ?>
-                                            <tr>
-                                              <td></td>
-                                              <td></td>
-                                              <td></td>
-                                              <td></td>
-                                              <td><?php echo $mdlMaterial->getName(); ?></td>
-                                              <td></td>
-                                              <td>₱ <?php echo $mdlMaterial->getPrice(); ?></td>
-                                            </tr>
-                                            <?php
-                                            $lstMaterialUpgrade = $clsMaterialUpgrade->GetByPartMaterial_Id($mdlPartMaterial->getId());
-                                						foreach ($lstMaterialUpgrade as $mdlMaterialUpgrade) {
-
-                                							$mdlUserProject->setProject_Id($FinalProj);
-                                							$mdlUserProject->setPartMaterial_Id($mdlPartMaterial->getId());
-                                							$mdlUserProject->setMaterialUpgrade_Id($mdlMaterialUpgrade->getId());
-                                							if ($clsUserProject->IsExist($mdlUserProject)) {
-                                								$mdlUpgrade = $clsUpgrade->GetById($mdlMaterialUpgrade->getUpgrade_Id());
-                                								$totalPrice += $mdlUpgrade->getPrice();
-                                                ?>
-                                                <tr>
-                                                  <td></td>
-                                                  <td></td>
-                                                  <td></td>
-                                                  <td></td>
-                                                  <td></td>
-                                                  <td><?php echo $mdlUpgrade->getName(); ?></td>
-                                                  <td>₱ <?php echo $mdlUpgrade->getPrice(); ?></td>
-                                                </tr>
-                                                <?php
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                  ?>
-                                </tbody>
-                                <tfoot>
-                                  <tr>
-                                    <th colspan="6">Total</th>
-                                    <th>₱ <?php echo $totalPrice; ?></th>
-                                  </tr>
-                                </tfoot>
-                              </table>
-                            </div>
-                            <div class="box-footer d-flex justify-content-between align-items-center">
-                            </div>
-                          </form>
-                        </div>
-                      </div>
--->
                       <div id="basket" class="col-md-offset-4 col-md-4">
                         <div class="box mt-0 pb-0 no-horizontal-padding">
                           <form method="get" action="">
@@ -655,71 +452,61 @@ $err = "";
                                   <?php
                                   $totalPrice = 0;
                                   $FinalProj = (empty($_GET['finalP']))?'0':$_GET['finalP'];
-                                  $Layout_Id = $clsProject->GetLayout_IdById($FinalProj);
-                                  $mdlLayout = $clsLayout->GetById($Layout_Id);
+                                  $Plan_Id = $clsProject->GetPlan_IdById($FinalProj);
+                                  $mdlPlan = $clsPlan->GetById($Plan_Id);
                                   ?>
                                   <ul>
-                                    <li><?php echo $mdlLayout->getName(); ?></li>
+                                    <li><?php echo $mdlPlan->getName(); ?></li>
                                   <?php
-                                  $lstLayoutFloor = $clsLayoutFloor->GetByLayout_Id($Layout_Id);
-                                  foreach ($lstLayoutFloor as $mdlLayoutFloor){
-                                    $mdlFloor = $clsFloor->GetById($mdlLayoutFloor->getFloor_Id());
+                                  $lstCategory = $clsCategory->GetByPlan_Id($Plan_Id);
+                                  foreach ($lstCategory as $mdlCategory){
                                     ?>
                                     <ul>
-                                      <li><?php echo $mdlFloor->getName(); ?></li>
+                                      <li><?php echo $mdlCategory->getName(); ?></li>
                                     <?php
-                                    $lstFloorRoom = $clsFloorRoom->GetByLayoutFloor_Id($mdlLayoutFloor->getId());
-                                    foreach ($lstFloorRoom as $mdlFloorRoom) {
-                                      $mdlRoom = $clsRoom->GetById($mdlFloorRoom->getRoom_Id());
+                                    $lstPart = $clsPart->GetByCategory_Id($mdlCategory->getId());
+                                    foreach ($lstPart as $mdlPart) {
                                       ?>
                                       <ul>
-                                        <li><?php echo $mdlRoom->getName(); ?></li>
+                                        <li><?php echo $mdlPart->getName(); ?></li>
                                       <?php
-                                      $lstRoomPart = $clsRoomPart->GetByFloorRoom_Id($mdlFloorRoom->getId());
-                                      foreach ($lstRoomPart as $mdlRoomPart) {
-                                        $mdlPart = $clsParts->GetById($mdlRoomPart->getParts_Id());
-                                        ?>
-                                        <ul>
-                                          <li><?php echo $mdlPart->getName(); ?></li>
-                                        <?php
-                                        $lstPartMaterial = $clsPartMaterial->GetByRoomPart_Id($mdlRoomPart->getId());
-                                        foreach ($lstPartMaterial as $mdlPartMaterial) {
+                                        $lstMaterial = $clsMaterial->GetByPart_Id($mdlPart->getId());
+                                        foreach ($lstMaterial as $mdlMaterial) {
 
                                           $mdlUserProject->setProject_Id($FinalProj);
-                                          $mdlUserProject->setPartMaterial_Id($mdlPartMaterial->getId());
-                                          $mdlUserProject->setMaterialUpgrade_Id('0');
+                                          $mdlUserProject->setMaterial_Id($mdlMaterial->getId());
+                                          $mdlUserProject->setUpgrade_Id('0');
                                           if ($clsUserProject->IsExist($mdlUserProject)) {
-                                            $mdlMaterial = $clsMaterial->GetById($mdlPartMaterial->getMaterial_Id());
-                                            $totalPrice += $mdlMaterial->getPrice();
+                                						$PMprice = $mdlMaterial->getPrice() * $mdlPart->getArea();
+                                						$totalPrice += $PMprice;
                                             ?>
                                             <ul>
                                               <li>
                                                 <div class="col-sm-6" style="padding:0px;"><?php echo $mdlMaterial->getName(); ?></div>
-                                                <div class="col-sm-6 text-right" style="padding:0px;">₱ <?php echo $mdlMaterial->getPrice(); ?></div>
+                                                <div class="col-sm-6 text-right" style="padding:0px;">₱ <?php echo $PMprice; ?></div>
                                               </li>
+                                            </ul>
                                             <?php
-                                            $lstMaterialUpgrade = $clsMaterialUpgrade->GetByPartMaterial_Id($mdlPartMaterial->getId());
-                                            foreach ($lstMaterialUpgrade as $mdlMaterialUpgrade) {
+                                          }
+                                        }
 
-                                              $mdlUserProject->setProject_Id($FinalProj);
-                                              $mdlUserProject->setPartMaterial_Id($mdlPartMaterial->getId());
-                                              $mdlUserProject->setMaterialUpgrade_Id($mdlMaterialUpgrade->getId());
-                                              if ($clsUserProject->IsExist($mdlUserProject)) {
-                                                $mdlUpgrade = $clsUpgrade->GetById($mdlMaterialUpgrade->getUpgrade_Id());
-                                                $totalPrice += $mdlUpgrade->getPrice();
-                                                ?>
-                                                <ul>
-                                                  <li>
-                                                    <div class="col-sm-6" style="padding:0px;"><?php echo $mdlUpgrade->getName(); ?></div>
-                                                    <div class="col-sm-6 text-right" style="padding:0px;">₱ <?php echo $mdlUpgrade->getPrice(); ?></div>
-                                                  </li>
-                                                </ul>
-                                                <?php
-                                              }
-                                            }
+                                        $lstUpgrade = $clsUpgrade->GetByPart_Id($mdlPart->getId());
+                                        foreach ($lstUpgrade as $mdlUpgrade) {
+
+                                          $mdlUserProject->setProject_Id($FinalProj);
+                                          $mdlUserProject->setMaterial_Id('0');
+                                          $mdlUserProject->setUpgrade_Id($mdlUpgrade->getId());
+                                          if ($clsUserProject->IsExist($mdlUserProject)) {
+                                						$PMprice = $mdlUpgrade->getPrice() * $mdlPart->getArea();
+                                						$totalPrice += $PMprice;
                                             ?>
-                                          </ul>
-                                          <?php
+                                            <ul>
+                                              <li>
+                                                <div class="col-sm-6" style="padding:0px;"><?php echo $mdlUpgrade->getName(); ?></div>
+                                                <div class="col-sm-6 text-right" style="padding:0px;">₱ <?php echo $PMprice; ?></div>
+                                              </li>
+                                            </ul>
+                                            <?php
                                           }
                                         }
                                         ?>
@@ -732,16 +519,13 @@ $err = "";
                                     }
                                     ?>
                                   </ul>
-                                  <?php
-                                  }
-                                  ?>
-                                </ul>
-                                <tfoot>
-                                  <ul>
-                                    <th colspan="6">Total</th>
-                                    <th>₱ <?php echo $totalPrice; ?></th>
-                                  </ul>
-                                </tfoot>
+                                  <div class="row">
+                                    <div class="col-sm-6">Total
+                                    </div>
+                                    <div class="col-sm-6 text-right" style="padding:0px;">
+                                      ₱ <?php echo $totalPrice; ?>
+                                    </div>
+                                  </div>
                             </div>
                             <div class="box-footer d-flex justify-content-between align-items-center">
                             </div>

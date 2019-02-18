@@ -1,4 +1,5 @@
 <?php
+require_once ("FinishModel.php");
 $clsFinish = new Finish();
 class Finish{
 
@@ -10,18 +11,18 @@ class Finish{
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
-		$sql = "INSERT INTO `".$this->table."`;
+		$sql = "INSERT INTO `".$this->table."`
 			(
 				`Finish_Name`
 			) VALUES (
-				 '".$mdl->getsqlName()."'
-			 )";
-		 $result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		 $id = mysqli_insert_id($conn);
+				'".$mdl->getsqlName()."'
+			)";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$id = mysqli_insert_id($conn);
 
-		 mysqli_close($conn);
-		 return $id;
-	 }
+		mysqli_close($conn);
+		return $id;
+	}
 
 	public function Update($mdl){
 
@@ -51,8 +52,6 @@ class Finish{
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
 	}
 
 	public function Delete($id){
@@ -72,23 +71,42 @@ class Finish{
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
+
 		$val = false;
 		$msg = "";
-		$sql = "SELECT * FROM `".$this->table."` AS `count`
+
+		// Finish_Id
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
 			`Finish_Id` != '".$mdl->getsqlId()."'AND
-			`Finish_Name` = '".$mdl->getsqlName()."'";
+			`Finish_Id` = '".$mdl->getsqlId()."'
+		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$num_rows = mysqli_num_rows($result);
-
-			mysqli_close($conn);
-
-		if($num_rows > 0)
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
 		{
-			return true;
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputId\")'>Id</a>: " . $mdl->getId() . "</p>";
+			$val = true;
 		}
 
-		return false;
+		// Finish_Name
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`Finish_Id` != '".$mdl->getsqlId()."'AND
+			`Finish_Name` = '".$mdl->getsqlName()."'
+		";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputName\")'>Name</a>: " . $mdl->getName() . "</p>";
+			$val = true;
+		}
+
+		mysqli_close($conn);
+
+		return array("val"=>"$val","msg"=>"$msg");
+
 	}
 
 	public function Get(){
@@ -97,7 +115,6 @@ class Finish{
 		$conn = $Database->GetConn();
 
 		$sql="SELECT * FROM `".$this->table."`";
-
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);

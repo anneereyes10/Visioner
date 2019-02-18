@@ -13,6 +13,7 @@ if(isset($_POST['Name'])){
 
 	$err .= $clsFn->setForm('Name',$mdlParts,true);
 	$err .= $clsFn->setForm('Description',$mdlParts,true);
+	$err .= $clsFn->setForm('Area',$mdlParts,true);
 
 	if($err == ""){
 		$duplicate = $clsParts->IsExist($mdlParts);
@@ -123,6 +124,13 @@ if(isset($_POST['Name'])){
   										<div class="col-12">
   											<label class="form-control-label" for="inputDescription">Description</label>
   											<input type="text" class="form-control" id="inputDescription" name="Description" placeholder="Description" value="<?php echo $mdlParts->getDescription(); ?>" onblur="checkInput('inputDescription')">
+  											<small id="notif-inputName" class="invalid-feedback">This is required</small>
+  										</div>
+  									</div>
+  									<div class="row mb-2">
+  										<div class="col-12">
+  											<label class="form-control-label" for="inputArea">Area (piece or sqm)</label>
+  											<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Area" value="<?php echo $mdlParts->getArea(); ?>" onblur="checkInput('inputArea')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>

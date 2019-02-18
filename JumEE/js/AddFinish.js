@@ -8,37 +8,34 @@ function cleaner(name){
   }
   switch(name) {
       case "Finish":
-        document.getElementById("Floor").innerHTML = '';
-        document.getElementById("Room").innerHTML = '';
-        document.getElementById("Parts").innerHTML = '';
+        document.getElementById("Plan").innerHTML = '';
+        document.getElementById("Category").innerHTML = '';
+        document.getElementById("Part").innerHTML = '';
         document.getElementById("Material").innerHTML = '';
         document.getElementById("Upgrade").innerHTML = '';
           break;
-      case "Layout":
-        document.getElementById("Room").innerHTML = '';
-        document.getElementById("Parts").innerHTML = '';
+      case "Plan":
+        document.getElementById("Category").innerHTML = '';
+        document.getElementById("Part").innerHTML = '';
         document.getElementById("Material").innerHTML = '';
         document.getElementById("Upgrade").innerHTML = '';
           break;
-      case "Floor":
-        document.getElementById("Parts").innerHTML = '';
+      case "Category":
+        document.getElementById("Part").innerHTML = '';
         document.getElementById("Material").innerHTML = '';
         document.getElementById("Upgrade").innerHTML = '';
           break;
-      case "Room":
+      case "Part":
         document.getElementById("Material").innerHTML = '';
-        document.getElementById("Upgrade").innerHTML = '';
-          break;
-      case "Parts":
         document.getElementById("Upgrade").innerHTML = '';
           break;
   }
 }
 function highlight_item(name){
-  var layout = document.getElementById(name);
-  layout.classList.remove("bg-light");
-  layout.classList.add("text-white");
-  layout.classList.add("bg-info");
+  var plan = document.getElementById(name);
+  plan.classList.remove("bg-light");
+  plan.classList.add("text-white");
+  plan.classList.add("bg-info");
 }
 
 // SELECT -------------------------------------------------------- SELECT
@@ -52,87 +49,68 @@ function selFinish(id) {
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Layout").innerHTML = this.responseText;
+      document.getElementById("Plan").innerHTML = this.responseText;
     }
   };
   url = "../Ajax/AddFinish.php";
-  url += "?call=layout";
+  url += "?call=plan";
   url += "&Id=" + id;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 
 }
 
-function selLayout(id) {
-  cleaner("Layout");
-  highlight_item("Layout_"+id);
+function selPlan(id) {
+  cleaner("Plan");
+  highlight_item("Plan_"+id);
 
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Floor").innerHTML = this.responseText;
+      document.getElementById("Category").innerHTML = this.responseText;
     }
   };
   url = "../Ajax/AddFinish.php";
-  url += "?call=floor";
+  url += "?call=category";
   url += "&Id=" + id;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 
 }
 
-function selFloor(id) {
-  cleaner("Floor");
-  highlight_item("LayoutFloor_"+id);
+function selCategory(id) {
+  cleaner("Category");
+  highlight_item("Category_"+id);
 
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Room").innerHTML = this.responseText;
+      document.getElementById("Part").innerHTML = this.responseText;
     }
   };
   url = "../Ajax/AddFinish.php";
-  url += "?call=room";
+  url += "?call=part";
   url += "&Id=" + id;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 
 }
 
-function selRoom(id) {
-  cleaner("Room");
-  highlight_item("FloorRoom_"+id);
+function selPart(id) {
+  cleaner("Part");
+  highlight_item("Part_"+id);
 
   var xmlhttp = new XMLHttpRequest();
   var url = "";
-  var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Parts").innerHTML = this.responseText;
-    }
-  };
-  url = "../Ajax/AddFinish.php";
-  url += "?call=parts";
-  url += "&Id=" + id;
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
-
-}
-
-function selParts(id) {
-  cleaner("Parts");
-  highlight_item("RoomPart_"+id);
-
-  var xmlhttp = new XMLHttpRequest();
-  var url = "";
-  var btn = "";
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Material").innerHTML = this.responseText;
+      // document.getElementById("Material").innerHTML = this.responseText;
+      displayMaterial(id);
+      displayUpgrade(id);
     }
   };
   url = "../Ajax/AddFinish.php";
@@ -142,41 +120,68 @@ function selParts(id) {
   xmlhttp.send();
 
 }
-
-function selMaterial(id,rp) {
+function displayMaterial(id){
+    var xmlhttp = new XMLHttpRequest();
+    var url = "";
+    var btn = "";
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("Material").innerHTML = this.responseText;
+      }
+    };
+    url = "../Ajax/AddFinish.php";
+    url += "?call=material";
+    url += "&Id=" + id;
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+function displayUpgrade(id){
+    var xmlhttp = new XMLHttpRequest();
+    var url = "";
+    var btn = "";
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("Upgrade").innerHTML = this.responseText;
+        console.log(this.responseText);
+      }
+    };
+    url = "../Ajax/AddFinish.php";
+    url += "?call=upgrade";
+    url += "&Id=" + id;
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+function selMaterial(id) {
   cleaner("Material");
-  highlight_item("PartMaterial_"+id);
+  highlight_item("Material_"+id);
 
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Upgrade").innerHTML = this.responseText;
+      // document.getElementById("Upgrade").innerHTML = this.responseText;
     }
   };
   url = "../Ajax/AddFinish.php";
-  url += "?call=upgrade";
+  url += "?call=selectMaterial";
   url += "&Id=" + id;
-  url += "&RoomPart_Id=" + rp;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 
 }
 
-function selUpgrade(id,pm) {
+function selUpgrade(id) {
   cleaner("Upgrade");
-  highlight_item("MaterialUpgrade_"+id);
+  highlight_item("Upgrade_"+id);
 
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
   xmlhttp.onreadystatechange = function() {};
   url = "../Ajax/AddFinish.php";
-  url += "?call=upgradeselect";
+  url += "?call=selectUpgrade";
   url += "&Id=" + id;
-  url += "&PartMaterial_Id=" + pm;
-  url += "&empty=false";
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 
@@ -203,65 +208,65 @@ function selUpgradeE(id,pm) {
 
 // ADD -------------------------------------------------------- ADD
 
-function addFloor(LayoutId,FloorId) {
-  cleaner("Layout");
+function addCategory(PlanId,CategoryId) {
+  cleaner("Plan");
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Floor").innerHTML = this.responseText;
-      showFloor(LayoutId);
+      document.getElementById("Category").innerHTML = this.responseText;
+      showCategory(PlanId);
     }
   };
   url = "../Ajax/AddFinish.php";
-  url += "?call=addfloor";
-  url += "&LayoutId=" + LayoutId;
-  url += "&FloorId=" + FloorId;
+  url += "?call=addcategory";
+  url += "&PlanId=" + PlanId;
+  url += "&CategoryId=" + CategoryId;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }
 
-function addRoom(LayoutFloorId,RoomId) {
-  cleaner("Floor");
+function addRoom(PlanCategoryId,RoomId) {
+  cleaner("Category");
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("Room").innerHTML = this.responseText;
-      showRoom(LayoutFloorId);
+      showRoom(PlanCategoryId);
     }
   };
   url = "../Ajax/AddFinish.php";
   url += "?call=addroom";
-  url += "&LayoutFloorId=" + LayoutFloorId;
+  url += "&PlanCategoryId=" + PlanCategoryId;
   url += "&RoomId=" + RoomId;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }
 
-function addParts(FloorRoomId,PartsId) {
+function addPart(CategoryRoomId,PartId) {
   cleaner("Room");
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Parts").innerHTML = this.responseText;
-      showPart(FloorRoomId);
+      document.getElementById("Part").innerHTML = this.responseText;
+      showPart(CategoryRoomId);
     }
   };
   url = "../Ajax/AddFinish.php";
   url += "?call=addparts";
-  url += "&FloorRoomId=" + FloorRoomId;
-  url += "&PartsId=" + PartsId;
+  url += "&CategoryRoomId=" + CategoryRoomId;
+  url += "&PartId=" + PartId;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }
 
 function addMaterial(RoomPartId,MaterialId) {
-  cleaner("Parts");
+  cleaner("Part");
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
@@ -301,27 +306,27 @@ function addUpgrade(PartMaterialId,UpgradeId) {
 
 // DELETE -------------------------------------------------------- DELETE
 
-function deleteFloor(LayoutFloorId,LayoutId) {
-  cleaner("Layout");
+function deleteCategory(PlanCategoryId,PlanId) {
+  cleaner("Plan");
 
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Floor").innerHTML = this.responseText;
-      showFloor(LayoutId);
+      document.getElementById("Category").innerHTML = this.responseText;
+      showCategory(PlanId);
     }
   };
   url = "../Ajax/AddFinish.php";
-  url += "?call=deletefloor";
-  url += "&LayoutFloorId=" + LayoutFloorId;
+  url += "?call=deletecategory";
+  url += "&PlanCategoryId=" + PlanCategoryId;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }
 
-function deleteRoom(FloorRoomId,LayoutFloorId) {
-  cleaner("Floor");
+function deleteRoom(CategoryRoomId,PlanCategoryId) {
+  cleaner("Category");
 
   var xmlhttp = new XMLHttpRequest();
   var url = "";
@@ -329,17 +334,17 @@ function deleteRoom(FloorRoomId,LayoutFloorId) {
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("Room").innerHTML = this.responseText;
-      showRoom(LayoutFloorId);
+      showRoom(PlanCategoryId);
     }
   };
   url = "../Ajax/AddFinish.php";
   url += "?call=deleteroom";
-  url += "&FloorRoomId=" + FloorRoomId;
+  url += "&CategoryRoomId=" + CategoryRoomId;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }
 
-function deleteParts(RoomPartId,FloorRoomId) {
+function deletePart(RoomPartId,CategoryRoomId) {
   cleaner("Room");
 
   var xmlhttp = new XMLHttpRequest();
@@ -347,8 +352,8 @@ function deleteParts(RoomPartId,FloorRoomId) {
   var btn = "";
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("Parts").innerHTML = this.responseText;
-      showPart(FloorRoomId);
+      document.getElementById("Part").innerHTML = this.responseText;
+      showPart(CategoryRoomId);
     }
   };
   url = "../Ajax/AddFinish.php";
@@ -359,7 +364,7 @@ function deleteParts(RoomPartId,FloorRoomId) {
 }
 
 function deleteMaterial(PartMaterialId,RoomPartId) {
-  cleaner("Parts");
+  cleaner("Part");
 
   var xmlhttp = new XMLHttpRequest();
   var url = "";
@@ -399,7 +404,7 @@ function deleteUpgrade(MaterialUpgradeId,PartMaterialId) {
 
 // SHOW -------------------------------------------------------- SHOW
 
-function showFloor(LayoutId) {
+function showCategory(PlanId) {
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
@@ -409,13 +414,13 @@ function showFloor(LayoutId) {
     }
   };
   url = "../Ajax/AddFinish.php";
-  url += "?call=showfloor";
-  url += "&Id=" + LayoutId;
+  url += "?call=showcategory";
+  url += "&Id=" + PlanId;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }
 
-function showRoom(LayoutFloorId) {
+function showRoom(PlanCategoryId) {
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
@@ -426,12 +431,12 @@ function showRoom(LayoutFloorId) {
   };
   url = "../Ajax/AddFinish.php";
   url += "?call=showroom";
-  url += "&Id=" + LayoutFloorId;
+  url += "&Id=" + PlanCategoryId;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }
 
-function showPart(FloorRoomId) {
+function showPart(CategoryRoomId) {
   var xmlhttp = new XMLHttpRequest();
   var url = "";
   var btn = "";
@@ -442,7 +447,7 @@ function showPart(FloorRoomId) {
   };
   url = "../Ajax/AddFinish.php";
   url += "?call=showpart";
-  url += "&Id=" + FloorRoomId;
+  url += "&Id=" + CategoryRoomId;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }
