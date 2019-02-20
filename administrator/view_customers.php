@@ -1,4 +1,10 @@
-
+<?php
+require_once ("../App_Code/Project.php");
+require_once ("../App_Code/Payment.php");
+require_once ("../App_Code/Place.php");
+require_once ("../App_Code/PaymentType.php");
+require_once ("../App_Code/Image.php");
+?>
         <div class="container-fluid">
 
           <!-- DataTables Example -->
@@ -113,31 +119,73 @@
 <div class="modal fade" id="payModal<?php echo $i ?>" role="dialog">
 	<div class="modal-dialog modal-lg">
 	  <div class="modal-content">
-		<div class="modal-header">
-		<h4 class="modal-title">Information for: <?php echo $c_email ?></h4>
-		  <button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-			<div class="modal-body">
-				<a href="user_payments.php?user_id=<?php echo $user_id?>">Change Status</a>
-				<p>
-				<strong>Payment Type Selected: </strong><br><?php echo $p_type ?>
-				</p>
-				<p>
-				<strong>Payment Status: </strong><br><?php echo $p_status ?>
-				</p>
-				<p>
-				<strong>Date Paid: </strong><br><?php echo $p_dp ?>
-				</p>
-				<p>
-				<strong>Image Submitted: </strong><br><img src="payments/<?php echo $p_img ?>" />
-				</p>
-				<p>
-				<strong>Date Submitted: </strong><br><?php echo $p_imgd ?>
-				</p>
-			</div>
-		<div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-         </div>
+  		<div class="modal-header">
+  		    <h4 class="modal-title">Information for: <?php echo $c_email ?></h4>
+  		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+  		</div>
+  		<div class="modal-body">
+  			<div class="row m-0">
+          <div class="col-sm-2 border">
+            Image
+          </div>
+          <div class="col-sm-4 border">
+            Project
+          </div>
+          <div class="col-sm-2 border">
+            Payment Type
+          </div>
+          <div class="col-sm-2 border">
+            Payment Date
+          </div>
+          <div class="col-sm-2 border">
+            Status
+          </div>
+        </div>
+        <?php
+        $lstPayment = $clsPayment->GetByUserId($_SESSION['uid']);
+        foreach ($lstPayment as $mdlPayment) {
+          ?>
+            <div class="row m-0">
+              <div class="col-sm-2 border">
+                <?php
+                $imgLocation = "";
+                $lstImage = $clsImage->GetByDetail("payment",$mdlPayment->getId(),"original");
+                foreach($lstImage as $mdlImage){
+                  $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
+                }
+                if ($imgLocation != '') {
+                  echo '<img src="'.$imgLocation.'" style="max-width:100px;max-height:100px;">';
+                }
+                ?>
+              </div>
+              <div class="col-sm-4 border">
+                <?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?>
+              </div>
+              <div class="col-sm-2 border">
+                <?php echo $clsPaymentType->GetNameById($mdlPayment->getPaymentType_Id()); ?>
+              </div>
+              <div class="col-sm-2 border">
+                <?php echo $mdlPayment->getReceiptDate(); ?>
+              </div>
+              <div class="col-sm-2 border">
+                <?php
+                if($mdlPayment->getReceiptStatus() == 0){
+                  echo "Pending";
+                } elseif($mdlPayment->getReceiptStatus() == 1){
+                  echo "Approved";
+                } else {
+                  echo "Declined";
+                }
+                ?>
+              </div>
+            </div>
+          <?php
+        }
+        ?>
+  		</div>
+  		<div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+      </div>
 	  </div>
 	</div>
 </div>
@@ -148,21 +196,66 @@
   		  <h4 class="modal-title">Information for: <?php echo $c_email ?></h4>
   		  <button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
-			<div class="modal-body">
-  			<a href="user_appointments.php?user_id=<?php echo $user_id?>">Change Status</a>
-  			<p>
-				<strong>Appointment Made on: </strong><br><?php echo $a_dm ?>
-				</p>
-				<p>
-				<strong>Appointment Date Selected: </strong><br><?php echo $a_ds ?>
-				</p>
-				<p>
-				<strong>Appointment Status: </strong> <br><?php echo $a_status ?>
-      </p>
-
-            
-
-		  </div>
+  		<div class="modal-body">
+  			<div class="row m-0">
+          <div class="col-sm-2 border">
+            Image
+          </div>
+          <div class="col-sm-4 border">
+            Project
+          </div>
+          <div class="col-sm-2 border">
+            Date
+          </div>
+          <div class="col-sm-2 border">
+            Place
+          </div>
+          <div class="col-sm-2 border">
+            Status
+          </div>
+        </div>
+        <?php
+        $lstPayment = $clsPayment->GetByUserId($_SESSION['uid']);
+        foreach ($lstPayment as $mdlPayment) {
+          ?>
+            <div class="row m-0">
+              <div class="col-sm-2 border">
+                <?php
+                $imgLocation = "";
+                $lstImage = $clsImage->GetByDetail("payment",$mdlPayment->getId(),"original");
+                foreach($lstImage as $mdlImage){
+                  $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
+                }
+                if ($imgLocation != '') {
+                  echo '<img src="'.$imgLocation.'" style="max-width:100px;max-height:100px;">';
+                }
+                ?>
+              </div>
+              <div class="col-sm-4 border">
+                <?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?>
+              </div>
+              <div class="col-sm-2 border">
+                <?php echo $mdlPayment->getAppointmentDate(); ?>
+              </div>
+              <div class="col-sm-2 border">
+                <?php echo $clsPlace->GetNameById($mdlPayment->getPlace_Id()); ?>
+              </div>
+              <div class="col-sm-2 border">
+                <?php
+                if($mdlPayment->getReceiptStatus() == 0){
+                  echo "Pending";
+                } elseif($mdlPayment->getReceiptStatus() == 1){
+                  echo "Approved";
+                } else {
+                  echo "Declined";
+                }
+                ?>
+              </div>
+            </div>
+          <?php
+        }
+        ?>
+  		</div>
 		<div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
          </div>

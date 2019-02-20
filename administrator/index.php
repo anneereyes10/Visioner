@@ -1,7 +1,6 @@
 <?php
 //all of these codes are needed to secure the website that the user is logged in
-
-session_start();
+require_once ("../App_Code/Database.php");
 
 if(!isset($_SESSION['email'])){
 

@@ -2,11 +2,10 @@
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Payment.php");
-require_once ("../App_Code/PaymentModel.php");
+require_once ("../App_Code/PaymentType.php");
+require_once ("../App_Code/Place.php");
 require_once ("../App_Code/Image.php");
-require_once ("../App_Code/ImageModel.php");
 require_once ("../App_Code/Project.php");
-require_once ("../App_Code/ProjectModel.php");
 
 $msg = "";
 $err = "";
@@ -58,6 +57,7 @@ if(isset($_POST['Project_Id'])){
 
   $err .= $clsFn->setForm('Project_Id',$mdlPayment,true);
   $err .= $clsFn->setForm('ReceiptDate',$mdlPayment,true);
+  $err .= $clsFn->setForm('PaymentType_Id',$mdlPayment,true);
 
   // $err .= $clsFn->setForm('Description',$mdlLayout,true);
 
@@ -347,16 +347,28 @@ $name=$row_pro['full_name'];
 												</div>
 											</div>
 											<div class="row">
-												<div class="form-group col-md-12">
+												<div class="form-group col-md-6">
 													<label class="form-control-label" for="inputReceiptDate">Receipt Date</label>
 													<input type="date" class="form-control" id="inputReceiptDate" name="ReceiptDate" placeholder="Receipt Date" value="<?php echo $mdlPayment->getReceiptDate(); ?>" onblur="checkInput('inputReceiptDate')">
 													<small id="notif-inputReceiptDate" class="invalid-feedback">This is required</small>
 												</div>
+												<div class="form-group col-md-6">
+													<label class="form-control-label" for="inputPaymentType_Id">Payment Type</label>
+													<select name="PaymentType_Id" id="inputPaymentType_Id" class="form-control">
+														<?php
+														$lstPT = $clsPaymentType->Get();
+														foreach ($lstPT as $mdlPT) {
+															echo '<option value="'.$mdlPT->getId().'">'.$mdlPT->getName().'</option>';
+														}
+														?>
+													</select>
+													<small id="notif-inputReceiptDate" class="invalid-feedback">This is required</small>
+												</div>
 											</div>
 											<div class="row mb-2">
-												<div class="form-group col-md-12">
+												<div class="form-group col-md-6">
 													<label class="form-control-label" for="inputImage">Picture</label>
-													<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload" />
+													<input type="file" class="form-control" id="inputImage" accept="image/*" name="fileToUpload" />
 												</div>
 											</div>
 										</div>
@@ -425,18 +437,37 @@ $name=$row_pro['full_name'];
 																	  <strong>Appointment Approved!</strong>
 																	</div>
 																	<?php
-																	echo 'Appointment Date: '.$mdlPayment->getAppointmentDate();
+																	echo 'Appointment Date: '.$mdlPayment->getAppointmentDate() . '<br />';
+																	echo 'Appointment Place: '.$clsPlace->GetNameById($mdlPayment->getPlace_Id());
 															} elseif ($mdlPayment->getAppointmentStatus() == 2) {
 																?>
 																<div class="alert alert-warning">
 																  <strong>Sorry!</strong> Date <?php echo $mdlPayment->getAppointmentDate(); ?> is unavailable for appointment.
 																</div>
 																<input type='date' class='form-control' id='inputAppointmentDate<?php echo $mdlPayment->getId();?>' name='AppointmentDate' value=''>
+																<select class="form-control" id="meetingplace">
+																	<option disabled selected>Select Place</option>
+																	<?php
+																	$lstPlace = $clsPlace->Get();
+																	foreach ($lstPlace as $mdlPlace) {
+																		echo '<option value="'.$mdlPlace->getId().'">'.$mdlPlace->getName().'</option>';
+																	}
+																	?>
+																</select>
 																<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $mdlPayment->getId();?>)">Set Appointment</button>
 																<?php
 															} elseif ($mdlPayment->getAppointmentDate() == '0000-00-00') {
 																?>
 																<input type='date' class='form-control' id='inputAppointmentDate<?php echo $mdlPayment->getId();?>' name='AppointmentDate' value=''>
+																<select class="form-control" id="meetingplace">
+																	<option disabled selected>Select Place</option>
+																	<?php
+																	$lstPlace = $clsPlace->Get();
+																	foreach ($lstPlace as $mdlPlace) {
+																		echo '<option value="'.$mdlPlace->getId().'">'.$mdlPlace->getName().'</option>';
+																	}
+																	?>
+																</select>
 																<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $mdlPayment->getId();?>)">Set Appointment</button>
 																<?php
 															}else{

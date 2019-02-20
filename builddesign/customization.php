@@ -466,6 +466,9 @@ $err = "";
                                     <?php
                                     $lstPart = $clsPart->GetByCategory_Id($mdlCategory->getId());
                                     foreach ($lstPart as $mdlPart) {
+                                      if ($mdlPart->getArea() <= 0) {
+                                        $mdlPart->setArea('1');
+                                      }
                                       ?>
                                       <ul>
                                         <li><?php echo $mdlPart->getName(); ?></li>

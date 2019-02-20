@@ -5,9 +5,12 @@ class PaymentModel{
 	private $Id = "";
 	private $Project_Id = "";
 	private $ReceiptDate = "";
+	private $PaymentType_Id = "";
 	private $ReceiptStatus = "";
 	private $AppointmentDate = "";
 	private $AppointmentStatus = "";
+	private $Place_Id = "";
+	private $PlaceStatus = "";
 	private $DateCreated = "";
 	private $Status = "";
 
@@ -67,6 +70,24 @@ class PaymentModel{
 	}
 
 
+	//PaymentType_Id
+	public function getPaymentType_Id(){
+		return $this->PaymentType_Id;
+	}
+
+	public function getsqlPaymentType_Id(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->PaymentType_Id);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setPaymentType_Id($PaymentType_Id){
+		$this->PaymentType_Id = $PaymentType_Id;
+	}
+
+
 	//ReceiptStatus
 	public function getReceiptStatus(){
 		return $this->ReceiptStatus;
@@ -118,6 +139,42 @@ class PaymentModel{
 
 	public function setAppointmentStatus($AppointmentStatus){
 		$this->AppointmentStatus = $AppointmentStatus;
+	}
+
+
+	//Place_Id
+	public function getPlace_Id(){
+		return $this->Place_Id;
+	}
+
+	public function getsqlPlace_Id(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->Place_Id);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setPlace_Id($Place_Id){
+		$this->Place_Id = $Place_Id;
+	}
+
+
+	//PlaceStatus
+	public function getPlaceStatus(){
+		return $this->PlaceStatus;
+	}
+
+	public function getsqlPlaceStatus(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->PlaceStatus);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setPlaceStatus($PlaceStatus){
+		$this->PlaceStatus = $PlaceStatus;
 	}
 
 

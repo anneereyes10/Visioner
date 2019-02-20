@@ -493,6 +493,9 @@ function ProjectItem()
 
 		$lstP = $clsP->GetByCategory_Id($mdlC->getId());
 		foreach ($lstP as $mdlP) {
+			if ($mdlP->getArea() <= 0) {
+				$mdlP->setArea('1');
+			}
 			$txtout .= '<ul>';
 			$txtout .= '<li>'.$mdlP->getName().'</li>';
 

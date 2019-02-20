@@ -70,50 +70,19 @@
   <!--  Dropdown Menu for Defaults -->
   <li class="nav-item">
     <a class="nav-link" href="AddFinish.php" id="pagesDropdown">
-      <i class="fas fa-fw fa-folder"></i>
+      <i class="fas fa-fw fa-clipboard-list"></i>
       <span>Set Finish</span>
     </a>
   </li>
-
-  <!--  Dropdown Menu for D&B -->
-  <!-- <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-fw fa-folder"></i>
-      <span>Design & Build</span>
+  <li class="nav-item">
+    <a class="nav-link" href="ViewPaymentType.php" id="pagesDropdown">
+      <i class="fas fa-fw fa-money-check"></i>
+      <span>Payment Type</span>
     </a>
-    <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-      <h6 class="dropdown-header">Relationship</h6>
-      <a class="dropdown-item" href="AddRelation.php">Set Relation</a>
-      <div class="dropdown-divider"></div>
-      <h6 class="dropdown-header">Layout</h6>
-      <a class="dropdown-item" href="AddLayout.php">Add Layout</a>
-      <a class="dropdown-item" href="ViewLayout.php">View Layouts</a>
-      <div class="dropdown-divider"></div>
-      <h6 class="dropdown-header">Floor</h6>
-      <a class="dropdown-item" href="AddFloor.php">Add Floor</a>
-      <a class="dropdown-item" href="ViewFloor.php">View Floor</a>
-      <div class="dropdown-divider"></div>
-      <h6 class="dropdown-header">Room</h6>
-      <a class="dropdown-item" href="AddRoom.php">Add Room</a>
-      <a class="dropdown-item" href="ViewRoom.php">View Room</a>
-      <div class="dropdown-divider"></div>
-      <h6 class="dropdown-header">Parts</h6>
-      <a class="dropdown-item" href="AddParts.php">Add Parts</a>
-      <a class="dropdown-item" href="ViewParts.php">View Parts</a>
-      <div class="dropdown-divider"></div>
-      <h6 class="dropdown-header">Material</h6>
-      <a class="dropdown-item" href="AddMaterial.php">Add Material</a>
-      <a class="dropdown-item" href="ViewMaterial.php">View Material</a>
-      <div class="dropdown-divider"></div>
-      <h6 class="dropdown-header">Upgrade</h6>
-      <a class="dropdown-item" href="AddUpgrade.php">Add Upgrade</a>
-      <a class="dropdown-item" href="ViewUpgrade.php">View Upgrade</a>
-    </div>
-  </li> -->
-
+  </li>
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-fw fa-folder"></i>
+      <i class="fas fa-fw fa-pencil-ruler"></i>
       <span>Design & Build</span>
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesDropdown">

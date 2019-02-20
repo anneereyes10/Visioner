@@ -3,7 +3,7 @@ require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Project.php");
 require_once ("../App_Code/Payment.php");
-require_once ("../App_Code/PaymentModel.php");
+require_once ("../App_Code/PaymentType.php");
 require_once ("../App_Code/User.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
@@ -98,6 +98,7 @@ require_once ("../App_Code/ImageModel.php");
                         <th>Image</th>
                         <th>User_Id</th>
                         <th>Project</th>
+                        <th>Payment Type</th>
                         <th>Payment Date</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -108,6 +109,7 @@ require_once ("../App_Code/ImageModel.php");
                         <th>Image</th>
                         <th>User_Id</th>
                         <th>Project</th>
+                        <th>Payment Type</th>
                         <th>Payment Date</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -136,13 +138,14 @@ require_once ("../App_Code/ImageModel.php");
                         </td>
                         <td><?php echo $clsUser->GetNameById($clsProject->GetUser_IdById($mdlPayment->getProject_Id())); ?></td>
                         <td><?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?></td>
+                        <td><?php echo $clsPaymentType->GetNameById($mdlPayment->getPaymentType_Id()); ?></td>
                         <td><?php echo $mdlPayment->getReceiptDate(); ?></td>
                         <td id="status_<?php echo $mdlPayment->getId();?>">
                           <?php
                           if($mdlPayment->getReceiptStatus() == 0){
                             echo "Pending";
                           } elseif($mdlPayment->getReceiptStatus() == 1){
-                            echo "Aprroved";
+                            echo "Approved";
                           } else {
                             echo "Declined";
                           }

@@ -3,7 +3,7 @@ require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Project.php");
 require_once ("../App_Code/Payment.php");
-require_once ("../App_Code/PaymentModel.php");
+require_once ("../App_Code/Place.php");
 require_once ("../App_Code/User.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
@@ -99,6 +99,7 @@ require_once ("../App_Code/ImageModel.php");
                         <th>User_Id</th>
                         <th>Project</th>
                         <th>Appointment Date</th>
+                        <th>Place</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
@@ -109,6 +110,7 @@ require_once ("../App_Code/ImageModel.php");
                         <th>User_Id</th>
                         <th>Project</th>
                         <th>Appointment Date</th>
+                        <th>Place</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
@@ -137,6 +139,7 @@ require_once ("../App_Code/ImageModel.php");
                         <td><?php echo $clsUser->GetNameById($clsProject->GetUser_IdById($mdlPayment->getProject_Id())); ?></td>
                         <td><?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?></td>
                         <td><?php echo $mdlPayment->getAppointmentDate(); ?></td>
+                        <td><?php echo $clsPlace->GetNameById($mdlPayment->getPlace_Id()); ?></td>
                         <td id="status_<?php echo $mdlPayment->getId();?>">
                           <?php
                           if($mdlPayment->getAppointmentStatus() == 0){
