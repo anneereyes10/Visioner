@@ -3,6 +3,7 @@ $mdlProject = new ProjectModel();
 class ProjectModel{
 
 	private $Id = "";
+	private $Type = "";
 	private $User_Id = "";
 	private $Name = "";
 	private $Plan_Id = "";
@@ -26,6 +27,24 @@ class ProjectModel{
 
 	public function setId($Id){
 		$this->Id = $Id;
+	}
+
+
+	//Type
+	public function getType(){
+		return $this->Type;
+	}
+
+	public function getsqlType(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->Type);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setType($Type){
+		$this->Type = $Type;
 	}
 
 

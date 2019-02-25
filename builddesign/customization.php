@@ -15,6 +15,8 @@ require_once ("../App_Code/Part.php");
 require_once ("../App_Code/Material.php");
 require_once ("../App_Code/Upgrade.php");
 
+require_once ("../App_Code/Payment.php");
+
 $clsFn->IsLogged();
 
 $_SESSION['projectId'] = (empty($_GET['project']) ?'':$_GET['project']);
@@ -170,7 +172,7 @@ $err = "";
                               </tfoot>
                               <tbody>
                                 <?php
-                                $lstProject = $clsProject->GetByUser_Id($_SESSION['uid']);
+                                $lstProject = $clsProject->GetByUser_IdType($_SESSION['uid'],0);
 
                                 foreach($lstProject as $mdlProject)
                                 {
@@ -178,8 +180,18 @@ $err = "";
                                 <tr>
                                   <td><?php echo $mdlProject->getName(); ?></td>
                                   <td>
-                                    <a href="customization.php?project=<?php echo $mdlProject->getId(); ?>" class="btn btn-next btn-primary"> Select </a>
-                                    <button class="btn btn-primary w-full" onclick="DeleteProject(<?php echo $mdlProject->getId(); ?>);"> Delete </button>
+                                    <?php
+                                    $mdlPayment->setProject_Id($mdlProject->getId());
+                                    $r_Payment = $clsPayment->IsExist($mdlPayment);
+                                    if($r_Payment['val']){
+                                      echo "Already Paid.";
+                                    }else{
+                                      ?>
+                                      <a href="customization.php?project=<?php echo $mdlProject->getId(); ?>" class="btn btn-next btn-primary"> Select </a>
+                                      <button class="btn btn-primary w-full" onclick="DeleteProject(<?php echo $mdlProject->getId(); ?>);"> Delete </button>
+                                      <?php
+                                    }
+                                    ?>
                                   </td>
                                 </tr>
                                 <?php
@@ -245,7 +257,7 @@ $err = "";
 
 
                             <div class="modal fade" id="plan<?php echo $mdlPlan->getId(); ?>" role="dialog">
-                              <div class="modal-dialog">
+                              <div class="modal-dialog modal-lg">
 
                                 <!-- Modal content-->
                                 <div class="modal-content">
@@ -253,12 +265,19 @@ $err = "";
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title"><?php echo $mdlPlan->getName(); ?></h4>
                                   </div>
-                                  <div class="modal-body text-center">
+                                  <div class="modal-body text-center" style="max-height:60vh;overflow:auto;">
                                     <div class="row">
-                                      <div class="col-md-6">
-                                        <img src="<?php echo $imgLocation; ?>" alt="plan" style="width:50%">
+                                      <div class="col-md-8">
+                                        <?php
+                                        foreach($lstImage as $mdlImage){
+                                          $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
+                                          ?>
+                                            <img src="<?php echo $imgLocation; ?>" alt="plan" style="margin-bottom:10px;">
+                                          <?php
+                                        }
+                                        ?>
                                       </div>
-                                      <div class="col-md-6">
+                                      <div class="col-md-4">
                                         <?php echo $mdlPlan->getDescription(); ?>
                                       </div>
                                     </div>

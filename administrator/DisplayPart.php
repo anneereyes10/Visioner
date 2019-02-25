@@ -194,7 +194,7 @@ if(isset($_POST['Name'])){
 				modal.classList.add("modal-success");
 				modal.classList.remove("modal-danger");
 				var table = $('#table1').DataTable();
-				console.log(table);
+				
 				table.rows('#tr'+Id).remove().draw();
 
 				var xmlhttp = new XMLHttpRequest();
@@ -239,7 +239,7 @@ if(isset($_POST['Name'])){
 					modal.classList.add("modal-success");
 					modal.classList.remove("modal-danger");
 					var table = $('#table2').DataTable();
-					console.log(table);
+					
 					table.rows('#tr2'+Id).remove().draw();
 
 					var xmlhttp = new XMLHttpRequest();

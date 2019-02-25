@@ -18,3 +18,22 @@ function setAppointment(id) {
   xmlhttp.send();
 
 }
+function deletePayment(id) {
+
+  var xmlhttp = new XMLHttpRequest();
+  var url = "";
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("tdPayment" + id).innerHTML = this.responseText;
+      var table = $('#example').DataTable();
+
+      table.rows('#tr'+id).remove().draw();
+    }
+  };
+  url = "../Ajax/payment.php";
+  url += "?call=deletePayment";
+  url += "&Id=" + id;
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
+
+}

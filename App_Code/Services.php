@@ -133,20 +133,6 @@ class Services{
 		$val = false;
 		$msg = "";
 
-		// Services_Id
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Services_Id` != '".$mdl->getsqlId()."' AND
-			`Services_Id` = '".$mdl->getsqlId()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputId\")'>Id</a>: " . $mdl->getId() . "</p>";
-			$val = true;
-		}
-
 		// Services_Name
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
@@ -158,34 +144,6 @@ class Services{
 		if($rows[0] > 0)
 		{
 			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputName\")'>Name</a>: " . $mdl->getName() . "</p>";
-			$val = true;
-		}
-
-		// Services_Description
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Services_Id` != '".$mdl->getsqlId()."' AND
-			`Services_Description` = '".$mdl->getsqlDescription()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputDescription\")'>Description</a>: " . $mdl->getDescription() . "</p>";
-			$val = true;
-		}
-
-		// Services_Price
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Services_Id` != '".$mdl->getsqlId()."' AND
-			`Services_Price` = '".$mdl->getsqlPrice()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPrice\")'>Price</a>: " . $mdl->getPrice() . "</p>";
 			$val = true;
 		}
 

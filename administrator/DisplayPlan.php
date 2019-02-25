@@ -17,7 +17,9 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
 
 $msgCategory = "";
 $errCategory = "";
-
+if (isset($_FILES["fileToUpload"])) {
+	$imgResult = $clsPlan->SetImage($_FILES["fileToUpload"],$mdlPlan->getId());
+}
 if(isset($_POST['Name'])){
 
 	$mdlCategory->setPlan_Id($mdlPlan->getId());
@@ -95,6 +97,49 @@ if(isset($_POST['Name'])){
 
 
 		<script>
+				function deleteShowImage(id) {
+					var modal = document.getElementById("ModalWrapper");
+					modal.classList.remove("modal-success");
+					modal.classList.add("modal-danger");
+
+					var xmlhttp = new XMLHttpRequest();
+					var url = "";
+					var btn = "";
+					xmlhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							document.getElementById("modalContent").innerHTML = this.responseText;
+						}
+					};
+					url = "../Ajax/DisplayPlan.php";
+					url += "?call=deleteShowImage";
+					url += "&Id=" + id;
+					xmlhttp.open("GET", url, true);
+					xmlhttp.send();
+
+				}
+				function deleteImage(id) {
+
+					var xmlhttp = new XMLHttpRequest();
+					var url = "";
+					var msg = `
+
+					`;
+					xmlhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							document.getElementById("img"+id).remove();
+							document.getElementById("modalContent").innerHTML = this.responseText;
+								var modal = document.getElementById("ModalWrapper");
+								modal.classList.add("modal-success");
+								modal.classList.remove("modal-danger");
+						}
+					};
+					url = "../Ajax/DisplayPlan.php";
+					url += "?call=deleteImage";
+					url += "&Id=" + id;
+					xmlhttp.open("GET", url, true);
+					xmlhttp.send();
+
+				}
 
 				function deleteShow(PlanId) {
 					var modal = document.getElementById("ModalWrapper");
@@ -121,7 +166,7 @@ if(isset($_POST['Name'])){
 					modal.classList.add("modal-success");
 					modal.classList.remove("modal-danger");
 					var table = $('#example').DataTable();
-					console.log(table);
+
 					table.rows('#tr'+PlanId).remove().draw();
 
 					var xmlhttp = new XMLHttpRequest();
@@ -166,7 +211,7 @@ if(isset($_POST['Name'])){
 					modal.classList.add("modal-success");
 					modal.classList.remove("modal-danger");
 					var table = $('#example').DataTable();
-					console.log(table);
+
 					table.rows('#tr'+PlanId).remove().draw();
 
 					var xmlhttp = new XMLHttpRequest();
@@ -189,6 +234,11 @@ if(isset($_POST['Name'])){
 			td > * {
 				vertical-align: middle;
 			}
+			.btn-close {
+				position:absolute;
+				top: 0px;
+				right: 5px;
+			}
 		</style>
   </head>
 
@@ -208,17 +258,32 @@ if(isset($_POST['Name'])){
                 </div>
                 <?php echo $msg; ?>
                 <div class="panel-body">
-                  <div class="row mb-2">
-                    <div class="form-group col-md-12 text-center">
+                  <div class="row">
+                    <div class="col-md-9 text-center">
+											<div class="row">
+
 											<?php
-											$imgLocation = "";
-											$lstImage = $clsImage->GetByDetail("layout",$mdlPlan->getId(),"original");
+											$lstImage = $clsImage->GetByDetail("plan",$mdlPlan->getId(),"original");
 											foreach($lstImage as $mdlImage){
-												$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
+												?>
+												<div style="position:relative;" id="img<?php echo $mdlImage->getId(); ?>">
+													<img src="../<?php echo $clsImage->ToLocation($mdlImage); ?>" style="max-height:100px;margin:5px;border:1px solid #aaa;">
+													<button type="button" data-toggle="modal" data-target="#ModalWrapper"  class="close btn-close" aria-label="Close" onclick="deleteShowImage(<?php echo $mdlImage->getId(); ?>); ">
+													  <span class="text-danger" aria-hidden="true">&times;</span>
+													</button>
+												</div>
+												<?php
 											}
 											?>
-                      <img src="<?php echo $imgLocation; ?>" style="max-height:200px;">
-                    </div>
+											</div>
+										</div>
+										<div class="col-md-3 text-center">
+											<form method="post" action="" enctype="multipart/form-data" autocomplete="off">
+												<label class="form-control-label" for="inputImage">Add Picture</label>
+												<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
+												<button type="submit" id="submit" class="btn btn-primary">Submit</button>
+											</form>
+										</div>
                   </div>
                   <div class="row">
                     <div class="form-group col-md-12">

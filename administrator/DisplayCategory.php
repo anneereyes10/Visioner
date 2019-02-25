@@ -122,7 +122,7 @@ if(isset($_POST['Name'])){
 				modal.classList.add("modal-success");
 				modal.classList.remove("modal-danger");
 				var table = $('#example').DataTable();
-				console.log(table);
+				
 				table.rows('#tr'+Id).remove().draw();
 
 				var xmlhttp = new XMLHttpRequest();

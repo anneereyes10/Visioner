@@ -2,8 +2,9 @@
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Services.php");
+require_once ("../App_Code/Project.php");
+require_once ("../App_Code/Image.php");
 include("../functions/functions.php");
-
 
 ?>
 
@@ -44,7 +45,23 @@ include("../functions/functions.php");
         <link rel="stylesheet" href="../assets/css/owl.transitions.css">
         <link rel="stylesheet" href="../assets/css/style.css">
         <link rel="stylesheet" href="../assets/css/responsive.css">
+        <script>
 
+        function addProject(id) {
+          var xmlhttp = new XMLHttpRequest();
+          var url = "";
+          xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("msg_Project").innerHTML = this.responseText;
+            }
+          };
+          url = "../Ajax/DisplayServices.php";
+          url += "?call=addProject";
+          url += "&Id=" + id;
+          xmlhttp.open("GET", url, true);
+          xmlhttp.send();
+        }
+        </script>
     </head>
     <body>
 
@@ -78,109 +95,152 @@ include("../functions/functions.php");
         <!--End top header -->
 
         <nav class="navbar navbar-default ">
-          <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="../index.php/?home"><img src="../assets/img/logo.png" alt=""></a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse yamm" id="navigation">
-              <div class="button navbar-right">
-
-                <?php
-        						if(isset($_SESSION['user_email']))
-        						{
-        						?>
-                <div class="btn-group">
-                  <button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('../user/logout.php', '_self')" data-wow-delay="0.4s">Logout</button>
-                </div>
-                <div class="btn-group">
-                  <button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
-                  <ul class="dropdown-menu">
-                    <li><a href="../user/user_account.php?edit_profile">Edit Information</a></li>
-                    <li><a href="../user/user_account.php?check_payment">Check Payment</a></li>
-                    <li><a href="../user/user_account.php?check_date">Check Appointment Date</a></li>
-                    <li><a href="../user/user_account.php?change_password">Change Password</a></li>
-                    <li><a href="../user/logout.php">Logout</a></li>
-                  </ul>
-                </div>
-                <?php
-        						}
-        						else
-        						{
-        						?>
-                <div class="btn-group">
-                  <button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('../index.php?login', '_self')" data-wow-delay="0.4s">Login</button>
-                </div>
-                <div class="btn-group">
-                  <button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.open('../index.php?login', '_self')" data-wow-delay="0.5s">Account</button>
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.php/?home"><img src="../assets/img/logo.png" alt=""></a>
                 </div>
 
-                <?php
-        						}
-        						?>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse yamm" id="navigation">
+                    <div class="button navbar-right">
 
-                <div class="btn-group">
+						<?php
+						if(isset($_SESSION['user_email']))
+						{
+						?>
+						<div class="btn-group">
+						<button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('../user/logout.php', '_self')" data-wow-delay="0.4s">Logout</button>
+						</div>
+						<div class="btn-group">
+						<button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
+							<ul class="dropdown-menu">
+                                <li><a href="../user/user_account.php?edit_profile">Edit Information</a></li>
+                                <li><a href="../user/user_account.php?check_payment">Check Payment</a></li>
+                                <li><a href="../user/user_account.php?check_date">Check Appointment Date</a></li>
+                                <li><a href="../user/user_account.php?change_password">Change Password</a></li>
+								<li><a href="../user/logout.php">Logout</a></li>
+                            </ul>
+						</div>
+						<?php
+						}
+						else
+						{
+						?>
+						<div class="btn-group">
+						<button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('../index.php?login', '_self')" data-wow-delay="0.4s">Login</button>
+						</div>
+						<div class="btn-group">
+						<button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.open('../index.php?login', '_self')" data-wow-delay="0.5s">Account</button>
+						</div>
 
-                  <button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('start.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
-                </div>
+						<?php
+						}
+						?>
 
-              </div>
-              <ul class="main-nav nav navbar-nav navbar-right">
-                <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?services">Services</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?gallery">Gallery</a></li>
-                <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="../index.php?contact">Contact</a></li>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
+						<div class="btn-group">
+
+                        <button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('start.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
+						</div>
+
+                    </div>
+                    <ul class="main-nav nav navbar-nav navbar-right">
+						<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
+                        <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?services">Services</a></li>
+                        <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?gallery">Gallery</a></li>
+                        <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="../index.php?contact">Contact</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
         </nav>
         <!-- End of nav bar -->
 
 
         <div class="page-head">
-          <div class="container">
-            <div class="row">
-              <div class="page-head-content">
-                <h1 class="page-title">Our SERVICES</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="clearfix">
-            <div class="wizard-container">
-              <br>
-              <div class="container">
-                <div class="clearfix">
-                  <div class="col-md-12">
-                    <p class="text-muted lead"> Select from the available services that Visioner Design & Builders can provide for you</p>
-                    <div class="box mt-0 mb-lg-0">
-                      <p>Select from our services:</p>
-
-                      <?php
-                      $lstServices = $clsServices->Get();
-                      foreach ($lstServices as $mdlServices) {
-                        echo '<a href="DisplayServices.php?id='.$mdlServices->getId().'">'.$mdlServices->getName().'</a><br />';
-                      }
-                      ?>
-                      <p id="details"></p>
-
+            <div class="container">
+                <div class="row">
+                    <div class="page-head-content">
+                        <h1 class="page-title">Our SERVICES</h1>
                     </div>
-                  </div>
-
                 </div>
-              </div>
             </div>
-          </div>
         </div>
+		<div class="container">
+                <div class="clearfix" >
+				<div class="wizard-container">
+		<br>
+		<div class="container">
+                <div class="clearfix" >
+        <div class="col-md-12">
+		<p class="text-muted lead"> Select from the available services that Visioner Design & Builders can provide for you</p>
+		<div class="box mt-0 mb-lg-0">
+
+      <?php
+      $mdlServices = $clsServices->GetById($_GET['id']);
+      ?>
+      <div class="row">
+        <div class="col-md-12" id="msg_Project">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+            <?php
+            $lstImage = $clsImage->GetByDetail("services",$mdlServices->getId(),"original");
+            foreach($lstImage as $mdlImage){
+              echo '<img src="../'.$clsImage->ToLocation($mdlImage).'" style="max-height:200px;">';
+            }
+            ?>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          Name:
+        </div>
+        <div class="col-md-9">
+          <?php echo $mdlServices->getName(); ?>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          Description:
+        </div>
+        <div class="col-md-9">
+          <?php echo $mdlServices->getDescription(); ?>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          Price:
+        </div>
+        <div class="col-md-9">
+          Php <?php echo $mdlServices->getPrice(); ?>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-9">
+          <button onclick="addProject(<?php echo $mdlServices->getId(); ?>);" class="btn btn-success"> Buy Service</button>
+        </div>
+      </div>
+
+		<p id="details"></p>
+
+		</div>
+		</div>
+
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
 
     <!-- Footer area-->
         <div class="footer-area">

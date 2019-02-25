@@ -13,10 +13,12 @@ class Project{
 		$conn = $Database->GetConn();
 		$sql = "INSERT INTO `".$this->table."`
 			(
+				`Project_Type`,
 				`User_Id`,
 				`Project_Name`,
 				`Plan_Id`
 			) VALUES (
+				'".$mdl->getsqlType()."',
 				'".$mdl->getsqlUser_Id()."',
 				'".$mdl->getsqlName()."',
 				'".$mdl->getsqlPlan_Id()."'
@@ -33,6 +35,7 @@ class Project{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$sql="UPDATE `".$this->table."` SET
+				 `Project_Type`='".$mdl->getsqlType()."',
 				 `User_Id`='".$mdl->getsqlUser_Id()."',
 				 `Project_Name`='".$mdl->getsqlName()."',
 				 `Plan_Id`='".$mdl->getsqlPlan_Id()."',
@@ -42,6 +45,23 @@ class Project{
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		 mysqli_close($conn);
+	}
+
+	public function UpdateType($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Project_Type`='".$value."'
+			WHERE `Project_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
 	}
 
 	public function UpdateUser_Id($id,$value){
@@ -134,11 +154,10 @@ class Project{
 		$msg = "";
 
 
-
 		// Project_Name
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Project_Id` != '".$mdl->getsqlId()."'AND
+			`Project_Id` != '".$mdl->getsqlId()."' AND
 			`Project_Name` = '".$mdl->getsqlName()."' AND
 			`User_Id` = '".$mdl->getsqlUser_Id()."'
 		";
@@ -149,7 +168,6 @@ class Project{
 			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputName\")'>Name</a>: " . $mdl->getName() . "</p>";
 			$val = true;
 		}
-
 
 		mysqli_close($conn);
 
@@ -169,6 +187,30 @@ class Project{
 		mysqli_close($conn);
 
 		return $this->ListTransfer($result);
+	}
+
+	public function GetTypeById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Project_Type` FROM `".$this->table."`
+		WHERE `Project_Id` = '".$id."'
+		AND `Project_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Project_Type'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
 	}
 
 	public function GetUser_IdById($id,$status=0){
@@ -284,6 +326,25 @@ class Project{
 		mysqli_close($conn);
 
 		return $this->ModelTransfer($result);
+	}
+
+	public function GetByType($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Project_Type` = '".$value."'
+		AND `Project_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
 	}
 
 	public function GetByUser_Id($value,$status=0){
@@ -420,11 +481,37 @@ class Project{
 	public function ToModel($row){
 		$mdl = new ProjectModel();
 		$mdl->setId((isset($row['Project_Id'])) ? $row['Project_Id'] : '');
+		$mdl->setType((isset($row['Project_Type'])) ? $row['Project_Type'] : '');
 		$mdl->setUser_Id((isset($row['User_Id'])) ? $row['User_Id'] : '');
 		$mdl->setName((isset($row['Project_Name'])) ? $row['Project_Name'] : '');
 		$mdl->setPlan_Id((isset($row['Plan_Id'])) ? $row['Plan_Id'] : '');
 		$mdl->setDateCreated((isset($row['Project_DateCreated'])) ? $row['Project_DateCreated'] : '');
 		$mdl->setStatus((isset($row['Project_Status'])) ? $row['Project_Status'] : '');
 		return $mdl;
+	}
+
+
+
+
+	public function GetByUser_IdType($value,$type,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$type = mysqli_real_escape_string($conn,$type);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `User_Id` = '".$value."'
+		AND `Project_Type` = '".$type."'
+		AND `Project_Status` = '".$status."'
+		";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
 	}
 }

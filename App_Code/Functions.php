@@ -20,8 +20,7 @@ class Functions{
 		return $msg;
 	}
 
-  public function Pagination($page=1, $totalItem=0, $btnperPage=5,$perPage=10)
-  {
+  public function Pagination($page=1, $totalItem=0, $btnperPage=5,$perPage=10){
     $pageQuery = '';
     foreach ($_GET as $key => $value) {
       if($key != "page"){
@@ -64,6 +63,20 @@ class Functions{
       exit();
     }
   }
+
+	public function alert($title, $message, $type='success'){
+		$msg .= '
+			<div class="alert alert-'.$type.' alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">×</span>
+			<span class="sr-only">Close</span>
+			</button>
+			<h4>'.$title.'</h4>
+			'.$message.'
+			</div>
+		';
+		return $msg;
+	}
 
   public function SendEmail($to,$subject,$message,$from = "donotreply@visionerdesignandbuilders.com"){
 

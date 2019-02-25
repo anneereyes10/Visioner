@@ -407,7 +407,7 @@ $name=$row_pro['full_name'];
 					                    {
 
 					                    ?>
-												<tr>
+												<tr id="tr<?php echo $mdlPayment->getId(); ?>">
 													<td>
 														<?php
 					                        $imgLocation = "";
@@ -479,7 +479,10 @@ $name=$row_pro['full_name'];
 																<?php
 															}
 		                        } else {
-		                          echo "Declined";
+															?>
+															<p>Declined</p>
+															<button class="btn btn-primary w-100" onclick="deletePayment(<?php echo $mdlPayment->getId();?>)">Delete</button>
+															<?php
 		                        }
 		                        ?>
 													</td>

@@ -10,6 +10,10 @@ switch ($call){
 		addPayment($_GET['Id'],$_GET['Date'],$_GET['Place_Id']);
 		break;
 	}
+	case 'deletePayment':	{
+		deletePayment($_GET['Id']);
+		break;
+	}
 }
 
 function addPayment($id,$date,$place){
@@ -33,6 +37,12 @@ function addPayment($id,$date,$place){
 		</div>
 		<?php
 	}
+
+}
+
+function deletePayment($id){
+	$clsPayment = new Payment();
+	$clsPayment->Delete($id);
 
 }
 ?>
