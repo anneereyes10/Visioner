@@ -94,14 +94,3 @@
     </div><!-- /.container-fluid -->
   </nav>
   <!-- End of nav bar -->
-
-  <div class="page-head">
-    <div class="container">
-      <div class="row">
-        <div class="page-head-content">
-          <h1 class="page-title">Online Design and Build</h1>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End page header -->

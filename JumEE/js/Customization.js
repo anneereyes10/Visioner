@@ -232,7 +232,7 @@ function selParts(id) {
 
 }
 
-function selMaterial(id,rp) {
+function selMaterial(id,pm) {
   cleaner("Material");
 
   var xmlhttp = new XMLHttpRequest();
@@ -246,6 +246,7 @@ function selMaterial(id,rp) {
   url = "../Ajax/Customization.php";
   url += "?call=addMaterial";
   url += "&Id=" + id;
+  url += "&PartId=" + pm;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 
@@ -263,6 +264,7 @@ function selUpgrade(id,pm) {
   url = "../Ajax/Customization.php";
   url += "?call=addUpgrade";
   url += "&Id=" + id;
+  url += "&PartId=" + pm;
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 }

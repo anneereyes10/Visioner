@@ -25,11 +25,11 @@ switch ($call)
 		break;
 	}
 	case 'addMaterial':	{
-		addMaterial($_GET['Id']);
+		addMaterial($_GET['Id'],$_GET['PartId']);
 		break;
 	}
 	case 'addUpgrade':	{
-		addUpgrade($_GET['Id']);
+		addUpgrade($_GET['Id'],$_GET['PartId']);
 		break;
 	}
 	case 'finish':	{
@@ -163,33 +163,37 @@ function addProject($name){
 
 }
 
-function addMaterial($Material_Id){
+function addMaterial($Material_Id,$Part_Id){
   $clsProject = new Project();
   $mdlProject = new ProjectModel();
   $clsUP = new UserProject();
   $mdlUP = new UserProjectModel();
   $clsMaterial = new Material();
 
-	$clsUP->DeleteMaterialChange($_SESSION['projectId'],$clsMaterial->GetPart_IdById($Material_Id));
-	$mdlUP->setProject_Id($_SESSION['projectId']);
-	$mdlUP->setMaterial_Id($Material_Id);
-	$mdlUP->setUpgrade_Id('0');
-	$clsUP->Add($mdlUP);
+	$clsUP->DeleteMaterialChange($_SESSION['projectId'],$Part_Id);
+	if ($Material_Id != '0') {
+		$mdlUP->setProject_Id($_SESSION['projectId']);
+		$mdlUP->setMaterial_Id($Material_Id);
+		$mdlUP->setUpgrade_Id('0');
+		$clsUP->Add($mdlUP);
+	}
 
 }
 
 
-function addUpgrade($Upgrade_Id){
+function addUpgrade($Upgrade_Id,$Part_Id){
   $clsProject = new Project();
   $mdlProject = new ProjectModel();
   $clsUP = new UserProject();
   $mdlUP = new UserProjectModel();
   $clsUpgrade = new Upgrade();
-	$clsUP->DeleteUpgradeChange($_SESSION['projectId'],$clsUpgrade->GetPart_IdById($Upgrade_Id));
-	$mdlUP->setProject_Id($_SESSION['projectId']);
-	$mdlUP->setMaterial_Id('0');
-	$mdlUP->setUpgrade_Id($Upgrade_Id);
-	$clsUP->Add($mdlUP);
+	$clsUP->DeleteUpgradeChange($_SESSION['projectId'],$Part_Id);
+	if ($Upgrade_Id != '0') {
+		$mdlUP->setProject_Id($_SESSION['projectId']);
+		$mdlUP->setMaterial_Id('0');
+		$mdlUP->setUpgrade_Id($Upgrade_Id);
+		$clsUP->Add($mdlUP);
+	}
 
 }
 
@@ -385,6 +389,27 @@ function displayUpgrade($Part_Id){
   if (empty($lstUpgrade)) {
     echo 'No Upgrade Attached';
   }else{
+		?>
+
+		<div class="thumbnail col-md-3">
+			<div class="caption">
+				<center>
+					<label class="radio-jumee">
+						<input
+						type="radio"
+						style="margin:0px;"
+						name="upgrade<?php echo $Part_Id; ?>"
+						onchange="selUpgrade(0,<?php echo $Part_Id; ?>);"
+						><br>
+						<strong>
+							None
+						</strong>
+					</label>
+				</center>
+			</div>
+		</div>
+
+		<?php
 		foreach ($lstUpgrade as $mdlUpgrade) {
 			$imgLocation = "";
 			$lstImage = $clsImage->GetByDetail("upgrade",$mdlUpgrade->getId(),"original");

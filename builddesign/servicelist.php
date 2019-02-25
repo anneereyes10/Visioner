@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once ("../App_Code/Database.php");
+require_once ("../App_Code/Functions.php");
+require_once ("../App_Code/Services.php");
 include("../functions/functions.php");
 
 
@@ -12,7 +14,7 @@ include("../functions/functions.php");
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-		
+
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Visioner Design and Builders | Home page</title>
@@ -33,11 +35,11 @@ include("../functions/functions.php");
         <link href="../assets/fonts/icon-7-stroke/css/pe-icon-7-stroke.css" rel="stylesheet">
         <link href="../assets/fonts/icon-7-stroke/css/helper.css" rel="stylesheet">
         <link href="../assets/css/animate.css" rel="stylesheet" media="screen">
-        <link rel="stylesheet" href="../assets/css/bootstrap-select.min.css"> 
+        <link rel="stylesheet" href="../assets/css/bootstrap-select.min.css">
         <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="../assets/css/icheck.min_all.css">
         <link rel="stylesheet" href="../assets/css/price-range.css">
-        <link rel="stylesheet" href="../assets/css/owl.carousel.css">  
+        <link rel="stylesheet" href="../assets/css/owl.carousel.css">
         <link rel="stylesheet" href="../assets/css/owl.theme.css">
         <link rel="stylesheet" href="../assets/css/owl.transitions.css">
         <link rel="stylesheet" href="../assets/css/style.css">
@@ -71,7 +73,7 @@ include("../functions/functions.php");
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
         <!--End top header -->
 
         <nav class="navbar navbar-default ">
@@ -90,7 +92,7 @@ include("../functions/functions.php");
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse yamm" id="navigation">
                     <div class="button navbar-right">
-                         
+
 						<?php
 						if(isset($_SESSION['user_email']))
 						{
@@ -119,16 +121,16 @@ include("../functions/functions.php");
 						<div class="btn-group">
 						<button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.open('../index.php?login', '_self')" data-wow-delay="0.5s">Account</button>
 						</div>
-						
+
 						<?php
 						}
 						?>
-						
+
 						<div class="btn-group">
-						
+
                         <button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('start.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
 						</div>
-						
+
                     </div>
                     <ul class="main-nav nav navbar-nav navbar-right">
 						<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
@@ -141,55 +143,59 @@ include("../functions/functions.php");
         </nav>
         <!-- End of nav bar -->
 
-		
-        <div class="page-head"> 
+
+        <div class="page-head">
             <div class="container">
                 <div class="row">
                     <div class="page-head-content">
-                        <h1 class="page-title">Our SERVICES</h1>               
+                        <h1 class="page-title">Our SERVICES</h1>
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
 		<div class="container">
-                <div class="clearfix" > 
-				<div class="wizard-container"> 
+                <div class="clearfix" >
+				<div class="wizard-container">
 		<br>
 		<div class="container">
-                <div class="clearfix" > 
+                <div class="clearfix" >
         <div class="col-md-12">
 		<p class="text-muted lead"> Select from the available services that Visioner Design & Builders can provide for you</p>
 		<div class="box mt-0 mb-lg-0">
 		<p>Select from our services:</p>
 
-		<?php 
+		<?php
+    $lstServices = $clsServices->Get();
+    foreach ($lstServices as $mdlServices) {
+			echo $mdlServices->getName();
+    }
 			$get_serv = "select * from services";
 						$run_serv = mysqli_query($con, $get_serv);
-	
+
 						while($row_serv=mysqli_fetch_array($run_serv))
 						{
 							$serv_id = $row_serv['service_id'];
 							$serv_name = $row_serv['service_name'];
-		
+
 							echo "<a href='services.php?serv_id=$serv_id'>$serv_name</a><br>";
-							
-							
-							
+
+
+
 						}
 					?>
 
-		
+
 		<p id="details"></p>
-		
+
 		</div>
 		</div>
-		
+
 		</div>
 		</div>
 		</div>
 		</div>
 		</div>
-		
+
     <!-- Footer area-->
         <div class="footer-area">
 
@@ -216,15 +222,15 @@ include("../functions/functions.php");
                                 <h4>Quick links </h4>
                                 <div class="footer-title-line"></div>
                                 <ul class="footer-menu">
-                                    <li><a href="../index.php?about">About</a>  </li> 
-                                    <li><a href="../index.php?services">Service</a>  </li> 
-                                    <li><a href="../index.php?login">Login</a></li> 
-                                    <li><a href="../index.php?contact">Contact</a></li> 
-                                    
+                                    <li><a href="../index.php?about">About</a>  </li>
+                                    <li><a href="../index.php?services">Service</a>  </li>
+                                    <li><a href="../index.php?login">Login</a></li>
+                                    <li><a href="../index.php?contact">Contact</a></li>
+
                                 </ul>
                             </div>
                         </div>
-						
+
                         <div class="col-md-3 col-sm-6 wow fadeInRight animated">
                             <div class="single-footer">
                                 <h4>Gallery</h4>
@@ -238,13 +244,13 @@ include("../functions/functions.php");
                                             <span class="blg-date">View</span>
 
                                         </div>
-										
+
                                         <div class="col-md-8  col-sm-8 col-xs-8  blg-entry">
-                                            <h6> <a href="../index.php/?gallery">Project I</a></h6> 
+                                            <h6> <a href="../index.php/?gallery">Project I</a></h6>
                                             <p style="line-height: 17px; padding: 8px 2px;">View Gallery</p>
                                         </div>
-                                    </li> 
-							
+                                    </li>
+
                                     <li>
                                         <div class="col-md-3 col-sm-4 col-xs-4 blg-thumb p0">
                                             <a href="../index.php/?gallery">
@@ -254,10 +260,10 @@ include("../functions/functions.php");
 
                                         </div>
                                         <div class="col-md-8  col-sm-8 col-xs-8  blg-entry">
-                                            <h6> <a href="../index.php/?gallery">Project II </a></h6> 
+                                            <h6> <a href="../index.php/?gallery">Project II </a></h6>
                                             <p style="line-height: 17px; padding: 8px 2px;">View Gallery</p>
                                         </div>
-                                    </li> 
+                                    </li>
 
                                     <li>
                                         <div class="col-md-3 col-sm-4 col-xs-4 blg-thumb p0">
@@ -268,17 +274,17 @@ include("../functions/functions.php");
 
                                         </div>
                                         <div class="col-md-8  col-sm-8 col-xs-8  blg-entry">
-                                            <h6> <a href="../index.php/?gallery">Project III</a></h6> 
+                                            <h6> <a href="../index.php/?gallery">Project III</a></h6>
                                             <p style="line-height: 17px; padding: 8px 2px;">View Gallery</p>
                                         </div>
-                                    </li> 
+                                    </li>
 
 
                                 </ul>
                             </div>
                         </div>
-						
-						
+
+
                         <div class="col-md-3 col-sm-6 wow fadeInRight animated">
                             <div class="single-footer news-letter">
                                 <h4>Stay in touch</h4>
@@ -293,15 +299,15 @@ include("../functions/functions.php");
                                         </span>
                                     </div>
                                     <!-- /input-group -->
-                                </form> 
+                                </form>
 
-                                <div class="social pull-right"> 
+                                <div class="social pull-right">
                                     <ul>
-                                        
+
                                         <li><a class="wow fadeInUp animated" href="https://www.facebook.com/Visioner-Design-and-Builders-432801973461175/" data-wow-delay="0.2s"><i class="fa fa-facebook"></i></a></li>
                                         <li><a class="wow fadeInUp animated" href="https://www.facebook.com/Visioner-Design-and-Builders-432801973461175/" data-wow-delay="0.4s"><i class="fa fa-instagram"></i></a></li>
-                                        
-                                    </ul> 
+
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -314,15 +320,15 @@ include("../functions/functions.php");
                 <div class="container">
                     <div class="row">
                         <div class="pull-left">
-                            <span> (C) <a href="https://www.facebook.com/Visioner-Design-and-Builders-432801973461175/">Visioner Design and Builders</a> , All rights reserved 2018  </span> 
-                        </div> 
-                        <div class="bottom-menu pull-right"> 
-                            <ul> 
+                            <span> (C) <a href="https://www.facebook.com/Visioner-Design-and-Builders-432801973461175/">Visioner Design and Builders</a> , All rights reserved 2018  </span>
+                        </div>
+                        <div class="bottom-menu pull-right">
+                            <ul>
                                 <li><a class="wow fadeInUp animated" href="../index.php?home" data-wow-delay="0.2s">Home</a></li>
                                 <li><a class="wow fadeInUp animated" href="../index.php?gallery" data-wow-delay="0.3s">Gallery</a></li>
                                 <li><a class="wow fadeInUp animated" href="../index.php?privacypolicy" data-wow-delay="0.4s">Privacy Policy</a></li>
                                 <li><a class="wow fadeInUp animated" href="../index.php?contact" data-wow-delay="0.6s">Contact</a></li>
-                            </ul> 
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -334,7 +340,7 @@ include("../functions/functions.php");
 
         <script src="../assets/js/modernizr-2.6.2.min.js"></script>
 
-        <script src="../assets/js/jquery-1.10.2.min.js"></script> 
+        <script src="../assets/js/jquery-1.10.2.min.js"></script>
         <script src="../bootstrap/js/bootstrap.min.js"></script>
         <script src="../assets/js/bootstrap-select.min.js"></script>
         <script src="../assets/js/bootstrap-hover-dropdown.js"></script>

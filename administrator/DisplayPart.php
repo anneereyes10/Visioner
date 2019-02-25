@@ -289,8 +289,11 @@ if(isset($_POST['Name'])){
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-4 offset-sm-4">
-                      <a href="EditPart.php?Id=<?php echo $mdlPart->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
+                    <div class="col-sm-3 offset-sm-3">
+											<a href="EditPart.php?Id=<?php echo $mdlPart->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
+                    </div>
+                    <div class="col-sm-3">
+											<a href="DisplayCategory.php?Id=<?php echo $mdlPart->getCategory_Id(); ?>" class="btn btn-secondary w-100">Back</a>
                     </div>
                   </div>
                 </div>

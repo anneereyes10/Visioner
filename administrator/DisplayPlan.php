@@ -257,13 +257,17 @@ if(isset($_POST['Name'])){
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-3 offset-sm-3">
+                    <div class="col-sm-2 offset-sm-2">
                       <a href="EditPlan.php?Id=<?php echo $mdlPlan->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
                     </div>
-                    <div class="col-sm-3">
+										<div class="col-sm-2">
+											<a href="ViewPlan.php?Id=<?php echo $mdlPlan->getId(); ?>" class="btn btn-secondary w-100">Back</a>
+										</div>
+                    <div class="col-sm-2">
                       <a href="EditPlan.php?Id=<?php echo $mdlPlan->getId(); ?>" id="submit" class="btn btn-danger w-100" data-toggle="modal" data-target="#ModalWrapper" onclick="deleteShow(<?php echo $mdlPlan->getId(); ?>);">Delete</a>
                     </div>
-                  </div>
+
+									</div>
                 </div>
               </div>
 						</div>

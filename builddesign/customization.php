@@ -99,6 +99,16 @@ $err = "";
 
   <?php include "header.php"; ?>
 
+    <div class="page-head">
+      <div class="container">
+        <div class="row">
+          <div class="page-head-content">
+            <h1 class="page-title">Online Design and Build</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End page header -->
   <!-- Customization Area -->
   <div class="content-area submit-property" style="background-color: #FCFCFC;">&nbsp;
     <div class="container">

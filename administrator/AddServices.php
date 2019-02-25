@@ -1,29 +1,21 @@
 <?php
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
-require_once ("../App_Code/Material.php");
-require_once ("../App_Code/MaterialModel.php");
+require_once ("../App_Code/Services.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
 
 $msg = "";
 $err = "";
 
-if(isset($_GET['Id']) && $_GET['Id'] != ""){
-	$mdlMaterial = $clsMaterial->GetById($_GET['Id']);
-}else{
-	header('Location: ViewMaterial.php');
-	die();
-}
-
 if(isset($_POST['Name'])){
 
-	$err .= $clsFn->setForm('Name',$mdlMaterial,true);
-	$err .= $clsFn->setForm('Description',$mdlMaterial,true);
-	$err .= $clsFn->setForm('Price',$mdlMaterial,true);
+	$err .= $clsFn->setForm('Name',$mdlServices,true);
+	$err .= $clsFn->setForm('Description',$mdlServices,true);
+	$err .= $clsFn->setForm('Price',$mdlServices,true);
 
 	if($err == ""){
-		$duplicate = $clsMaterial->IsExist($mdlMaterial);
+		$duplicate = $clsServices->IsExist($mdlServices);
 		if($duplicate['val']){
 			$msg .= '
 			<div class="alert alert-danger alert-dismissible" role="alert">
@@ -31,20 +23,23 @@ if(isset($_POST['Name'])){
 			<span aria-hidden="true">×</span>
 			<span class="sr-only">Close</span>
 			</button>
-			<h6>Duplicate of Information Detected. </h6>
+			<h4>Duplicate of Information Detected. </h4>
 			'.$duplicate['msg'].'
 			</div>';
 		}else{
-			$clsMaterial->Update($mdlMaterial);
+			$materialId = $clsServices->Add($mdlServices);
 			$msg .= '
-			<div class="alert alert-success alert-dismissible" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">×</span>
-			<span class="sr-only">Close</span>
-			</button>
-			<h6>Successfully Updated Material. </h6>
-			</div>';
-			$imgResult = $clsMaterial->SetImage($_FILES["fileToUpload"],$mdlMaterial->getId());
+				<div class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+				<span class="sr-only">Close</span>
+				</button>
+				<h6>
+					Successfully Added New Services.
+				</h6>
+				</div>
+			     ';
+			$imgResult = $clsServices->SetImage($_FILES["fileToUpload"],$materialId);
 			if($imgResult['msg'] != ""){
 				$msg .= '
 				<div class="alert alert-danger alert-dismissible" role="alert">
@@ -52,10 +47,12 @@ if(isset($_POST['Name'])){
 				<span aria-hidden="true">×</span>
 				<span class="sr-only">Close</span>
 				</button>
-				<h6>Image Upload Failed </h6>
+				<h4>Image Upload Failed </h4>
 				'.$imgResult['msg'].'
 				</div>';
 			}
+			// Clear all data if success
+			$mdlServices = new ServicesModel();
 		}
 	}else{
 		$msg .= '
@@ -95,6 +92,7 @@ if(isset($_POST['Name'])){
     <!-- Custom styles for this template-->
     <link href="styles/css/sb-admin.css" rel="stylesheet">
 
+
   </head>
 
   <body id="page-top">
@@ -110,28 +108,28 @@ if(isset($_POST['Name'])){
   						<div class="col-12">
   							<div class="panel">
   								<div class="panel-heading">
-  									<h3 class="panel-title">Material Details</h3>
+  									<h3 class="panel-title">Services Details</h3>
   								</div>
   								<?php echo $msg; ?>
   								<div class="panel-body">
   									<div class="row">
   										<div class="form-group col-md-12">
   											<label class="form-control-label" for="inputName">Name</label>
-  											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlMaterial->getName(); ?>" onblur="checkInput('inputName')">
+  											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlServices->getName(); ?>" onblur="checkInput('inputName')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
   									<div class="row mb-2">
   										<div class="col-12">
   											<label class="form-control-label" for="inputDescription">Description</label>
-  											<input type="text" class="form-control" id="inputDescription" name="Description" placeholder="Description" value="<?php echo $mdlMaterial->getDescription(); ?>" onblur="checkInput('inputDescription')">
+  											<input type="text" class="form-control" id="inputDescription" name="Description" placeholder="Description" value="<?php echo $mdlServices->getDescription(); ?>" onblur="checkInput('inputDescription')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
 										<div class="row mb-2">
   										<div class="col-12">
   											<label class="form-control-label" for="inputPrice">Price</label>
-  											<input type="text" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlMaterial->getPrice(); ?>" onblur="checkInput('inputPrice')">
+  											<input type="text" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlServices->getPrice(); ?>" onblur="checkInput('inputPrice')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
@@ -141,14 +139,11 @@ if(isset($_POST['Name'])){
   											<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
   										</div>
   									</div>
-	                  <div class="row">
-	                    <div class="col-sm-3 offset-sm-3">
-												<button type="submit" id="submit" class="btn btn-primary w-100">Submit</button>
-	                    </div>
-	                    <div class="col-sm-3">
-												<a href="DisplayMaterial.php?Id=<?php echo $mdlMaterial->getId(); ?>" class="btn btn-secondary w-100">Back</a>
-	                    </div>
-	                  </div>
+  									<div class="row">
+  										<div class="col-sm-4 offset-sm-4">
+  											<button type="submit" id="submit" class="btn btn-primary w-full">Submit</button>
+  										</div>
+  									</div>
   								</div>
   							</div>
   						</div>
@@ -170,8 +165,6 @@ if(isset($_POST['Name'])){
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>
     </a>
-
-
 
     <?php include 'logoutmodal.php';?>
 

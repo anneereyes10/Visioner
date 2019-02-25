@@ -119,9 +119,16 @@ if(isset($_POST['Name'])){
   									</div>
   									<div class="row">
   										<div class="col-sm-4 offset-sm-4">
-  											<button type="submit" id="submit" class="btn btn-primary w-full">Submit</button>
   										</div>
   									</div>
+	                  <div class="row">
+	                    <div class="col-sm-3 offset-sm-3">
+												<button type="submit" id="submit" class="btn btn-primary w-100">Submit</button>
+	                    </div>
+	                    <div class="col-sm-3">
+												<a href="DisplayCategory.php?Id=<?php echo $mdlCategory->getId(); ?>" class="btn btn-secondary w-100">Back</a>
+	                    </div>
+	                  </div>
   								</div>
   							</div>
   						</div>

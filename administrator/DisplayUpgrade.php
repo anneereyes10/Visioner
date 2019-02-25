@@ -135,7 +135,14 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
                   </div>
                   <div class="row">
                     <div class="col-sm-4 offset-sm-4">
-                      <a href="EditUpgrade.php?Id=<?php echo $mdlUpgrade->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3 offset-sm-3">
+											<a href="EditUpgrade.php?Id=<?php echo $mdlUpgrade->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
+                    </div>
+                    <div class="col-sm-3">
+											<a href="DisplayPart.php?Id=<?php echo $mdlUpgrade->getPart_Id(); ?>" class="btn btn-secondary w-100">Back</a>
                     </div>
                   </div>
                 </div>

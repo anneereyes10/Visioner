@@ -96,51 +96,51 @@ if(isset($_POST['Name'])){
     <link href="../JumEE/css/bootstrap-extended.css" rel="stylesheet">
 
 
-				<script>
-					function deleteShow(Id) {
-						var modal = document.getElementById("ModalWrapper");
-						modal.classList.remove("modal-success");
-						modal.classList.add("modal-danger");
+		<script>
+			function deleteShow(Id) {
+				var modal = document.getElementById("ModalWrapper");
+				modal.classList.remove("modal-success");
+				modal.classList.add("modal-danger");
 
-						var xmlhttp = new XMLHttpRequest();
-						var url = "";
-						var btn = "";
-						xmlhttp.onreadystatechange = function() {
-							if (this.readyState == 4 && this.status == 200) {
-								document.getElementById("modalContent").innerHTML = this.responseText;
-							}
-						};
-						url = "../Ajax/DisplayCategory.php";
-						url += "?call=deleteShow";
-						url += "&Id=" + Id;
-						xmlhttp.open("GET", url, true);
-						xmlhttp.send();
-
+				var xmlhttp = new XMLHttpRequest();
+				var url = "";
+				var btn = "";
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						document.getElementById("modalContent").innerHTML = this.responseText;
 					}
-					function deleteItem(Id) {
-						var modal = document.getElementById("ModalWrapper");
-						modal.classList.add("modal-success");
-						modal.classList.remove("modal-danger");
-						var table = $('#example').DataTable();
-						console.log(table);
-						table.rows('#tr'+Id).remove().draw();
+				};
+				url = "../Ajax/DisplayCategory.php";
+				url += "?call=deleteShow";
+				url += "&Id=" + Id;
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send();
 
-						var xmlhttp = new XMLHttpRequest();
-						var url = "";
-						var btn = "";
-						xmlhttp.onreadystatechange = function() {
-							if (this.readyState == 4 && this.status == 200) {
-								document.getElementById("modalContent").innerHTML = this.responseText;
-							}
-						};
-						url = "../Ajax/DisplayCategory.php";
-						url += "?call=deleteItem";
-						url += "&Id=" + Id;
-						xmlhttp.open("GET", url, true);
-						xmlhttp.send();
+			}
+			function deleteItem(Id) {
+				var modal = document.getElementById("ModalWrapper");
+				modal.classList.add("modal-success");
+				modal.classList.remove("modal-danger");
+				var table = $('#example').DataTable();
+				console.log(table);
+				table.rows('#tr'+Id).remove().draw();
 
+				var xmlhttp = new XMLHttpRequest();
+				var url = "";
+				var btn = "";
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						document.getElementById("modalContent").innerHTML = this.responseText;
 					}
-				</script>
+				};
+				url = "../Ajax/DisplayCategory.php";
+				url += "?call=deleteItem";
+				url += "&Id=" + Id;
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send();
+
+			}
+		</script>
   </head>
 
   <body id="page-top">
@@ -166,8 +166,11 @@ if(isset($_POST['Name'])){
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-4 offset-sm-4">
+                    <div class="col-sm-3 offset-sm-3">
                       <a href="EditCategory.php?Id=<?php echo $mdlCategory->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
+                    </div>
+                    <div class="col-sm-3">
+											<a href="DisplayPlan.php?Id=<?php echo $mdlCategory->getPlan_Id(); ?>" class="btn btn-secondary w-100">Back</a>
                     </div>
                   </div>
                 </div>
