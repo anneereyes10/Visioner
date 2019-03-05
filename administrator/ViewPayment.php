@@ -8,6 +8,7 @@ require_once ("../App_Code/User.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,6 +75,22 @@ require_once ("../App_Code/ImageModel.php");
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
 		}
+
+    function displayDetail(id){
+
+      var xmlhttp = new XMLHttpRequest();
+      var url = "";
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("modalContent").innerHTML = this.responseText;
+        }
+      };
+      url = "../Ajax/ViewPayment.php";
+      url += "?call=displayDetail";
+      url += "&Id=" + id;
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
+    }
     </script>
   </head>
 
@@ -137,7 +154,10 @@ require_once ("../App_Code/ImageModel.php");
                           ?>
                         </td>
                         <td><?php echo $clsUser->GetNameById($clsProject->GetUser_IdById($mdlPayment->getProject_Id())); ?></td>
-                        <td><?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?></td>
+                        <td>
+                          <?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?>
+                          <button class="btn btn-default" data-toggle="modal" data-target="#ModalWrapper" onclick="displayDetail(<?php echo $mdlPayment->getProject_Id(); ?>)"> View </button>
+                        </td>
                         <td><?php echo $clsPaymentType->GetNameById($mdlPayment->getPaymentType_Id()); ?></td>
                         <td><?php echo $mdlPayment->getReceiptDate(); ?></td>
                         <td id="status_<?php echo $mdlPayment->getId();?>">

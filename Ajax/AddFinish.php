@@ -270,60 +270,6 @@ function displayMaterial($PartId){
 	}
 }
 
-function displayUpgrade($PartId){
-	$clsUpgrade = new Upgrade();
-	$mdlUpgrade = new UpgradeModel();
-	$clsFI = new FinishItem();
-	$mdlFI = new FinishItemModel();
-	$clsImage = new Image();
-	$mdlImage = new ImageModel();
-
-  $lstUpgrade = $clsUpgrade->GetByPart_Id($PartId);
-
-  if (empty($lstUpgrade)) {
-    echo 'No Upgrade Attached';
-  }else{
-		foreach ($lstUpgrade as $mdlUpgrade) {
-			$imgLocation = "";
-			$lstImage = $clsImage->GetByDetail("upgrade",$mdlUpgrade->getId(),"original");
-
-			foreach($lstImage as $mdlImage){
-				$imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-			}
-			$mdlFI->setFinish_Id($_SESSION['Finish_Id']);
-			$mdlFI->setPlan_Id($_SESSION['Plan_Id']);
-			$mdlFI->setMaterial_Id('0');
-			$mdlFI->setUpgrade_Id($mdlUpgrade->getId());
-			$addedCss = ' bg-light';
-			if ($clsFI->IsExist($mdlFI)) {
-				$addedCss = ' text-white bg-info';
-			}
-			?>
-			<div class="col-md-2 col-sm-3 mb-10 p-0">
-				<a
-				href="javascript:void(0);"
-				onclick="selUpgrade(<?php echo $mdlUpgrade->getId(); ?>);"
-				class="card shadow featured <?php echo $addedCss; ?>"
-				style="color:#666;"
-				id="Upgrade_<?php echo $mdlUpgrade->getId(); ?>"
-				>
-					<div
-					class="card-img-top img-featured"
-					style="background-image: url('<?php echo $imgLocation; ?>')"
-					alt="<?php echo $mdlUpgrade->getName(); ?>"
-					></div>
-					<div class="card-body">
-						<h5 class="card-title"><?php echo $mdlUpgrade->getName(); ?></h5>
-						<p class="card-text">
-							<?php echo $mdlUpgrade->getDescription(); ?>
-						</p>
-					</div>
-				</a>
-			</div>
-			<?php
-		}
-	}
-}
 
 function displayUpgradeSelect($materialUpgradeId,$PartMaterial_Id,$empty){
 	$clsFI = new FinishItem();

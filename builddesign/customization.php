@@ -277,7 +277,7 @@ $err = "";
                                         }
                                         ?>
                                       </div>
-                                      <div class="col-md-4">
+                                      <div class="col-md-4" style="white-space: pre-line">
                                         <?php echo $mdlPlan->getDescription(); ?>
                                       </div>
                                     </div>

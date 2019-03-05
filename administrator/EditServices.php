@@ -174,7 +174,8 @@ if(isset($_POST['Name'])){
   									<div class="row mb-2">
   										<div class="col-12">
   											<label class="form-control-label" for="inputDescription">Description</label>
-  											<input type="text" class="form-control" id="inputDescription" name="Description" placeholder="Description" value="<?php echo $mdlServices->getDescription(); ?>" onblur="checkInput('inputDescription')">
+
+												<textarea name="Description" class="form-control" id="inputDescription"><?php echo $mdlServices->getDescription(); ?></textarea>
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>

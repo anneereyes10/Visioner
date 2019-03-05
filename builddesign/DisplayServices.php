@@ -121,12 +121,12 @@ include("../functions/functions.php");
 						<div class="btn-group">
 						<button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
 							<ul class="dropdown-menu">
-                                <li><a href="../user/user_account.php?edit_profile">Edit Information</a></li>
-                                <li><a href="../user/user_account.php?check_payment">Check Payment</a></li>
-                                <li><a href="../user/user_account.php?check_date">Check Appointment Date</a></li>
-                                <li><a href="../user/user_account.php?change_password">Change Password</a></li>
-								<li><a href="../user/logout.php">Logout</a></li>
-                            </ul>
+                <li><a href="../user/user_account.php?edit_profile">Edit Information</a></li>
+                <li><a href="../user/user_account.php?check_payment">Check Payment</a></li>
+                <li><a href="../user/user_account.php?check_date">Check Appointment Date</a></li>
+                <li><a href="../user/user_account.php?change_password">Change Password</a></li>
+                <li><a href="../user/logout.php">Logout</a></li>
+              </ul>
 						</div>
 						<?php
 						}
@@ -151,10 +151,10 @@ include("../functions/functions.php");
 
                     </div>
                     <ul class="main-nav nav navbar-nav navbar-right">
-						<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
-                        <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?services">Services</a></li>
-                        <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?gallery">Gallery</a></li>
-                        <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="../index.php?contact">Contact</a></li>
+                      <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
+                      <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?services">Services</a></li>
+                      <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?gallery">Gallery</a></li>
+                      <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="../index.php?contact">Contact</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
@@ -192,8 +192,12 @@ include("../functions/functions.php");
         <div class="col-md-12">
             <?php
             $lstImage = $clsImage->GetByDetail("services",$mdlServices->getId(),"original");
+            $imgLocation = '';
             foreach($lstImage as $mdlImage){
-              echo '<img src="../'.$clsImage->ToLocation($mdlImage).'" style="max-height:200px;">';
+              $imgLocation = '../'.$clsImage->ToLocation($mdlImage);
+            }
+            if ($imgLocation != '') {
+              echo '<img src="'.$imgLocation.'" style="max-height:200px;">';
             }
             ?>
         </div>
@@ -210,7 +214,7 @@ include("../functions/functions.php");
         <div class="col-md-3">
           Description:
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9" style="white-space: pre-line">
           <?php echo $mdlServices->getDescription(); ?>
         </div>
       </div>

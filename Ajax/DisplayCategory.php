@@ -71,3 +71,5 @@ function deleteItem($id)
 	</div>
 	<?php
 }
+
+?>

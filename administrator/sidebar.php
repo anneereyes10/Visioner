@@ -50,7 +50,7 @@
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesDropdown">
       <h6 class="dropdown-header">Manage</h6>
-      <a class="dropdown-item" href="AddServices.php">Add Services</a>
+      <a class="dropdown-item" href="AddServices.php">View Services</a>
 
     </div>
   </li>

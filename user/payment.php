@@ -340,7 +340,20 @@ $name=$row_pro['full_name'];
 
                         ?>
 														<option value="<?php echo $mdlProject->getId(); ?>">
-															<?php echo $mdlProject->getName(); ?>
+															<?php
+															switch ($mdlProject->getType()){
+																case '0':
+																	echo "Build: ";
+																	break;
+																case '1':
+																	echo "Service: ";
+																	break;
+																case '2':
+																	echo "Upload: ";
+																	break;
+															}
+															echo $mdlProject->getName();
+															?>
 														</option>
 														<?php } ?>
 													</select>
@@ -410,18 +423,34 @@ $name=$row_pro['full_name'];
 												<tr id="tr<?php echo $mdlPayment->getId(); ?>">
 													<td>
 														<?php
-					                        $imgLocation = "";
-					                        $lstImage = $clsImage->GetByDetail("payment",$mdlPayment->getId(),"original");
-					                        foreach($lstImage as $mdlImage){
-					                          $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-					                        }
-					                        if ($imgLocation != '') {
-					                          echo '<img src="'.$imgLocation.'" style="max-width:100px;max-height:100px;">';
-					                        }
-					                        ?>
+		                        $imgLocation = "";
+		                        $lstImage = $clsImage->GetByDetail("payment",$mdlPayment->getId(),"original");
+		                        foreach($lstImage as $mdlImage){
+		                          $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
+		                        }
+		                        if ($imgLocation != '') {
+		                          echo '<img src="'.$imgLocation.'" style="max-width:100px;max-height:100px;">';
+		                        }
+		                        ?>
 													</td>
 													<td>
-														<?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()) ; ?>
+														<?php
+														$mdlProject = $clsProject->GetById($mdlPayment->getProject_Id());
+														switch ($mdlProject->getType()){
+															case '0':
+																echo "Build: ";
+																break;
+															case '1':
+																echo "Service: ";
+																break;
+															case '2':
+																echo "Upload: ";
+																break;
+														}
+														echo $mdlProject->getName();
+														?>
+														<br />
+														<button class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="displayDetail(<?php echo $mdlProject->getId(); ?>)"> View </button>
 													</td>
 													<td>
 														<?php echo $mdlPayment->getReceiptDate(); ?>
@@ -503,6 +532,26 @@ $name=$row_pro['full_name'];
 			</div>
 		</div>
 	</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content" id="modalContent">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 	<?php include 'footer.php'; ?>
 	<script src="../assets/js/modernizr-2.6.2.min.js"></script>

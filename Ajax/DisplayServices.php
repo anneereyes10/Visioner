@@ -35,7 +35,7 @@ function addProject($id)
 
 	$mdl->setType("1");
 	$mdl->setUser_Id($_SESSION['uid']);
-	$mdl->setName("Service: " . $clsServices->GetNameById($id));
+	$mdl->setName($clsServices->GetNameById($id));
 	$mdl->setPlan_Id($id);
 
 	$mdl = $cls->Add($mdl);

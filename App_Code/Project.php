@@ -159,6 +159,7 @@ class Project{
 			WHERE
 			`Project_Id` != '".$mdl->getsqlId()."' AND
 			`Project_Name` = '".$mdl->getsqlName()."' AND
+			`Project_Type` = '".$mdl->getsqlType()."' AND
 			`User_Id` = '".$mdl->getsqlUser_Id()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));

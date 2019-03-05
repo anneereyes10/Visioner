@@ -12,22 +12,18 @@ function cleaner(name){
         document.getElementById("Category").innerHTML = '';
         document.getElementById("Part").innerHTML = '';
         document.getElementById("Material").innerHTML = '';
-        document.getElementById("Upgrade").innerHTML = '';
           break;
       case "Plan":
         document.getElementById("Category").innerHTML = '';
         document.getElementById("Part").innerHTML = '';
         document.getElementById("Material").innerHTML = '';
-        document.getElementById("Upgrade").innerHTML = '';
           break;
       case "Category":
         document.getElementById("Part").innerHTML = '';
         document.getElementById("Material").innerHTML = '';
-        document.getElementById("Upgrade").innerHTML = '';
           break;
       case "Part":
         document.getElementById("Material").innerHTML = '';
-        document.getElementById("Upgrade").innerHTML = '';
           break;
   }
 }
@@ -110,7 +106,6 @@ function selPart(id) {
     if (this.readyState == 4 && this.status == 200) {
       // document.getElementById("Material").innerHTML = this.responseText;
       displayMaterial(id);
-      displayUpgrade(id);
     }
   };
   url = "../Ajax/AddFinish.php";

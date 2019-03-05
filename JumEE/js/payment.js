@@ -37,3 +37,18 @@ function deletePayment(id) {
   xmlhttp.send();
 
 }
+function displayDetail(id){
+
+  var xmlhttp = new XMLHttpRequest();
+  var url = "";
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("modalContent").innerHTML = this.responseText;
+    }
+  };
+  url = "../Ajax/payment.php";
+  url += "?call=displayDetail";
+  url += "&Id=" + id;
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
+}

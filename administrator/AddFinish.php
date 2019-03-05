@@ -198,19 +198,6 @@ $lstPlan = $clsPlan->Get();
   											</div>
   										</div>
 
-                      <div class="panel-heading">
-  											<h6 class="panel-title">Select Upgrade</h6>
-  										</div>
-  										<div class="panel-body mb-4">
-  											<div class="row">
-  												<div class="col-xs-12" style="width:100% !important;">
-  													<div class="card-deck">
-  														<div class="row" style="width:100% !important;" id="Upgrade">
-  														</div>
-  													</div>
-  												</div>
-  											</div>
-  										</div>
   									</div>
                   </div>
 								</div>
