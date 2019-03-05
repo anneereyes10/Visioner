@@ -8,11 +8,6 @@ $call = $_GET['call'];
 
 switch ($call)
 {
-	case 'addProject':
-	{
-		addProject($_GET['Id']);
-		break;
-	}
 	case 'deleteShow':
 	{
 		deleteShow($_GET['Id']);
@@ -25,22 +20,6 @@ switch ($call)
 	}
 }
 
-function addProject($id)
-{
-	$clsPlace = new Place();
-	$mdlPlace = new PlaceModel();
-	$cls = new Project();
-	$mdl = new ProjectModel();
-	$clsFn = new Functions();
-
-	$mdl->setType("1");
-	$mdl->setUser_Id($_SESSION['uid']);
-	$mdl->setName($clsPlace->GetNameById($id));
-	$mdl->setPlan_Id($id);
-
-	$mdl = $cls->Add($mdl);
-	echo $clsFn->alert("Get a Service", "Successfully Booked a Service!");
-}
 function deleteShow($id)
 {
 	$cls = new Place();
