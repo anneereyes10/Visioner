@@ -42,18 +42,7 @@
 
     </div>
   </li>
-  <!-- menu for services -->
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-fw fa-folder"></i>
-      <span>Services</span>
-    </a>
-    <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-      <h6 class="dropdown-header">Manage</h6>
-      <a class="dropdown-item" href="AddServices.php">View Services</a>
 
-    </div>
-  </li>
   <!--  Dropdown Menu for Customers -->
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -65,6 +54,22 @@
       <a class="dropdown-item" href="index.php?view_customers">View All Customers</a>
       <a class="dropdown-item" href="index.php?search_customers">Search for a Customer</a>
     </div>
+  </li>
+
+  <!-- menu for services -->
+  <li class="nav-item">
+    <a class="nav-link" href="AddServices.php" id="pagesDropdown">
+      <i class="fas fa-fw fa-cogs"></i>
+      <span>Services</span>
+    </a>
+  </li>
+
+  <!-- menu for place -->
+  <li class="nav-item">
+    <a class="nav-link" href="AddPlace.php" id="pagesDropdown">
+      <i class="fas fa-fw fa-map"></i>
+      <span>Places</span>
+    </a>
   </li>
 
   <!--  Dropdown Menu for Defaults -->

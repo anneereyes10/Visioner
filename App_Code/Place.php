@@ -93,19 +93,6 @@ class Place{
 		$val = false;
 		$msg = "";
 
-		// Place_Id
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Place_Id` != '".$mdl->getsqlId()."' AND
-			`Place_Id` = '".$mdl->getsqlId()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputId\")'>Id</a>: " . $mdl->getId() . "</p>";
-			$val = true;
-		}
 
 		// Place_Name
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
