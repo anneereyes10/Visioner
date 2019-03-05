@@ -352,7 +352,7 @@ $name=$row_pro['full_name'];
 																	echo "Upload: ";
 																	break;
 															}
-															echo $mdlProject->getName();
+															echo $mdlProject->getName() . " (" . $mdlProject->getDateCreated() . ")";
 															?>
 														</option>
 														<?php } ?>
