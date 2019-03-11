@@ -6,6 +6,7 @@ class PartModel{
 	private $Category_Id = "";
 	private $Name = "";
 	private $Area = "";
+	private $Piece = "";
 	private $DateCreated = "";
 	private $Status = "";
 
@@ -80,6 +81,24 @@ class PartModel{
 
 	public function setArea($Area){
 		$this->Area = $Area;
+	}
+
+
+	//Piece
+	public function getPiece(){
+		return $this->Piece;
+	}
+
+	public function getsqlPiece(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->Piece);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setPiece($Piece){
+		$this->Piece = $Piece;
 	}
 
 

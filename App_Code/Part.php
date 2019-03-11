@@ -15,11 +15,13 @@ class Part{
 			(
 				`Category_Id`,
 				`Part_Name`,
-				`Part_Area`
+				`Part_Area`,
+				`Part_Piece`
 			) VALUES (
 				'".$mdl->getsqlCategory_Id()."',
 				'".$mdl->getsqlName()."',
-				'".$mdl->getsqlArea()."'
+				'".$mdl->getsqlArea()."',
+				'".$mdl->getsqlPiece()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -36,6 +38,7 @@ class Part{
 				 `Category_Id`='".$mdl->getsqlCategory_Id()."',
 				 `Part_Name`='".$mdl->getsqlName()."',
 				 `Part_Area`='".$mdl->getsqlArea()."',
+				 `Part_Piece`='".$mdl->getsqlPiece()."',
 				 `Part_Status`='".$mdl->getsqlStatus()."'
 		 WHERE `Part_Id`='".$mdl->getsqlId()."'";
 
@@ -88,6 +91,23 @@ class Part{
 
 		$sql="UPDATE `".$this->table."` SET
 			`Part_Area`='".$value."'
+			WHERE `Part_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdatePiece($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Part_Piece`='".$value."'
 			WHERE `Part_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -240,6 +260,30 @@ class Part{
 		return $value;
 	}
 
+	public function GetPieceById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Part_Piece` FROM `".$this->table."`
+		WHERE `Part_Id` = '".$id."'
+		AND `Part_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Part_Piece'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
 	public function GetStatusById($id,$status=0){
 
 		$Database = new Database();
@@ -340,6 +384,25 @@ class Part{
 		return $this->ListTransfer($result);
 	}
 
+	public function GetByPiece($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Part_Piece` = '".$value."'
+		AND `Part_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
 	public function GetByDateCreated($value,$status=0){
 
 		$Database = new Database();
@@ -420,6 +483,7 @@ class Part{
 		$mdl->setCategory_Id((isset($row['Category_Id'])) ? $row['Category_Id'] : '');
 		$mdl->setName((isset($row['Part_Name'])) ? $row['Part_Name'] : '');
 		$mdl->setArea((isset($row['Part_Area'])) ? $row['Part_Area'] : '');
+		$mdl->setPiece((isset($row['Part_Piece'])) ? $row['Part_Piece'] : '');
 		$mdl->setDateCreated((isset($row['Part_DateCreated'])) ? $row['Part_DateCreated'] : '');
 		$mdl->setStatus((isset($row['Part_Status'])) ? $row['Part_Status'] : '');
 		return $mdl;

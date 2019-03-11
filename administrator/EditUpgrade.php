@@ -21,6 +21,7 @@ if(isset($_POST['Name'])){
 	$err .= $clsFn->setForm('Name',$mdlUpgrade,true);
 	$err .= $clsFn->setForm('Description',$mdlUpgrade,true);
 	$err .= $clsFn->setForm('Price',$mdlUpgrade,true);
+	$err .= $clsFn->setForm('PriceType',$mdlUpgrade,true);
 
 	if($err == ""){
 		$duplicate = $clsUpgrade->IsExist($mdlUpgrade);
@@ -133,6 +134,16 @@ if(isset($_POST['Name'])){
   											<label class="form-control-label" for="inputPrice">Price</label>
   											<input type="text" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlUpgrade->getPrice(); ?>" onblur="checkInput('inputPrice')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
+  										</div>
+  									</div>
+										<div class="row mb-2">
+  										<div class="col-12">
+  											<label class="form-control-label" for="inputPriceType">Price Type</label>
+												<select class="form-control" id="inputPriceType" name="PriceType" onblur="checkInput('inputPriceType')">
+													<option value="0" <?php echo ($mdlUpgrade->getPriceType() == "0")?'selected':''; ?>>per Area</option>
+													<option value="1" <?php echo ($mdlUpgrade->getPriceType() == "1")?'selected':''; ?>>per Piece</option>
+												</select>
+												<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
   									<div class="row mb-2">

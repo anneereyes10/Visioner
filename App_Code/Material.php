@@ -16,12 +16,14 @@ class Material{
 				`Part_Id`,
 				`Material_Name`,
 				`Material_Description`,
-				`Material_Price`
+				`Material_Price`,
+				`Material_PriceType`
 			) VALUES (
 				'".$mdl->getsqlPart_Id()."',
 				'".$mdl->getsqlName()."',
 				'".$mdl->getsqlDescription()."',
-				'".$mdl->getsqlPrice()."'
+				'".$mdl->getsqlPrice()."',
+				'".$mdl->getsqlPriceType()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -39,6 +41,7 @@ class Material{
 				 `Material_Name`='".$mdl->getsqlName()."',
 				 `Material_Description`='".$mdl->getsqlDescription()."',
 				 `Material_Price`='".$mdl->getsqlPrice()."',
+				 `Material_PriceType`='".$mdl->getsqlPriceType()."',
 				 `Material_Status`='".$mdl->getsqlStatus()."'
 		 WHERE `Material_Id`='".$mdl->getsqlId()."'";
 
@@ -108,6 +111,23 @@ class Material{
 
 		$sql="UPDATE `".$this->table."` SET
 			`Material_Price`='".$value."'
+			WHERE `Material_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdatePriceType($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Material_PriceType`='".$value."'
 			WHERE `Material_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -286,6 +306,30 @@ class Material{
 		return $value;
 	}
 
+	public function GetPriceTypeById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Material_PriceType` FROM `".$this->table."`
+		WHERE `Material_Id` = '".$id."'
+		AND `Material_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Material_PriceType'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
 	public function GetStatusById($id,$status=0){
 
 		$Database = new Database();
@@ -405,6 +449,25 @@ class Material{
 		return $this->ListTransfer($result);
 	}
 
+	public function GetByPriceType($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Material_PriceType` = '".$value."'
+		AND `Material_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
 	public function GetByDateCreated($value,$status=0){
 
 		$Database = new Database();
@@ -486,6 +549,7 @@ class Material{
 		$mdl->setName((isset($row['Material_Name'])) ? $row['Material_Name'] : '');
 		$mdl->setDescription((isset($row['Material_Description'])) ? $row['Material_Description'] : '');
 		$mdl->setPrice((isset($row['Material_Price'])) ? $row['Material_Price'] : '');
+		$mdl->setPriceType((isset($row['Material_PriceType'])) ? $row['Material_PriceType'] : '');
 		$mdl->setDateCreated((isset($row['Material_DateCreated'])) ? $row['Material_DateCreated'] : '');
 		$mdl->setStatus((isset($row['Material_Status'])) ? $row['Material_Status'] : '');
 		return $mdl;

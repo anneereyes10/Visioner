@@ -133,6 +133,12 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
                       <p class="font-weight-bold"><?php echo $mdlUpgrade->getPrice(); ?></p>
                     </div>
                   </div>
+									<div class="row mb-2">
+                    <div class="col-12">
+                      <label class="form-control-label" for="inputPriceType">PriceType:</label>
+                      <p class="font-weight-bold"><?php echo ($mdlUpgrade->getPriceType() == "0")?'per Area':'per Piece'; ?></p>
+                    </div>
+                  </div>
                   <div class="row">
                     <div class="col-sm-4 offset-sm-4">
                     </div>

@@ -509,8 +509,13 @@ $err = "";
                                           $mdlUserProject->setMaterial_Id($mdlMaterial->getId());
                                           $mdlUserProject->setUpgrade_Id('0');
                                           if ($clsUserProject->IsExist($mdlUserProject)) {
-                                						$PMprice = $mdlMaterial->getPrice() * $mdlPart->getArea();
-                                						$totalPrice += $PMprice;
+                                						if ($mdlMaterial->getPriceType() == "0") {
+                                							$PMprice = $mdlMaterial->getPrice() * $mdlPart->getArea();
+                                							$totalPrice += $PMprice;
+                                						}else{
+                                							$PMprice = $mdlMaterial->getPrice() * $mdlPart->getPiece();
+                                							$totalPrice += $PMprice;
+                                						}
                                             ?>
                                             <ul>
                                               <li>
@@ -529,13 +534,18 @@ $err = "";
                                           $mdlUserProject->setMaterial_Id('0');
                                           $mdlUserProject->setUpgrade_Id($mdlUpgrade->getId());
                                           if ($clsUserProject->IsExist($mdlUserProject)) {
-                                						$PMprice = $mdlUpgrade->getPrice() * $mdlPart->getArea();
-                                						$totalPrice += $PMprice;
+                                						if ($mdlUpgrade->getPriceType() == "0") {
+                                							$PUprice = $mdlUpgrade->getPrice() * $mdlPart->getArea();
+                                							$totalPrice += $PUprice;
+                                						}else{
+                                							$PUprice = $mdlUpgrade->getPrice() * $mdlPart->getPiece();
+                                							$totalPrice += $PUprice;
+                                						}
                                             ?>
                                             <ul>
                                               <li>
                                                 <div class="col-sm-6" style="padding:0px;"><?php echo $mdlUpgrade->getName(); ?></div>
-                                                <div class="col-sm-6 text-right" style="padding:0px;">₱ <?php echo $PMprice; ?></div>
+                                                <div class="col-sm-6 text-right" style="padding:0px;">₱ <?php echo $PUprice; ?></div>
                                               </li>
                                             </ul>
                                             <?php

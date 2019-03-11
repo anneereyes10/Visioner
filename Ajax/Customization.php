@@ -530,8 +530,13 @@ function ProjectItem()
 					$mdlUP->setMaterial_Id($mdlM->getId());
 					$mdlUP->setUpgrade_Id('0');
 					if ($clsUP->IsExist($mdlUP)) {
-						$PMprice = $mdlM->getPrice() * $mdlP->getArea();
-						$totalPrice += $PMprice;
+						if ($mdlM->getPriceType() == "0") {
+							$PMprice = $mdlM->getPrice() * $mdlP->getArea();
+							$totalPrice += $PMprice;
+						}else{
+							$PMprice = $mdlM->getPrice() * $mdlP->getPiece();
+							$totalPrice += $PMprice;
+						}
 						$txtout .= '<ul>';
 						$txtout .= '<li>
 													<div class="col-sm-6" style="padding:0px;">Material: '.$mdlM->getName().'</div>
@@ -547,8 +552,13 @@ function ProjectItem()
 					$mdlUP->setMaterial_Id('0');
 					$mdlUP->setUpgrade_Id($mdlU->getId());
 					if ($clsUP->IsExist($mdlUP)) {
-						$PUprice = $mdlU->getPrice() * $mdlP->getArea();
-						$totalPrice += $PUprice;
+						if ($mdlU->getPriceType() == "0") {
+							$PUprice = $mdlU->getPrice() * $mdlP->getArea();
+							$totalPrice += $PUprice;
+						}else{
+							$PUprice = $mdlU->getPrice() * $mdlP->getPiece();
+							$totalPrice += $PUprice;
+						}
 						$txtout .= '<ul>';
 						$txtout .= '<li>
 													<div class="col-sm-6" style="padding:0px;">Upgrade: '.$mdlU->getName().'</div>

@@ -24,6 +24,7 @@ if(isset($_POST['Name'])){
 	$mdlPart->setCategory_Id($mdlCategory->getId());
 	$err2 .= $clsFn->setForm('Name',$mdlPart,true);
 	$err2 .= $clsFn->setForm('Area',$mdlPart,true);
+	$err2 .= $clsFn->setForm('Piece',$mdlPart,true);
 
 	if($err2 == ""){
 		$duplicate = $clsPart->IsExist($mdlPart);
@@ -122,7 +123,7 @@ if(isset($_POST['Name'])){
 				modal.classList.add("modal-success");
 				modal.classList.remove("modal-danger");
 				var table = $('#example').DataTable();
-				
+
 				table.rows('#tr'+Id).remove().draw();
 
 				var xmlhttp = new XMLHttpRequest();
@@ -202,12 +203,17 @@ if(isset($_POST['Name'])){
 		  											<label class="form-control-label" for="inputName">Name: </label>
 														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPart->getName(); ?>" onblur="checkInput('inputName')">
 														<small id="notif-inputName" class="invalid-feedback">This is required</small>
-		  										</div>
-		  										<div class="form-group col-md-6">
-		  											<label class="form-control-label" for="inputArea">Area/Pieces: </label>
-														<input type="text" class="form-control" id="inputArea" name="Area" placeholder="Area or Number of Pieces" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
+													</div>
+													<div class="form-group col-md-3">
+														<label class="form-control-label" for="inputArea">Area: </label>
+														<input type="text" class="form-control" id="inputArea" name="Area" placeholder="Area in SQM" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
 														<small id="notif-inputArea" class="invalid-feedback">This is required</small>
-		  										</div>
+													</div>
+		  										<div class="form-group col-md-3">
+		  											<label class="form-control-label" for="inputPiece">Pieces: </label>
+														<input type="text" class="form-control" id="inputPiece" name="Piece" placeholder="Number of Pieces" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
+														<small id="notif-inputPiece" class="invalid-feedback">This is required</small>
+													</div>
 												</div>
 												<div class="row">
 		  										<div class="col-sm-4">

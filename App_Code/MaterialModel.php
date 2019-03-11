@@ -7,6 +7,7 @@ class MaterialModel{
 	private $Name = "";
 	private $Description = "";
 	private $Price = "";
+	private $PriceType = "";
 	private $DateCreated = "";
 	private $Status = "";
 
@@ -99,6 +100,24 @@ class MaterialModel{
 
 	public function setPrice($Price){
 		$this->Price = $Price;
+	}
+
+
+	//PriceType
+	public function getPriceType(){
+		return $this->PriceType;
+	}
+
+	public function getsqlPriceType(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->PriceType);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setPriceType($PriceType){
+		$this->PriceType = $PriceType;
 	}
 
 
