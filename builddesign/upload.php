@@ -9,6 +9,10 @@ include("../functions/functions.php");
 $msg = "";
 $err = "";
 
+if (empty($_SESSION['uid'])) {
+  header("Location: ../index.php?login");
+  die();
+}
 
 if(isset($_POST['Name'])){
 

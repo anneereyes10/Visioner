@@ -130,7 +130,7 @@ if(isset($_POST['Name'])){
 										<div class="row mb-2">
   										<div class="col-12">
   											<label class="form-control-label" for="inputPrice">Price</label>
-  											<input type="text" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlUpgrade->getPrice(); ?>" onblur="checkInput('inputPrice')">
+  											<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlUpgrade->getPrice(); ?>" onblur="checkInput('inputPrice')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>

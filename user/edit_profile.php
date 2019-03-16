@@ -44,12 +44,7 @@ $gend=$row_pro['gender'];
 							</div>
 							<div class="form-group">
 								<label>Birthdate :</label>
-								<div class='input-group date' id='datepicker'>
-									<input type='text' class="form-control" name="birthday" required value="<?php echo $date; ?>" />
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar"></span>
-									</span>
-								</div>
+									<input type='date' class="form-control" name="birthday" required value="<?php echo $date; ?>" />
 							</div>
 							<div class="form-group">
 								<label>Address:</label>
@@ -60,7 +55,7 @@ $gend=$row_pro['gender'];
 						<div class="col-sm-5">
 							<div class="form-group">
 								<label>Contact Number : (+63) </label>
-								<input type="text" class="form-control" placeholder="Contact Number" required name="contact" value="<?php echo $cont; ?>">
+								<input type="number" class="form-control" placeholder="Contact Number" required name="contact" value="<?php echo $cont; ?>">
 							</div>
 							<div class="form-group">
 								<label>Gender: </label>

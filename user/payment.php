@@ -333,29 +333,37 @@ $name=$row_pro['full_name'];
 													<select class="form-control" name="Project_Id">
 
 														<?php
-                        $lstProject = $clsProject->GetByUser_Id($_SESSION['uid']);
+                        		$lstProject = $clsProject->GetByUser_Id($_SESSION['uid']);
 
-                        foreach($lstProject as $mdlProject)
-                        {
-
-                        ?>
-														<option value="<?php echo $mdlProject->getId(); ?>">
-															<?php
-															switch ($mdlProject->getType()){
-																case '0':
-																	echo "Build: ";
-																	break;
-																case '1':
-																	echo "Service: ";
-																	break;
-																case '2':
-																	echo "Upload: ";
-																	break;
+                        		foreach($lstProject as $mdlProject)
+                        		{
+															$mdlPayment = new PaymentModel();
+															$lstPayment = $clsPayment->GetByProject_Id($mdlProject->getId());
+															foreach ($lstPayment as $mdlPayment_foreach) {
+																$mdlPayment = $mdlPayment_foreach;
 															}
-															echo $mdlProject->getName() . " (" . $mdlProject->getDateCreated() . ")";
-															?>
-														</option>
-														<?php } ?>
+															if ($mdlPayment->getReceiptStatus() != 1 && $mdlPayment->getAppointmentStatus() != 1) {
+																?>
+																<option value="<?php echo $mdlProject->getId(); ?>">
+																	<?php
+																	switch ($mdlProject->getType()){
+																		case '0':
+																		echo "Build: ";
+																		break;
+																		case '1':
+																		echo "Service: ";
+																		break;
+																		case '2':
+																		echo "Upload: ";
+																		break;
+																	}
+																	echo $mdlProject->getName() . " (" . $mdlProject->getDateCreated() . ")";
+																	?>
+																</option>
+															<?php
+															}
+														}
+														?>
 													</select>
 												</div>
 											</div>

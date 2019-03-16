@@ -106,7 +106,7 @@ if(isset($_POST['Name'])){
 							var btn = "";
 							xmlhttp.onreadystatechange = function() {
 								if (this.readyState == 4 && this.status == 200) {
-									document.getElementById("modalContent").innerHTML = this.responseText;
+									document.getElementById("modalContentDelete").innerHTML = this.responseText;
 								}
 							};
 							url = "../Ajax/DisplayServices.php";
@@ -129,7 +129,7 @@ if(isset($_POST['Name'])){
 							var btn = "";
 							xmlhttp.onreadystatechange = function() {
 								if (this.readyState == 4 && this.status == 200) {
-									document.getElementById("modalContent").innerHTML = this.responseText;
+									document.getElementById("modalContentDelete").innerHTML = this.responseText;
 								}
 							};
 							url = "../Ajax/DisplayServices.php";
@@ -177,7 +177,7 @@ if(isset($_POST['Name'])){
 										<div class="row mb-2">
   										<div class="col-12">
   											<label class="form-control-label" for="inputPrice">Price</label>
-  											<input type="text" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlServices->getPrice(); ?>" onblur="checkInput('inputPrice')">
+  											<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlServices->getPrice(); ?>" onblur="checkInput('inputPrice')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
@@ -325,7 +325,7 @@ if(isset($_POST['Name'])){
 														<!-- Modal -->
 														<div class="modal fade" id="ModalWrapper" aria-hidden="true" aria-labelledby="ModalWrapper" role="dialog" tabindex="-1">
 															<div class="modal-dialog modal-lg">
-																<div class="modal-content" id="modalContent">
+																<div class="modal-content" id="modalContentDelete">
 																	<div class="modal-header">
 																		<h4 class="modal-title">Modal Title</h4>
 																		<button type="button" class="close" data-dismiss="modal" aria-label="Close">

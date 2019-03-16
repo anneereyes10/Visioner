@@ -20,15 +20,23 @@ $e = $_GET['e'];
     {
       $sqli = "INSERT INTO `user_account`
   				(
-  					`ip_address`,
-  					`user_email`,
-            `user_pass`,
-            `full_name`
+						`ip_address`,
+						`user_email`,
+						`user_pass`,
+						`full_name`,
+						`birthdate`,
+						`gender`,
+						`contact`,
+						`address`
   				) VALUES (
   					'".$row['ip_address']."',
             '".$row['user_email']."',
             '".$row['user_pass']."',
-            '".$row['full_name']."'
+            '".$row['full_name']."',
+            '".$row['birthdate']."',
+            '".$row['gender']."',
+            '".$row['contact']."',
+            '".$row['address']."'
   				)";
           $userID = $row['user_id'];
     }

@@ -224,8 +224,12 @@ function displayCategory($Plan_Id){
 	$mdlImage = new ImageModel();
 
 	$clsProject = new Project();
-
-	$clsProject->UpdatePlan_Id($_SESSION['projectId'],$Plan_Id);
+	if (empty($clsProject->GetPlan_IdById($_SESSION['projectId']))) {
+		$clsProject->UpdatePlan_Id($_SESSION['projectId'],$Plan_Id);
+		setFinish('1',$_SESSION['projectId']);
+	}else {
+		$clsProject->UpdatePlan_Id($_SESSION['projectId'],$Plan_Id);
+	}
 	$lstCategory = $clsCategory->GetByPlan_Id($Plan_Id);
 
 	  if (empty($lstCategory)) {

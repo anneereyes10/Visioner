@@ -95,7 +95,6 @@ require_once ("../App_Code/ImageModel.php");
                   <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                       <tr>
-                        <th>Image</th>
                         <th>User_Id</th>
                         <th>Project</th>
                         <th>Appointment Date</th>
@@ -106,7 +105,6 @@ require_once ("../App_Code/ImageModel.php");
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Image</th>
                         <th>User_Id</th>
                         <th>Project</th>
                         <th>Appointment Date</th>
@@ -124,18 +122,6 @@ require_once ("../App_Code/ImageModel.php");
 
                       ?>
                       <tr>
-                        <td>
-                          <?php
-                          $imgLocation = "";
-                          $lstImage = $clsImage->GetByDetail("payment",$mdlPayment->getId(),"original");
-                          foreach($lstImage as $mdlImage){
-                            $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
-                          }
-                          if ($imgLocation != '') {
-                            echo '<img src="'.$imgLocation.'" style="max-width:100px;max-height:100px;">';
-                          }
-                          ?>
-                        </td>
                         <td><?php echo $clsUser->GetNameById($clsProject->GetUser_IdById($mdlPayment->getProject_Id())); ?></td>
                         <td><?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?></td>
                         <td><?php echo $mdlPayment->getAppointmentDate(); ?></td>

@@ -264,7 +264,7 @@ $msg = "";
   							<div class="form-group">
   								<label>Birthdate :</label>
   								<div class='input-group date' id='datepicker'>
-  									<input type='text' class="form-control" name="u_birthday" required />
+  									<input type='date' class="form-control" name="u_birthday" required />
   									<span class="input-group-addon">
   										<span class="glyphicon glyphicon-calendar"></span>
   									</span>
@@ -276,7 +276,7 @@ $msg = "";
   							</div>
   							<div class="form-group">
   								<label>Contact Number : (+63) </label>
-  								<input type="text" class="form-control" placeholder="Contact Number" required name="u_contact">
+  								<input type="number" class="form-control" placeholder="Contact Number" required name="u_contact">
   							</div>
               </div>
               <div class="col-sm-6">

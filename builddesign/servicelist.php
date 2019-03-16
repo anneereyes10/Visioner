@@ -4,6 +4,10 @@ require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Services.php");
 include("../functions/functions.php");
 
+if (empty($_SESSION['uid'])) {
+  header("Location: ../index.php?login");
+  die();
+}
 
 ?>
 

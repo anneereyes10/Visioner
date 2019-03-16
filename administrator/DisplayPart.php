@@ -336,7 +336,7 @@ if(isset($_POST['Name'])){
 		  										</div>
 		  										<div class="form-group col-md-3">
 		  											<label class="form-control-label" for="inputPrice">Price: </label>
-														<input type="text" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlMaterial->getPrice(); ?>" onblur="checkInput('inputPrice')">
+														<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlMaterial->getPrice(); ?>" onblur="checkInput('inputPrice')">
 														<small id="notif-inputPrice" class="invalid-feedback">This is required</small>
 		  										</div>
 		  										<div class="form-group col-md-3">
@@ -465,7 +465,7 @@ if(isset($_POST['Name'])){
 		  										</div>
 		  										<div class="form-group col-md-3">
 		  											<label class="form-control-label" for="inputPrice">Price: </label>
-														<input type="text" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlUpgrade->getPrice(); ?>" onblur="checkInput('inputPrice')">
+														<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlUpgrade->getPrice(); ?>" onblur="checkInput('inputPrice')">
 														<small id="notif-inputPrice" class="invalid-feedback">This is required</small>
 		  										</div>
 		  										<div class="form-group col-md-3">
