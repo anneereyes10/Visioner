@@ -1,6 +1,6 @@
 <?php
-$mdlUploadplace = new UploadplaceModel();
-class UploadplaceModel{
+$mdlUploadPlace = new UploadPlaceModel();
+class UploadPlaceModel{
 
 	private $Id = "";
 	private $Place = "";

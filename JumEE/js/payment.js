@@ -1,9 +1,16 @@
-function setAppointment(id) {
+function setAppointment(id,type) {
 
-  var place = document.getElementById("meetingplace").value;
+  var place = "";
+  var appDate = "";
+  
+  if (type == "2") {
+    place = document.getElementById("meetingplace"+id).value;
+  }else{
+    place = document.getElementById("meetingplace"+id).value;
+    appDate = document.getElementById("inputAppointmentDate" + id).value;
+  }
   var xmlhttp = new XMLHttpRequest();
   var url = "";
-  var AppDate = document.getElementById("inputAppointmentDate" + id).value;
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       document.getElementById("tdPayment" + id).innerHTML = this.responseText;
@@ -12,8 +19,12 @@ function setAppointment(id) {
   url = "../Ajax/payment.php";
   url += "?call=addPayment";
   url += "&Id=" + id;
-  url += "&Place_Id=" + place;
-  url += "&Date=" + AppDate;
+  if (type == "2") {
+    url += "&Place_Id=" + place;
+  } else {
+    url += "&Place_Id=" + place;
+    url += "&Date=" + appDate;
+  }
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
 

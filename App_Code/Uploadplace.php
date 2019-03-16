@@ -1,7 +1,7 @@
 <?php
-require_once ("UploadplaceModel.php");
-$clsUploadplace = new Uploadplace();
-class Uploadplace{
+require_once ("UploadPlaceModel.php");
+$clsUploadPlace = new UploadPlace();
+class UploadPlace{
 
 	private $table = "uploadplace";
 
@@ -13,9 +13,9 @@ class Uploadplace{
 		$conn = $Database->GetConn();
 		$sql = "INSERT INTO `".$this->table."`
 			(
-				`Uploadplace_Place`,
-				`Uploadplace_DateTime`,
-				`Uploadplace_Used`
+				`UploadPlace_Place`,
+				`UploadPlace_DateTime`,
+				`UploadPlace_Used`
 			) VALUES (
 				'".$mdl->getsqlPlace()."',
 				'".$mdl->getsqlDateTime()."',
@@ -33,11 +33,11 @@ class Uploadplace{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$sql="UPDATE `".$this->table."` SET
-				 `Uploadplace_Place`='".$mdl->getsqlPlace()."',
-				 `Uploadplace_DateTime`='".$mdl->getsqlDateTime()."',
-				 `Uploadplace_Used`='".$mdl->getsqlUsed()."',
-				 `Uploadplace_Status`='".$mdl->getsqlStatus()."'
-		 WHERE `Uploadplace_Id`='".$mdl->getsqlId()."'";
+				 `UploadPlace_Place`='".$mdl->getsqlPlace()."',
+				 `UploadPlace_DateTime`='".$mdl->getsqlDateTime()."',
+				 `UploadPlace_Used`='".$mdl->getsqlUsed()."',
+				 `UploadPlace_Status`='".$mdl->getsqlStatus()."'
+		 WHERE `UploadPlace_Id`='".$mdl->getsqlId()."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -53,8 +53,8 @@ class Uploadplace{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Uploadplace_Place`='".$value."'
-			WHERE `Uploadplace_Id` = '".$id."'";
+			`UploadPlace_Place`='".$value."'
+			WHERE `UploadPlace_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -70,8 +70,8 @@ class Uploadplace{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Uploadplace_DateTime`='".$value."'
-			WHERE `Uploadplace_Id` = '".$id."'";
+			`UploadPlace_DateTime`='".$value."'
+			WHERE `UploadPlace_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -87,8 +87,8 @@ class Uploadplace{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Uploadplace_Used`='".$value."'
-			WHERE `Uploadplace_Id` = '".$id."'";
+			`UploadPlace_Used`='".$value."'
+			WHERE `UploadPlace_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -104,8 +104,8 @@ class Uploadplace{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Uploadplace_Status`='".$value."'
-			WHERE `Uploadplace_Id` = '".$id."'";
+			`UploadPlace_Status`='".$value."'
+			WHERE `UploadPlace_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -118,7 +118,7 @@ class Uploadplace{
 		$conn = $Database->GetConn();
 		$id = mysqli_real_escape_string($conn,$id);
 		$sql="DELETE FROM `".$this->table."`
-			WHERE `Uploadplace_Id` = '".$id."'";
+			WHERE `UploadPlace_Id` = '".$id."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 			mysqli_close($conn);
@@ -133,59 +133,18 @@ class Uploadplace{
 		$val = false;
 		$msg = "";
 
-		// Uploadplace_Id
+		// UploadPlace_Place
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Uploadplace_Id` != '".$mdl->getsqlId()."' AND
-			`Uploadplace_Id` = '".$mdl->getsqlId()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputId\")'>Id</a>: " . $mdl->getId() . "</p>";
-			$val = true;
-		}
-
-		// Uploadplace_Place
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Uploadplace_Id` != '".$mdl->getsqlId()."' AND
-			`Uploadplace_Place` = '".$mdl->getsqlPlace()."'
+			`UploadPlace_Id` != '".$mdl->getsqlId()."' AND
+			`UploadPlace_Place` = '".$mdl->getsqlPlace()."' AND
+			`UploadPlace_DateTime` = '".$mdl->getsqlDateTime()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
 			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputPlace\")'>Place</a>: " . $mdl->getPlace() . "</p>";
-			$val = true;
-		}
-
-		// Uploadplace_DateTime
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Uploadplace_Id` != '".$mdl->getsqlId()."' AND
-			`Uploadplace_DateTime` = '".$mdl->getsqlDateTime()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputDateTime\")'>DateTime</a>: " . $mdl->getDateTime() . "</p>";
-			$val = true;
-		}
-
-		// Uploadplace_Used
-		$sql = "SELECT COUNT(*) FROM `".$this->table."`
-			WHERE
-			`Uploadplace_Id` != '".$mdl->getsqlId()."' AND
-			`Uploadplace_Used` = '".$mdl->getsqlUsed()."'
-		";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$rows = mysqli_fetch_row($result);
-		if($rows[0] > 0)
-		{
-			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputUsed\")'>Used</a>: " . $mdl->getUsed() . "</p>";
 			$val = true;
 		}
 
@@ -201,7 +160,7 @@ class Uploadplace{
 		$conn = $Database->GetConn();
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Uploadplace_Status` = '".$status."'";
+		WHERE `UploadPlace_Status` = '".$status."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
@@ -218,14 +177,14 @@ class Uploadplace{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Uploadplace_Place` FROM `".$this->table."`
-		WHERE `Uploadplace_Id` = '".$id."'
-		AND `Uploadplace_Status` = '".$status."'";
+		$sql="SELECT `UploadPlace_Place` FROM `".$this->table."`
+		WHERE `UploadPlace_Id` = '".$id."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Uploadplace_Place'];
+			$value = $row['UploadPlace_Place'];
 		}
 
 		mysqli_close($conn);
@@ -242,14 +201,14 @@ class Uploadplace{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Uploadplace_DateTime` FROM `".$this->table."`
-		WHERE `Uploadplace_Id` = '".$id."'
-		AND `Uploadplace_Status` = '".$status."'";
+		$sql="SELECT `UploadPlace_DateTime` FROM `".$this->table."`
+		WHERE `UploadPlace_Id` = '".$id."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Uploadplace_DateTime'];
+			$value = $row['UploadPlace_DateTime'];
 		}
 
 		mysqli_close($conn);
@@ -266,14 +225,14 @@ class Uploadplace{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Uploadplace_Used` FROM `".$this->table."`
-		WHERE `Uploadplace_Id` = '".$id."'
-		AND `Uploadplace_Status` = '".$status."'";
+		$sql="SELECT `UploadPlace_Used` FROM `".$this->table."`
+		WHERE `UploadPlace_Id` = '".$id."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Uploadplace_Used'];
+			$value = $row['UploadPlace_Used'];
 		}
 
 		mysqli_close($conn);
@@ -290,14 +249,14 @@ class Uploadplace{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Uploadplace_Status` FROM `".$this->table."`
-		WHERE `Uploadplace_Id` = '".$id."'
-		AND `Uploadplace_Status` = '".$status."'";
+		$sql="SELECT `UploadPlace_Status` FROM `".$this->table."`
+		WHERE `UploadPlace_Id` = '".$id."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Uploadplace_Status'];
+			$value = $row['UploadPlace_Status'];
 		}
 
 		mysqli_close($conn);
@@ -314,8 +273,8 @@ class Uploadplace{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Uploadplace_Id` = '".$value."'
-		AND `Uploadplace_Status` = '".$status."'";
+		WHERE `UploadPlace_Id` = '".$value."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -333,8 +292,8 @@ class Uploadplace{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Uploadplace_Place` = '".$value."'
-		AND `Uploadplace_Status` = '".$status."'";
+		WHERE `UploadPlace_Place` = '".$value."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -352,8 +311,8 @@ class Uploadplace{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Uploadplace_DateTime` = '".$value."'
-		AND `Uploadplace_Status` = '".$status."'";
+		WHERE `UploadPlace_DateTime` = '".$value."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -371,8 +330,8 @@ class Uploadplace{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Uploadplace_Used` = '".$value."'
-		AND `Uploadplace_Status` = '".$status."'";
+		WHERE `UploadPlace_Used` = '".$value."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -390,8 +349,8 @@ class Uploadplace{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Uploadplace_DateCreated` = '".$value."'
-		AND `Uploadplace_Status` = '".$status."'";
+		WHERE `UploadPlace_DateCreated` = '".$value."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -409,8 +368,8 @@ class Uploadplace{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Uploadplace_Status` = '".$value."'
-		AND `Uploadplace_Status` = '".$status."'";
+		WHERE `UploadPlace_Status` = '".$value."'
+		AND `UploadPlace_Status` = '".$status."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -436,7 +395,7 @@ class Uploadplace{
 
 	public function ModelTransfer($result){
 
-		$mdl = new UploadplaceModel();
+		$mdl = new UploadPlaceModel();
 		while($row = mysqli_fetch_array($result))
 		{
 			$mdl = $this->ToModel($row);
@@ -448,7 +407,7 @@ class Uploadplace{
 		$lst = array();
 		while($row = mysqli_fetch_array($result))
 		{
-			$mdl = new UploadplaceModel();
+			$mdl = new UploadPlaceModel();
 			$mdl = $this->ToModel($row);
 			array_push($lst,$mdl);
 		}
@@ -456,13 +415,13 @@ class Uploadplace{
 	}
 
 	public function ToModel($row){
-		$mdl = new UploadplaceModel();
-		$mdl->setId((isset($row['Uploadplace_Id'])) ? $row['Uploadplace_Id'] : '');
-		$mdl->setPlace((isset($row['Uploadplace_Place'])) ? $row['Uploadplace_Place'] : '');
-		$mdl->setDateTime((isset($row['Uploadplace_DateTime'])) ? $row['Uploadplace_DateTime'] : '');
-		$mdl->setUsed((isset($row['Uploadplace_Used'])) ? $row['Uploadplace_Used'] : '');
-		$mdl->setDateCreated((isset($row['Uploadplace_DateCreated'])) ? $row['Uploadplace_DateCreated'] : '');
-		$mdl->setStatus((isset($row['Uploadplace_Status'])) ? $row['Uploadplace_Status'] : '');
+		$mdl = new UploadPlaceModel();
+		$mdl->setId((isset($row['UploadPlace_Id'])) ? $row['UploadPlace_Id'] : '');
+		$mdl->setPlace((isset($row['UploadPlace_Place'])) ? $row['UploadPlace_Place'] : '');
+		$mdl->setDateTime((isset($row['UploadPlace_DateTime'])) ? $row['UploadPlace_DateTime'] : '');
+		$mdl->setUsed((isset($row['UploadPlace_Used'])) ? $row['UploadPlace_Used'] : '');
+		$mdl->setDateCreated((isset($row['UploadPlace_DateCreated'])) ? $row['UploadPlace_DateCreated'] : '');
+		$mdl->setStatus((isset($row['UploadPlace_Status'])) ? $row['UploadPlace_Status'] : '');
 		return $mdl;
 	}
 }

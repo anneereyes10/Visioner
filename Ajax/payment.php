@@ -1,6 +1,7 @@
 <?php
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Payment.php");
+require_once ("../App_Code/UploadPlace.php");
 require_once ("../App_Code/Project.php");
 require_once ("../App_Code/Services.php");
 require_once ("../App_Code/UserProject.php");
@@ -16,7 +17,11 @@ $call = $_GET['call'];
 
 switch ($call){
 	case 'addPayment':	{
-		addPayment($_GET['Id'],$_GET['Date'],$_GET['Place_Id']);
+		if (empty($_GET['Date'])) {
+			addPayment($_GET['Id'],$_GET['Place_Id']);
+		} else {
+			addPayment($_GET['Id'],$_GET['Place_Id'],$_GET['Date']);
+		}
 		break;
 	}
 	case 'deletePayment':	{
@@ -30,26 +35,40 @@ switch ($call){
 	}
 }
 
-function addPayment($id,$date,$place){
+function addPayment($id,$place,$date=""){
+	$clsUploadPlace = new UploadPlace();
 	$clsPayment = new Payment();
 	$mdlPayment = new PaymentModel();
-	if ($clsPayment->IsDateTaken($id,$date)) {
-		?>
-		<div class="alert alert-danger">
-			Date Already Taken.
-		</div>
-		<input type='date' class='form-control' id='inputAppointmentDate<?php echo $id;?>' name='AppointmentDate' value=''>
-		<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $id;?>)">Set Appointment</button>
-		<?php
-	}else{
+	if ($date=="") {
+		$date = "1111-11-11";
 		$clsPayment->UpdateAppointmentDate($id,$date);
 		$clsPayment->UpdatePlace_Id($id,$place);
-		$clsPayment->UpdateAppointmentStatus($id,'0');
+		$clsPayment->UpdateAppointmentStatus($id,'1');
+		$clsUploadPlace->UpdateUsed($place,'1');
 		?>
 		<div class="alert alert-success">
-		  <strong>Success!</strong> Date Submitted</a>.
+			<strong>Success!</strong> Appointment is now scheduled</a>.
 		</div>
 		<?php
+	} else {
+		if ($clsPayment->IsDateTaken($id,$date)) {
+			?>
+			<div class="alert alert-danger">
+				Date Already Taken.
+			</div>
+			<input type='date' class='form-control' id='inputAppointmentDate<?php echo $id;?>' name='AppointmentDate' value=''>
+			<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $id;?>)">Set Appointment</button>
+			<?php
+		}else{
+			$clsPayment->UpdateAppointmentDate($id,$date);
+			$clsPayment->UpdatePlace_Id($id,$place);
+			$clsPayment->UpdateAppointmentStatus($id,'0');
+			?>
+			<div class="alert alert-success">
+			  <strong>Success!</strong> Date Submitted</a>.
+			</div>
+			<?php
+		}
 	}
 
 }

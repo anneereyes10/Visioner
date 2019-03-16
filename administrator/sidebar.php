@@ -72,6 +72,14 @@
     </a>
   </li>
 
+  <!-- menu for place -->
+  <li class="nav-item">
+    <a class="nav-link" href="AddUploadPlace.php" id="pagesDropdown">
+      <i class="fas fa-fw fa-map-marked-alt"></i>
+      <span>Upload Places</span>
+    </a>
+  </li>
+
   <!--  Dropdown Menu for Defaults -->
   <li class="nav-item">
     <a class="nav-link" href="AddFinish.php" id="pagesDropdown">

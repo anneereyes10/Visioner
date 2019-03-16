@@ -4,6 +4,7 @@ require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Payment.php");
 require_once ("../App_Code/PaymentType.php");
 require_once ("../App_Code/Place.php");
+require_once ("../App_Code/UploadPlace.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/Project.php");
 
@@ -469,20 +470,30 @@ $name=$row_pro['full_name'];
 															echo "Pending";
 														} elseif($mdlPayment->getReceiptStatus() == 1) {
 															if ($mdlPayment->getAppointmentStatus() == 1) {
+																if ($mdlProject->getType() == "2") {
+																		?>
+																		<div class="alert alert-success">
+																			<strong>Appointment Approved!</strong>
+																		</div>
+																		<?php
+																		$mdlUploadPlace = $clsUploadPlace->GetById($mdlPayment->getPlace_Id());
+																		echo 'Appointment DateTime:<br />' .$mdlUploadPlace->getPlace()." (". date('M j, Y - h:i A', strtotime($mdlUploadPlace->getDateTime())).")";
+																} else {
 																	?>
 																	<div class="alert alert-success">
-																	  <strong>Appointment Approved!</strong>
+																		<strong>Appointment Approved!</strong>
 																	</div>
 																	<?php
 																	echo 'Appointment Date: '.$mdlPayment->getAppointmentDate() . '<br />';
 																	echo 'Appointment Place: '.$clsPlace->GetNameById($mdlPayment->getPlace_Id());
+																}
 															} elseif ($mdlPayment->getAppointmentStatus() == 2) {
 																?>
 																<div class="alert alert-warning">
 																  <strong>Sorry!</strong> Date <?php echo $mdlPayment->getAppointmentDate(); ?> is unavailable for appointment.
 																</div>
 																<input type='date' class='form-control' id='inputAppointmentDate<?php echo $mdlPayment->getId();?>' name='AppointmentDate' value=''>
-																<select class="form-control" id="meetingplace">
+																<select class="form-control" id="meetingplace<?php echo $mdlPayment->getId();?>">
 																	<option disabled selected>Select Place</option>
 																	<?php
 																	$lstPlace = $clsPlace->Get();
@@ -491,22 +502,38 @@ $name=$row_pro['full_name'];
 																	}
 																	?>
 																</select>
-																<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $mdlPayment->getId();?>)">Set Appointment</button>
+																<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $mdlPayment->getId().",".$mdlProject->getType();?>)">Set Appointment</button>
 																<?php
 															} elseif ($mdlPayment->getAppointmentDate() == '0000-00-00') {
-																?>
-																<input type='date' class='form-control' id='inputAppointmentDate<?php echo $mdlPayment->getId();?>' name='AppointmentDate' value=''>
-																<select class="form-control" id="meetingplace">
-																	<option disabled selected>Select Place</option>
-																	<?php
-																	$lstPlace = $clsPlace->Get();
-																	foreach ($lstPlace as $mdlPlace) {
-																		echo '<option value="'.$mdlPlace->getId().'">'.$mdlPlace->getName().'</option>';
-																	}
+																if ($mdlProject->getType() == "2") {
 																	?>
-																</select>
-																<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $mdlPayment->getId();?>)">Set Appointment</button>
-																<?php
+																	<select class="form-control" id="meetingplace<?php echo $mdlPayment->getId();?>">
+																		<option disabled selected>Select Place</option>
+																		<?php
+																		$lstUploadPlace = $clsUploadPlace->GetByUsed("0");
+																		foreach ($lstUploadPlace as $mdlUploadPlace) {
+																			echo '<option value="'.$mdlUploadPlace->getId().'">'.$mdlUploadPlace->getPlace()." (". date('M j, Y - h:i A', strtotime($mdlUploadPlace->getDateTime())).')</option>';
+																		}
+																		?>
+																	</select>
+																	<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $mdlPayment->getId().",".$mdlProject->getType();?>)">Set Appointment</button>
+																	<?php
+																} else {
+
+																	?>
+																	<input type='date' class='form-control' id='inputAppointmentDate<?php echo $mdlPayment->getId();?>' name='AppointmentDate' value=''>
+																	<select class="form-control" id="meetingplace<?php echo $mdlPayment->getId();?>">
+																		<option disabled selected>Select Place</option>
+																		<?php
+																		$lstPlace = $clsPlace->Get();
+																		foreach ($lstPlace as $mdlPlace) {
+																			echo '<option value="'.$mdlPlace->getId().'">'.$mdlPlace->getName().'</option>';
+																		}
+																		?>
+																	</select>
+																	<button class="btn btn-primary w-full" onclick="setAppointment(<?php echo $mdlPayment->getId().",".$mdlProject->getType();?>)">Set Appointment</button>
+																	<?php
+																}
 															}else{
 																?>
 																<div class="alert alert-success">
