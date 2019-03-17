@@ -16,6 +16,7 @@ if (empty($_SESSION['uid'])) {
 
 if(isset($_POST['Name'])){
 
+
   $mdlProject->setType('2');
   $mdlProject->setUser_Id($_SESSION['uid']);
 	$err .= $clsFn->setForm('Name',$mdlProject,true);
@@ -49,18 +50,40 @@ if(isset($_POST['Name'])){
 			     ';
       $Upload_Id = $clsUpload->Add($mdlUpload);
       $clsProject->UpdatePlan_Id($Project_Id,$Upload_Id);
-			$imgResult = $clsUpload->SetImage($_FILES["fileToUpload"],$Upload_Id);
-			if($imgResult['msg'] != ""){
-				$msg .= '
-				<div class="alert alert-danger alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">×</span>
-				<span class="sr-only">Close</span>
-				</button>
-				<h4>Image Upload Failed </h4>
-				'.$imgResult['msg'].'
-				</div>';
-			}
+        if (mkdir("../UploadFiles/" . $Upload_Id)) {
+
+          $total = count($_FILES['fileToUpload']['name']);
+          for( $i=0 ; $i < $total ; $i++ ) {
+
+            //Get the temp file path
+            $tmpFilePath = $_FILES['fileToUpload']['tmp_name'][$i];
+
+            //Make sure we have a file path
+            if ($tmpFilePath != ""){
+              //Setup our new file path
+              $newFilePath = "../UploadFiles/" . $Upload_Id . "/" . $_FILES['fileToUpload']['name'][$i];
+
+              //Upload the file into the temp dir
+              if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+
+                //Handle other code here
+
+              }
+            }
+          }
+        } else {
+          $msg .= '
+    				<div class="alert alert-danger alert-dismissible" role="alert">
+    				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    				<span aria-hidden="true">×</span>
+    				<span class="sr-only">Close</span>
+    				</button>
+    				<h6>
+    					Failed to Create Directory for files.
+    				</h6>
+    				</div>
+    			     ';
+        }
 			// Clear all data if success
 			$mdlProject = new ProjectModel();
       $mdlUpload = new UploadModel();
@@ -161,12 +184,12 @@ if(isset($_POST['Name'])){
 
               <div class="row">
                 <div class="col-md-12">
-                  <h4>Image</h4>
+                  <h4>Files</h4>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
+                  <input type="file" class="form-control-file" multiple="multiple" name="fileToUpload[]"/>
                 </div>
               </div>
 

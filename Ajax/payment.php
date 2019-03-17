@@ -184,7 +184,11 @@ function displayDetail($id)
 							<div class="row" style="padding: 10px;">
 								<div class="col-md-12" style="border:1px solid #aaa;padding:10px;	">
 									<div class="row">
-										<div class="col-md-12">
+
+										<div class="col-md-4">
+											Files:
+										</div>
+										<div class="col-md-6">
 											<?php
 											$lstImage = $clsImage->GetByDetail("upload",$mdlUpload->getId(),"original");
 											$imgLocation = '';
@@ -193,6 +197,13 @@ function displayDetail($id)
 											}
 											if ($imgLocation != '') {
 												echo '<img src="'.$imgLocation.'" style="max-height:200px;">';
+											}
+											$path = '../UploadFiles/'.$mdlUpload->getId()."/";
+											if (file_exists($path)) {
+												$files = array_slice(scandir($path), 2);
+												foreach ($files as $key => $value) {
+													echo "<a href='".$path.$value."' >".$value."</a><br/>";
+												}
 											}
 											?>
 										</div>

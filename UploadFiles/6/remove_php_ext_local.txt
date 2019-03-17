@@ -1,0 +1,3 @@
+https://stackoverflow.com/questions/29628001/removing-html-url-extension-using-htaccess-not-working
+https://www.youtube.com/watch?v=2qMnDgVpXkA
+https://tecadmin.net/remove-file-extension-from-url-using-htaccess/

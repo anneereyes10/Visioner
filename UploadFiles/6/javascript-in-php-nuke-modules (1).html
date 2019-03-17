@@ -1,0 +1,558 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>How to use Javascript in PHP-Nuke modules</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="PHP-Nuke: Management and Programming"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="Creating modules"
+HREF="creating-modules.html"><LINK
+REL="PREVIOUS"
+TITLE="How to include a plain text file in a PHP-Nuke module"
+HREF="include-plain-text-file-in-module.html"><LINK
+REL="NEXT"
+TITLE="How to create a Logout module"
+HREF="create-logout-module.html"></HEAD
+><BODY
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PHP-Nuke: Management and Programming</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="include-plain-text-file-in-module.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 21. Creating modules</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="create-logout-module.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="JAVASCRIPT-IN-PHP-NUKE-MODULES"
+>21.9. How to use Javascript in <SPAN
+CLASS="APPLICATION"
+>PHP-Nuke</SPAN
+> modules</A
+></H1
+><P
+>You can include Javascript code in modules without problems in <SPAN
+CLASS="APPLICATION"
+>PHP-Nuke</SPAN
+>. You can proceed in two ways:</P
+><P
+></P
+><UL
+><LI
+><P
+>Include your Javascript functions in javascript.php (<A
+HREF="javascript-in-php-nuke-modules.html#JAVASCRIPT-PHP"
+>Section 21.9.1</A
+>).</P
+></LI
+><LI
+><P
+>Include your complete Javascript code in the module (<A
+HREF="javascript-in-php-nuke-modules.html#JAVASCRIPT-IN-PHP-NUKE-MODULES-COMPLETE"
+>Section 21.9.2</A
+>)</P
+></LI
+></UL
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JAVASCRIPT-PHP"
+>21.9.1. Javascript functions in javascript.php</A
+></H2
+><P
+>PHP-Nuke come with its own Javascript functions included in the file javascript.php, located under the includes folder. You can add your own Javascript code there, if you follow some simple rules:</P
+><P
+></P
+><UL
+><LI
+><P
+>Use a decent text editor (see <A
+HREF="editing-php-nuke-files.html"
+>Chapter 11</A
+>) to edit the file.</P
+></LI
+><LI
+><P
+>Append your code after the code already there, but before the ending ?&#62; line.</P
+></LI
+><LI
+><P
+>&#8220;echo&#8221; each line of your Javascript script. Example: Instead of entering directly the script code:</P
+><TABLE
+BORDER="1"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><FONT
+COLOR="#000000"
+><PRE
+CLASS="SCREEN"
+>&#60;script type="text/javascript"&#62;
+&#60;!--
+function openwindow(){
+ window.open
+("modules/$name/copyright.php","Copyright","toolbar=no,location=no,directories=no,
+status=no,scrollbars=yes,resizable=no,copyhistory=no,width=400,height=200")
+}
+//--&#62;
+&#60;/script&#62;</PRE
+></FONT
+></TD
+></TR
+></TABLE
+></LI
+><LI
+><P
+>enter it with &#8220;echo&#8221;s as:</P
+><TABLE
+BORDER="1"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><FONT
+COLOR="#000000"
+><PRE
+CLASS="SCREEN"
+>echo "&#60;script type=\"text/javascript\"&#62;\n";
+echo "&#60;!--\n";
+echo "function openwindow(){\n";
+echo " window.open(\"modules/$name/copyright.php\",\"Copyright\",
+\"toolbar=no,location=no,directories=no,status=no,
+scrollbars=yes,resizable=no,copyhistory=no,width=400,height=200\");\n";
+echo "}\n";
+echo "//--&#62;\n";
+echo "&#60;/script&#62;\n\n";</PRE
+></FONT
+></TD
+></TR
+></TABLE
+></LI
+><LI
+><P
+>Enclose each line in double quotes, like a string, and escape (with a backslash \) any double quote inside that string.</P
+></LI
+><LI
+><P
+>Add a newline character (\n) to the string, before the closing double quote<A
+NAME="AEN15365"
+HREF="#FTN.AEN15365"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+>.</P
+></LI
+><LI
+><P
+>End each line, like every <ACRONYM
+CLASS="ACRONYM"
+>PHP</ACRONYM
+> line, with a semicolon (;).</P
+></LI
+></UL
+><P
+>If you use vi (see <A
+HREF="vi.html"
+>Section 11.1</A
+>), the following sequence of vi commands, applied to a Javascript file, will produce the right <ACRONYM
+CLASS="ACRONYM"
+>PHP</ACRONYM
+> code to append in the javascript.php file:</P
+><TABLE
+BORDER="1"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><FONT
+COLOR="#000000"
+><PRE
+CLASS="SCREEN"
+>1,$s/"/\\"/g <A
+NAME="VI1"
+><IMG
+SRC="images/callouts/1.png"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+>
+1,$s/^/echo "/ <A
+NAME="VI2"
+><IMG
+SRC="images/callouts/2.png"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+>
+1,$s/$/";/ <A
+NAME="VI3"
+><IMG
+SRC="images/callouts/3.png"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(3)"></A
+>
+1,$s/";$/\\n";/ <A
+NAME="VI4"
+><IMG
+SRC="images/callouts/4.png"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(4)"></A
+></PRE
+></FONT
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="CALLOUTLIST"
+><DL
+COMPACT="COMPACT"
+><DT
+><A
+HREF="javascript-in-php-nuke-modules.html#VI1"
+><IMG
+SRC="images/callouts/1.png"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(1)"></A
+></DT
+><DD
+>       Escape all double quotes.
+      </DD
+><DT
+><A
+HREF="javascript-in-php-nuke-modules.html#VI2"
+><IMG
+SRC="images/callouts/2.png"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(2)"></A
+></DT
+><DD
+>         Add 'echo "' at the start of every line.
+       </DD
+><DT
+><A
+HREF="javascript-in-php-nuke-modules.html#VI3"
+><IMG
+SRC="images/callouts/3.png"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(3)"></A
+></DT
+><DD
+>      Add '";' at the end of every line.
+       </DD
+><DT
+><A
+HREF="javascript-in-php-nuke-modules.html#VI4"
+><IMG
+SRC="images/callouts/4.png"
+HSPACE="0"
+VSPACE="0"
+BORDER="0"
+ALT="(4)"></A
+></DT
+><DD
+>       Add a newline '\n' at the end of each Javascript  line.
+       </DD
+></DL
+></DIV
+><P
+>You can then include calls to your Javascript functions in the HTML code of your module. You echo the Javascript code, just like any other HTML code.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="JAVASCRIPT-IN-PHP-NUKE-MODULES-COMPLETE"
+>21.9.2. Complete Javascript code in modules</A
+></H2
+><P
+>You can use the following template to include your complete Javascript code in your <SPAN
+CLASS="APPLICATION"
+>PHP-Nuke</SPAN
+> module:</P
+><TABLE
+BORDER="1"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><FONT
+COLOR="#000000"
+><PRE
+CLASS="SCREEN"
+>&#60;?php
+if (!eregi("modules.php", $PHP_SELF)) {
+  die ("You can't access this file directly...");
+}
+require_once("mainfile.php");
+// 0 : do not show right blocks - 1:show right blocks
+$index = 0; 
+include("header.php");
+?&#62;
+// PUT HTML OR JAVASCRIPT CODE HERE, 
+// OR GET RID OF THE ?&#62; AND &#60;?php ABOVE AND BELOW THIS LINE 
+// AND USE &#60;acronym&#62;PHP&#60;/acronym&#62; CODE HERE INSTEAD.
+&#60;?php
+include("footer.php");
+?&#62;</PRE
+></FONT
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="TIP"
+><P
+></P
+><TABLE
+CLASS="TIP"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/tip.png"
+HSPACE="5"
+ALT="Tip"></TD
+><TH
+ALIGN="LEFT"
+VALIGN="MIDDLE"
+><B
+>Javascript with PHP</B
+></TH
+></TR
+><TR
+><TD
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>If you decide to use <ACRONYM
+CLASS="ACRONYM"
+>PHP</ACRONYM
+> code ("echo"s) to enter your Javascript code, you should take into account the rules presented in <A
+HREF="javascript-in-php-nuke-modules.html#JAVASCRIPT-PHP"
+>Section 21.9.1</A
+>.</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="TIP"
+><P
+></P
+><TABLE
+CLASS="TIP"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+><IMG
+SRC="../images/tip.png"
+HSPACE="5"
+ALT="Tip"></TD
+><TH
+ALIGN="LEFT"
+VALIGN="MIDDLE"
+><B
+>Javascript codebase</B
+></TH
+></TR
+><TR
+><TD
+>&nbsp;</TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>You may need to add the following line to your Javascript applet:</P
+><TABLE
+BORDER="1"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><FONT
+COLOR="#000000"
+><PRE
+CLASS="SCREEN"
+>codebase="modules/modulename"</PRE
+></FONT
+></TD
+></TR
+></TABLE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+></DIV
+><H3
+CLASS="FOOTNOTES"
+>Notes</H3
+><TABLE
+BORDER="0"
+CLASS="FOOTNOTES"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="5%"
+><A
+NAME="FTN.AEN15365"
+HREF="javascript-in-php-nuke-modules.html#AEN15365"
+><SPAN
+CLASS="footnote"
+>[1]</SPAN
+></A
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+WIDTH="95%"
+><P
+>the &#8220;window.open&#8221; line in the example above is actually a long line that has been broken to 3 lines only for layout purposes, that's why there are no newlines (\n) at the ends of two lines (just as there is no semicolon for the same reason).</P
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="include-plain-text-file-in-module.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="create-logout-module.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>How to include a plain text file in a <SPAN
+CLASS="APPLICATION"
+>PHP-Nuke</SPAN
+> module</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="creating-modules.html"
+ACCESSKEY="U"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>How to create a Logout module</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
