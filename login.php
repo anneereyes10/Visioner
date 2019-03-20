@@ -20,43 +20,53 @@ include("includes/db.php");
             <div class="container">
 
 	<!-- Login Area -->
+  <?php
+  if (!empty($_GET['rp'])) {
+    // code...
+    $msg = '<div class="alert alert-success">
+    <strong>Success!</strong> Password has been changed.
+    </div>';
+    echo $msg;
+  }
+  ?>
                 <div class="col-md-6">
-                    <div class="box-for overflow">
-                        <div class="col-md-12 col-xs-12 login-blocks">
-                            <h2>Login : </h2>
-                            <form action="" method="post">
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" name="u_email" placeholder="Enter Email" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-									<input type="password" class="form-control" name="u_pass" placeholder="Enter Password" required />
-                                </div>
-                                <div class="text-center">
-									<input type="submit" class="btn btn-default" name="login" value="Login" />
-                                </div>
-                            </form>
-
+                  <div class="box-for overflow">
+                    <div class="col-md-12 col-xs-12 login-blocks">
+                      <h2>Login : </h2>
+                      <form action="" method="post">
+                        <div class="form-group">
+                          <label for="email">Email</label>
+                          <input type="email" class="form-control" name="u_email" placeholder="Enter Email" required />
                         </div>
-
-                    </div>
-                </div>
-				<div class="col-md-6">
-                    <div class="box-for overflow">
-                        <div class="col-md-12 col-xs-12 register-blocks">
-                            <h2>Not yet Registered? </h2>
-                            <form action="" method="post">
-                                <br><br>
-                                <div class="text-center">
-                                    <h2><a href="register.php">New? Register here</a></h2>
-                                </div>
-                            </form>
+                        <div class="form-group">
+                          <label for="password">Password</label>
+                          <input type="password" class="form-control" name="u_pass" placeholder="Enter Password" required />
                         </div>
+                        <div class="text-center">
+                          <input type="submit" class="btn btn-default" name="login" value="Login" />
+                        </div>
+                        <div class="form-group">
+                          <a href="user/forgotpassword.php">Forgot Password?</a>
+                        </div>
+                      </form>
                     </div>
+                  </div>
                 </div>
+          			<div class="col-md-6">
+                  <div class="box-for overflow">
+                    <div class="col-md-12 col-xs-12 register-blocks">
+                      <h2>Not yet Registered? </h2>
+                      <form action="" method="post">
+                        <br><br>
+                        <div class="text-center">
+                          <h2><a href="register.php">New? Register here</a></h2>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
 
 
 <?php
