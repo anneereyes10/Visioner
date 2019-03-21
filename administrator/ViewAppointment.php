@@ -2,6 +2,8 @@
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Project.php");
+require_once ("../App_Code/Upload.php");
+require_once ("../App_Code/UploadPlace.php");
 require_once ("../App_Code/Payment.php");
 require_once ("../App_Code/Place.php");
 require_once ("../App_Code/User.php");
@@ -42,7 +44,7 @@ require_once ("../App_Code/ImageModel.php");
 
       var xmlhttp = new XMLHttpRequest();
       var url = "";
-      var btn = "";
+      var txt = document.getElementById("payment_message"+PaymentId).value;
       xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           document.getElementById("modalContent").innerHTML = this.responseText;
@@ -52,6 +54,7 @@ require_once ("../App_Code/ImageModel.php");
       url = "../Ajax/ViewAppointment.php";
       url += "?call=Approved";
       url += "&Id=" + PaymentId;
+      url += "&txt=" + txt;
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
 		}
@@ -60,7 +63,7 @@ require_once ("../App_Code/ImageModel.php");
 
       var xmlhttp = new XMLHttpRequest();
       var url = "";
-      var btn = "";
+      var txt = document.getElementById("payment_message"+PaymentId).value;
       xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           document.getElementById("modalContent").innerHTML = this.responseText;
@@ -71,6 +74,7 @@ require_once ("../App_Code/ImageModel.php");
       url = "../Ajax/ViewAppointment.php";
       url += "?call=Declined";
       url += "&Id=" + PaymentId;
+      url += "&txt=" + txt;
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
 		}
@@ -120,12 +124,27 @@ require_once ("../App_Code/ImageModel.php");
                       foreach($lstPayment as $mdlPayment)
                       {
 
+                        ?>
+                        <tr>
+                          <td><?php echo $clsUser->GetNameById($clsProject->GetUser_IdById($mdlPayment->getProject_Id())); ?></td>
+                          <td><?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?></td>
+                          <?php
+                          $mdlProject = $clsProject->GetById($mdlPayment->getProject_Id());
+                          if ($mdlProject->getType() == "2"){
+                            $mdlUploadPlace = $clsUploadPlace->GetById($mdlProject->getPlan_Id());
+                            ?>
+                              <td><?php echo $mdlUploadPlace->getDateTime(); ?></td>
+                              <td><?php echo $mdlUploadPlace->getPlace(); ?></td>
+                            <?php
+
+                          } else {?>
+                            <td><?php echo $mdlPayment->getAppointmentDate(); ?></td>
+                            <td><?php echo $clsPlace->GetNameById($mdlPayment->getPlace_Id());?></td>
+                          <?php
+                        }
+
                       ?>
-                      <tr>
-                        <td><?php echo $clsUser->GetNameById($clsProject->GetUser_IdById($mdlPayment->getProject_Id())); ?></td>
-                        <td><?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?></td>
-                        <td><?php echo $mdlPayment->getAppointmentDate(); ?></td>
-                        <td><?php echo $clsPlace->GetNameById($mdlPayment->getPlace_Id()); ?></td>
+
                         <td id="status_<?php echo $mdlPayment->getId();?>">
                           <?php
                           if($mdlPayment->getAppointmentStatus() == 0){
@@ -140,11 +159,9 @@ require_once ("../App_Code/ImageModel.php");
                         <td>
                             <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Yes</button>
                             <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">No</button>
+                            <br />
+                            <textarea id="payment_message<?php echo $mdlPayment->getId();?>"><?php echo $mdlPayment->getMessage();?></textarea>
                         </td>
-
-
-
-
                       </tr>
                       <?php
                       } ?>

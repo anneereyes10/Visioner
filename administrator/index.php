@@ -204,6 +204,13 @@ else {
 
     <!-- Custom scripts for all pages-->
     <script src="styles/js/sb-admin.min.js"></script>
+		    <script type="text/javascript" src="../JumEE/js/jquery.dataTables.min.js"></script>
+		    <script type="text/javascript" src="../JumEE/js/dataTables.bootstrap4.min.js"></script>
+		    <script>
+		    $(document).ready(function() {
+		        $('#example').DataTable();
+		    } );
+		    </script>
 
   </body>
 

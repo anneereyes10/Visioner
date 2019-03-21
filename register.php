@@ -18,7 +18,7 @@ $msg = "";
     $u_pass = $_POST['u_pass'];
     $hashcode = md5($ip . $u_email);
 
-    $search = "SELECT COUNT(*) FROM `user_account_p`
+    $search = "SELECT COUNT(*) FROM `user_account`
 			         WHERE `user_email` = '".$u_email."'";
     $result=mysqli_query($con,$search) or die(mysqli_error($con));
     $rows = mysqli_fetch_row($result);

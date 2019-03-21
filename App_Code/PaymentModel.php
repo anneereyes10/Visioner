@@ -9,6 +9,7 @@ class PaymentModel{
 	private $ReceiptStatus = "";
 	private $AppointmentDate = "";
 	private $AppointmentStatus = "";
+	private $Message = "";
 	private $Place_Id = "";
 	private $PlaceStatus = "";
 	private $DateCreated = "";
@@ -139,6 +140,24 @@ class PaymentModel{
 
 	public function setAppointmentStatus($AppointmentStatus){
 		$this->AppointmentStatus = $AppointmentStatus;
+	}
+
+
+	//Message
+	public function getMessage(){
+		return $this->Message;
+	}
+
+	public function getsqlMessage(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->Message);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setMessage($Message){
+		$this->Message = $Message;
 	}
 
 

@@ -13,23 +13,24 @@ switch ($call)
 {
 	case 'Approved':
 	{
-		Approved($_GET['Id']);
+		Approved($_GET['Id'],$_GET['txt']);
 		break;
 	}
 	case 'Declined':
 	{
-		Declined($_GET['Id']);
+		Declined($_GET['Id'],$_GET['txt']);
 		break;
 	}
 }
 
-function Approved($pid)
+function Approved($pid,$txt)
 {
 	$clsFn = new Functions();
 	$clsPayment = new Payment();
 	$clsProject = new Project();
 	$clsUser = new User();
 	$clsPayment->UpdateAppointmentStatus($pid,'1');
+	$clsPayment->UpdateMessage($pid,$txt);
 
 	$mdlPayment = $clsPayment->GetById($pid);
 	$User_Id = $clsProject->GetUser_IdById($mdlPayment->getProject_Id());
@@ -53,13 +54,14 @@ function Approved($pid)
 }
 
 
-function Declined($pid)
+function Declined($pid,$txt)
 {
 	$clsFn = new Functions();
 	$clsPayment = new Payment();
 	$clsProject = new Project();
 	$clsUser = new User();
 	$clsPayment->UpdateAppointmentStatus($pid,'2');
+	$clsPayment->UpdateMessage($pid,$txt);
 
 	$mdlPayment = $clsPayment->GetById($pid);
 	$User_Id = $clsProject->GetUser_IdById($mdlPayment->getProject_Id());

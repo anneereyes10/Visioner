@@ -206,12 +206,12 @@ if(isset($_POST['Name'])){
 													</div>
 													<div class="form-group col-md-3">
 														<label class="form-control-label" for="inputArea">Area: </label>
-														<input type="text" class="form-control" id="inputArea" name="Area" placeholder="Area in SQM" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
+														<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Area in SQM" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
 														<small id="notif-inputArea" class="invalid-feedback">This is required</small>
 													</div>
 		  										<div class="form-group col-md-3">
 		  											<label class="form-control-label" for="inputPiece">Pieces: </label>
-														<input type="text" class="form-control" id="inputPiece" name="Piece" placeholder="Number of Pieces" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
+														<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Number of Pieces" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
 														<small id="notif-inputPiece" class="invalid-feedback">This is required</small>
 													</div>
 												</div>

@@ -216,18 +216,23 @@ if(isset($_POST['Place'])){
 															?>
 													 	</td>
 		                        <td>
-
-
-															<a href="EditUploadPlace.php?Id=<?php echo $mdlUploadPlace->getId(); ?>" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" title="Edit">
-																<i class="fa fa-edit" aria-hidden="true"></i>
-															</a>
-
-															<span data-toggle="modal" data-target="#ModalWrapper" onclick="deleteShow(<?php echo $mdlUploadPlace->getId(); ?>);">
-																<a href="JavaScript:void(0);" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" title="Remove">
-																	<i class="fa fa-trash" aria-hidden="true"></i>
+															<?php
+															if ($mdlUploadPlace->getUsed() == "1"){
+																echo 'Used by Client';
+															} else {
+																?>
+																<a href="EditUploadPlace.php?Id=<?php echo $mdlUploadPlace->getId(); ?>" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" title="Edit">
+																	<i class="fa fa-edit" aria-hidden="true"></i>
 																</a>
-															</span>
 
+																<span data-toggle="modal" data-target="#ModalWrapper" onclick="deleteShow(<?php echo $mdlUploadPlace->getId(); ?>);">
+																	<a href="JavaScript:void(0);" class="btn btn-sm btn-icon btn-pure btn-default" data-toggle="tooltip" title="Remove">
+																		<i class="fa fa-trash" aria-hidden="true"></i>
+																	</a>
+																</span>
+																<?php
+															}
+															?>
 		                        </td>
 		                      </tr>
 		                      <?php

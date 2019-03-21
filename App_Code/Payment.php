@@ -19,6 +19,7 @@ class Payment{
 				`Payment_ReceiptStatus`,
 				`Payment_AppointmentDate`,
 				`Payment_AppointmentStatus`,
+				`Payment_Message`,
 				`Place_Id`,
 				`Payment_PlaceStatus`
 			) VALUES (
@@ -28,6 +29,7 @@ class Payment{
 				'".$mdl->getsqlReceiptStatus()."',
 				'".$mdl->getsqlAppointmentDate()."',
 				'".$mdl->getsqlAppointmentStatus()."',
+				'".$mdl->getsqlMessage()."',
 				'".$mdl->getsqlPlace_Id()."',
 				'".$mdl->getsqlPlaceStatus()."'
 			)";
@@ -49,6 +51,7 @@ class Payment{
 				 `Payment_ReceiptStatus`='".$mdl->getsqlReceiptStatus()."',
 				 `Payment_AppointmentDate`='".$mdl->getsqlAppointmentDate()."',
 				 `Payment_AppointmentStatus`='".$mdl->getsqlAppointmentStatus()."',
+				 `Payment_Message`='".$mdl->getsqlMessage()."',
 				 `Place_Id`='".$mdl->getsqlPlace_Id()."',
 				 `Payment_PlaceStatus`='".$mdl->getsqlPlaceStatus()."',
 				 `Payment_Status`='".$mdl->getsqlStatus()."'
@@ -154,6 +157,23 @@ class Payment{
 
 		$sql="UPDATE `".$this->table."` SET
 			`Payment_AppointmentStatus`='".$value."'
+			WHERE `Payment_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdateMessage($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Payment_Message`='".$value."'
 			WHERE `Payment_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -411,6 +431,30 @@ class Payment{
 		return $value;
 	}
 
+	public function GetMessageById($id,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT `Payment_Message` FROM `".$this->table."`
+		WHERE `Payment_Id` = '".$id."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Payment_Message'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
 	public function GetPlace_IdById($id,$status=0){
 
 		$Database = new Database();
@@ -616,6 +660,25 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
+	public function GetByMessage($value,$status=0){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+		WHERE `Payment_Message` = '".$value."'
+		AND `Payment_Status` = '".$status."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
 	public function GetByPlace_Id($value,$status=0){
 
 		$Database = new Database();
@@ -692,50 +755,6 @@ class Payment{
 		return $this->ListTransfer($result);
 	}
 
-	public function IsDateTaken($Payment_Id, $Payment_AppointmentDate){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$val = false;
-		$msg = "";
-
-		$sql = "SELECT `Payment_Id` FROM `".$this->table."` AS `count`
-				WHERE
-				`Payment_Id` != '".$Payment_Id."' AND
-				`Payment_AppointmentDate` = '".$Payment_AppointmentDate."'";
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		$num_rows = mysqli_num_rows($result);
-
-		mysqli_close($conn);
-
-		if($num_rows > 0)
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	public function GetByUserId($id){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="SELECT * FROM `".$this->table."` AS `pay`
-					INNER JOIN `project` AS `proj`
-					ON `pay`.`Project_Id` = `proj`.`Project_Id`
-				WHERE `User_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
-	}
-
 	public function SetImage($image,$id){
 
 		$val = true;
@@ -781,6 +800,7 @@ class Payment{
 		$mdl->setReceiptStatus((isset($row['Payment_ReceiptStatus'])) ? $row['Payment_ReceiptStatus'] : '');
 		$mdl->setAppointmentDate((isset($row['Payment_AppointmentDate'])) ? $row['Payment_AppointmentDate'] : '');
 		$mdl->setAppointmentStatus((isset($row['Payment_AppointmentStatus'])) ? $row['Payment_AppointmentStatus'] : '');
+		$mdl->setMessage((isset($row['Payment_Message'])) ? $row['Payment_Message'] : '');
 		$mdl->setPlace_Id((isset($row['Place_Id'])) ? $row['Place_Id'] : '');
 		$mdl->setPlaceStatus((isset($row['Payment_PlaceStatus'])) ? $row['Payment_PlaceStatus'] : '');
 		$mdl->setDateCreated((isset($row['Payment_DateCreated'])) ? $row['Payment_DateCreated'] : '');
