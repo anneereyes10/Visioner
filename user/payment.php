@@ -469,6 +469,14 @@ $name=$row_pro['full_name'];
 														if($mdlPayment->getReceiptStatus() == 0) {
 															echo "Pending";
 														} elseif($mdlPayment->getReceiptStatus() == 1) {
+
+															if (!empty($mdlPayment->getMessage())) {
+																?>
+																<div class="alert alert-info">
+																	<strong><?php echo $mdlPayment->getMessage(); ?></strong>
+																</div>
+																<?php
+															}
 															if ($mdlPayment->getAppointmentStatus() == 1) {
 																if ($mdlProject->getType() == "2") {
 																		?>
@@ -543,6 +551,14 @@ $name=$row_pro['full_name'];
 																<?php
 															}
 		                        } else {
+
+															if (!empty($mdlPayment->getMessage())) {
+																?>
+																<div class="alert alert-info">
+																	<strong><?php echo $mdlPayment->getMessage(); ?></strong>
+																</div>
+																<?php
+															}
 															?>
 															<p>Declined</p>
 															<button class="btn btn-primary w-100" onclick="deletePayment(<?php echo $mdlPayment->getId();?>)">Delete</button>

@@ -807,4 +807,21 @@ class Payment{
 		$mdl->setStatus((isset($row['Payment_Status'])) ? $row['Payment_Status'] : '');
 		return $mdl;
 	}
+
+
+
+	
+
+	public function GetByUserId($id){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$id = mysqli_real_escape_string($conn,$id);
+		$sql="SELECT * FROM `".$this->table."` AS `pay`
+					INNER JOIN `project` AS `proj`
+					ON `pay`.`Project_Id` = `proj`.`Project_Id`
+				WHERE `User_Id` = '".$id."'";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		mysqli_close($conn);
+		return $this->ListTransfer($result);
+	}
 }
