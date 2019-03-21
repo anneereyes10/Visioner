@@ -157,10 +157,17 @@ require_once ("../App_Code/ImageModel.php");
                           ?>
                         </td>
                         <td>
-                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Yes</button>
-                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">No</button>
-                            <br />
-                            <textarea id="payment_message<?php echo $mdlPayment->getId();?>"><?php echo $mdlPayment->getMessage();?></textarea>
+                            <?php
+                            $type = $clsProject->GetTypeById($mdlPayment->getProject_Id());
+                            if ($type != "2") {
+                              ?>
+                              <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Yes</button>
+                              <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">No</button>
+                              <br />
+                              <textarea id="payment_message<?php echo $mdlPayment->getId();?>"><?php echo $mdlPayment->getMessage();?></textarea>
+                              <?php
+                            }
+                            ?>
                         </td>
                       </tr>
                       <?php
