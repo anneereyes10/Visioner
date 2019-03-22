@@ -164,6 +164,7 @@ require_once ("../App_Code/Image.php");
                   <?php
         $lstPayment = $clsPayment->GetByUserId($user_id);
         foreach ($lstPayment as $mdlPayment) {
+          $mdlProject = $clsProject->GetById($mdlPayment->getProject_Id());
           ?>
                   <div class="row m-0">
                     <div class="col-sm-2 border">
@@ -179,7 +180,26 @@ require_once ("../App_Code/Image.php");
                 ?>
                     </div>
                     <div class="col-sm-4 border">
-                      <?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?>
+                      <?php
+                      switch ($mdlProject->getType()) {
+                        case '0':{
+                          echo 'Build: ';
+                          break;
+                        }
+                        case '1':{
+                          echo 'Service: ';
+                          break;
+                        }
+                        case '2':{
+                          echo 'Upload: ';
+                          break;
+                        }
+                        default:
+                          // code...
+                          break;
+                      }
+
+                      echo $mdlProject->getName(); ?>
                     </div>
                     <div class="col-sm-2 border">
                       <?php echo $clsPaymentType->GetNameById($mdlPayment->getPaymentType_Id()); ?>
@@ -237,7 +257,7 @@ require_once ("../App_Code/Image.php");
                     </div>
                   </div>
                   <?php
-        $lstPayment = $clsPayment->GetByUserId($_SESSION['uid']);
+        $lstPayment = $clsPayment->GetByUserId($user_id);
         foreach ($lstPayment as $mdlPayment) {
           ?>
                   <div class="row m-0">
@@ -257,7 +277,26 @@ require_once ("../App_Code/Image.php");
                     $mdlProject = $clsProject->GetById($mdlPayment->getProject_Id());
                     ?>
                     <div class="col-sm-4 border">
-                      <?php echo $mdlProject->getName(); ?>
+                      <?php
+                      switch ($mdlProject->getType()) {
+                        case '0':{
+                          echo 'Build: ';
+                          break;
+                        }
+                        case '1':{
+                          echo 'Service: ';
+                          break;
+                        }
+                        case '2':{
+                          echo 'Upload: ';
+                          break;
+                        }
+                        default:
+                          // code...
+                          break;
+                      }
+
+                       echo $mdlProject->getName(); ?>
                     </div>
                     <?php
                     if ($mdlProject->getType() == "2") {

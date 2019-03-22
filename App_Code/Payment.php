@@ -810,7 +810,7 @@ class Payment{
 
 
 
-	
+
 
 	public function GetByUserId($id){
 		$Database = new Database();
@@ -823,5 +823,24 @@ class Payment{
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		mysqli_close($conn);
 		return $this->ListTransfer($result);
+	}
+
+	public function IsDateTaken($Payment_Id, $Payment_AppointmentDate){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$val = false;
+		$msg = "";
+		$sql = "SELECT `Payment_Id` FROM `".$this->table."` AS `count`
+				WHERE
+				`Payment_Id` != '".$Payment_Id."' AND
+				`Payment_AppointmentDate` = '".$Payment_AppointmentDate."'";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$num_rows = mysqli_num_rows($result);
+		mysqli_close($conn);
+		if($num_rows > 0)
+		{
+			return true;
+		}
+		return false;
 	}
 }
