@@ -1,32 +1,55 @@
 function setAppointment(id,type) {
 
+  let empty = false;
   var place = "";
   var appDate = "";
-  
+
   if (type == "2") {
     place = document.getElementById("meetingplace"+id).value;
+    if (place) {
+      $("#meetingplace"+id).removeClass("isError");
+    } else {
+      empty = true;
+      $("#meetingplace"+id).addClass("isError");
+    }
   }else{
     place = document.getElementById("meetingplace"+id).value;
     appDate = document.getElementById("inputAppointmentDate" + id).value;
-  }
-  var xmlhttp = new XMLHttpRequest();
-  var url = "";
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("tdPayment" + id).innerHTML = this.responseText;
+    console.log(place);
+    if (place) {
+      $("#meetingplace"+id).removeClass("isError");
+    } else {
+      empty = true;
+      $("#meetingplace"+id).addClass("isError");
     }
-  };
-  url = "../Ajax/payment.php";
-  url += "?call=addPayment";
-  url += "&Id=" + id;
-  if (type == "2") {
-    url += "&Place_Id=" + place;
-  } else {
-    url += "&Place_Id=" + place;
-    url += "&Date=" + appDate;
+    if (appDate) {
+      $("#inputAppointmentDate"+id).removeClass("isError");
+    } else {
+      empty = true;
+      $("#inputAppointmentDate"+id).addClass("isError");
+    }
   }
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
+  if (empty) {
+  } else {
+    var xmlhttp = new XMLHttpRequest();
+    var url = "";
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("tdPayment" + id).innerHTML = this.responseText;
+      }
+    };
+    url = "../Ajax/payment.php";
+    url += "?call=addPayment";
+    url += "&Id=" + id;
+    if (type == "2") {
+      url += "&Place_Id=" + place;
+    } else {
+      url += "&Place_Id=" + place;
+      url += "&Date=" + appDate;
+    }
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+  }
 
 }
 function deletePayment(id) {

@@ -47,7 +47,7 @@ function addPayment($id,$place,$date=""){
 		$clsUploadPlace->UpdateUsed($place,'1');
 		?>
 		<div class="alert alert-success">
-			<strong>Success!</strong> Appointment is now scheduled</a>.
+			<strong>Success!</strong> Appointment is now scheduled.
 		</div>
 		<?php
 	} else {

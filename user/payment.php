@@ -182,7 +182,11 @@ $name=$row_pro['full_name'];
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" id="bootstrap-css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-
+	<style>
+		.isError {
+			border: 1px solid red;
+		}
+	</style>
 </head>
 
 <body>
@@ -502,7 +506,7 @@ $name=$row_pro['full_name'];
 																</div>
 																<input type='date' class='form-control' id='inputAppointmentDate<?php echo $mdlPayment->getId();?>' name='AppointmentDate' value=''>
 																<select class="form-control" id="meetingplace<?php echo $mdlPayment->getId();?>">
-																	<option disabled selected>Select Place</option>
+																	<option value="" disabled selected>Select Place</option>
 																	<?php
 																	$lstPlace = $clsPlace->Get();
 																	foreach ($lstPlace as $mdlPlace) {
@@ -516,7 +520,7 @@ $name=$row_pro['full_name'];
 																if ($mdlProject->getType() == "2") {
 																	?>
 																	<select class="form-control" id="meetingplace<?php echo $mdlPayment->getId();?>">
-																		<option disabled selected>Select Place</option>
+																		<option value="" disabled selected>Select Place</option>
 																		<?php
 																		$lstUploadPlace = $clsUploadPlace->GetByUsed("0");
 																		foreach ($lstUploadPlace as $mdlUploadPlace) {
@@ -531,7 +535,7 @@ $name=$row_pro['full_name'];
 																	?>
 																	<input type='date' class='form-control' id='inputAppointmentDate<?php echo $mdlPayment->getId();?>' name='AppointmentDate' value=''>
 																	<select class="form-control" id="meetingplace<?php echo $mdlPayment->getId();?>">
-																		<option disabled selected>Select Place</option>
+																		<option value="" disabled selected>Select Place</option>
 																		<?php
 																		$lstPlace = $clsPlace->Get();
 																		foreach ($lstPlace as $mdlPlace) {

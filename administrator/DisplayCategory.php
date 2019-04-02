@@ -288,7 +288,7 @@ if(isset($_POST['Name'])){
 
 				<!-- Modal -->
 				<div class="modal fade" id="ModalWrapper" aria-hidden="true" aria-labelledby="ModalWrapper" role="dialog" tabindex="-1">
-					<div class="modal-dialog modal-lg">
+					<div class="modal-dialog modal-lg modal-success">
 						<div class="modal-content" id="modalContent">
 							<div class="modal-header">
 								<h4 class="modal-title">Modal Title</h4>
