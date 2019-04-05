@@ -23,8 +23,10 @@ if(isset($_POST['Name'])){
 
 	$mdlPart->setCategory_Id($mdlCategory->getId());
 	$err2 .= $clsFn->setForm('Name',$mdlPart,true);
-	$err2 .= $clsFn->setForm('Area',$mdlPart,true);
-	$err2 .= $clsFn->setForm('Piece',$mdlPart,true);
+	$mdlPart->setArea("1");
+	$mdlPart->setPiece("1");
+	// $err2 .= $clsFn->setForm('Area',$mdlPart,true);
+	// $err2 .= $clsFn->setForm('Piece',$mdlPart,true);
 
 	if($err2 == ""){
 		$duplicate = $clsPart->IsExist($mdlPart);
@@ -199,12 +201,12 @@ if(isset($_POST['Name'])){
 										<div class="col-sm-12">
 											<form action="?Id=<?php echo $_GET['Id']; ?>" method="post">
 		  									<div class="row">
-		  										<div class="form-group col-md-6">
+		  										<div class="form-group col-md-12">
 		  											<label class="form-control-label" for="inputName">Name: </label>
 														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPart->getName(); ?>" onblur="checkInput('inputName')">
 														<small id="notif-inputName" class="invalid-feedback">This is required</small>
 													</div>
-													<div class="form-group col-md-3">
+													<!-- <div class="form-group col-md-3">
 														<label class="form-control-label" for="inputArea">Area: </label>
 														<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Area in SQM" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
 														<small id="notif-inputArea" class="invalid-feedback">This is required</small>
@@ -213,7 +215,7 @@ if(isset($_POST['Name'])){
 		  											<label class="form-control-label" for="inputPiece">Pieces: </label>
 														<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Number of Pieces" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
 														<small id="notif-inputPiece" class="invalid-feedback">This is required</small>
-													</div>
+													</div> -->
 												</div>
 												<div class="row">
 		  										<div class="col-sm-4">
@@ -288,7 +290,7 @@ if(isset($_POST['Name'])){
 
 				<!-- Modal -->
 				<div class="modal fade" id="ModalWrapper" aria-hidden="true" aria-labelledby="ModalWrapper" role="dialog" tabindex="-1">
-					<div class="modal-dialog modal-lg modal-success">
+					<div class="modal-dialog modal-lg">
 						<div class="modal-content" id="modalContent">
 							<div class="modal-header">
 								<h4 class="modal-title">Modal Title</h4>

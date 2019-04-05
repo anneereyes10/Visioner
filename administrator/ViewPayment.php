@@ -113,7 +113,7 @@ require_once ("../App_Code/ImageModel.php");
                     <thead>
                       <tr>
                         <th>Image</th>
-                        <th>User_Id</th>
+                        <th>Full Name</th>
                         <th>Project</th>
                         <th>Payment Type</th>
                         <th>Payment Date</th>
@@ -121,17 +121,7 @@ require_once ("../App_Code/ImageModel.php");
                         <th>Action</th>
                       </tr>
                     </thead>
-                    <tfoot>
-                      <tr>
-                        <th>Image</th>
-                        <th>User_Id</th>
-                        <th>Project</th>
-                        <th>Payment Type</th>
-                        <th>Payment Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </tfoot>
+
                     <tbody>
                       <?php
                       $lstPayment = $clsPayment->Get();
@@ -149,9 +139,28 @@ require_once ("../App_Code/ImageModel.php");
                             $imgLocation = "../" . $clsImage->ToLocation($mdlImage);
                           }
                           if ($imgLocation != '') {
-                            echo '<img src="'.$imgLocation.'" style="max-width:100px;max-height:100px;">';
+                            echo '<a href="#" data-toggle="modal" data-target="#MW'.$mdlPayment->getId().'"><img src="'.$imgLocation.'" style="max-width:100px;max-height:100px;"></a>';
                           }
                           ?>
+
+                          				<!-- Modal -->
+                          				<div class="modal fade" id="MW<?php echo $mdlPayment->getId(); ?>" aria-hidden="true" aria-labelledby="MW<?php echo $mdlPayment->getId(); ?>" role="dialog" tabindex="-1">
+                          					<div class="modal-dialog modal-lg">
+                          						<div class="modal-content" id="modalContent">
+                          							<div class="modal-body text-center" style="overflow: auto;">
+                          								<?php
+                                          if ($imgLocation != '') {
+                                            echo '<img src="'.$imgLocation.'" style="max-height:500px;">';
+                                          }
+                                          ?>
+                          							</div>
+                          							<div class="modal-footer">
+                          								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          							</div>
+                          						</div>
+                          					</div>
+                          				</div>
+                          				<!-- End Modal -->
                         </td>
                         <td><?php echo $clsUser->GetNameById($clsProject->GetUser_IdById($mdlPayment->getProject_Id())); ?></td>
                         <td>
@@ -172,8 +181,17 @@ require_once ("../App_Code/ImageModel.php");
                           ?>
                         </td>
                         <td>
-                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Yes</button>
-                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">No</button>
+							<?php
+							if($mdlPayment->getReceiptStatus() == 0)
+							{
+							?>"
+                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Confirm</button>
+                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">Deny</button>";
+							<?php
+                          } else {
+                            echo " ";
+                          }
+                          ?>
                         </td>
 
                       </tr>

@@ -21,7 +21,8 @@ if(isset($_POST['Name'])){
 	$err .= $clsFn->setForm('Name',$mdlMaterial,true);
 	$err .= $clsFn->setForm('Description',$mdlMaterial,true);
 	$err .= $clsFn->setForm('Price',$mdlMaterial,true);
-	$err .= $clsFn->setForm('PriceType',$mdlMaterial,true);
+	// $err .= $clsFn->setForm('PriceType',$mdlMaterial,true);
+	$mdlMaterial->setPriceType("0");
 
 	if($err == ""){
 		$duplicate = $clsMaterial->IsExist($mdlMaterial);
@@ -136,7 +137,7 @@ if(isset($_POST['Name'])){
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
-										<div class="row mb-2">
+										<!-- <div class="row mb-2">
   										<div class="col-12">
   											<label class="form-control-label" for="inputPriceType">Price Type</label>
 												<select class="form-control" id="inputPriceType" name="PriceType" onblur="checkInput('inputPriceType')">
@@ -145,7 +146,7 @@ if(isset($_POST['Name'])){
 												</select>
 												<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
-  									</div>
+  									</div> -->
   									<div class="row mb-2">
   										<div class="form-group col-md-12">
   											<label class="form-control-label" for="inputImage">Picture</label>

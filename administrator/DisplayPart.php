@@ -28,7 +28,8 @@ if(isset($_POST['Name'])){
 		$err2 .= $clsFn->setForm('Name',$mdlMaterial,true);
 		$err2 .= $clsFn->setForm('Description',$mdlMaterial,true);
 		$err2 .= $clsFn->setForm('Price',$mdlMaterial,true);
-		$err2 .= $clsFn->setForm('PriceType',$mdlMaterial,true);
+		// $err2 .= $clsFn->setForm('PriceType',$mdlMaterial,true);
+		$mdlMaterial->setPriceType("0");
 
 		if($err2 == ""){
 			$duplicate = $clsMaterial->IsExist($mdlMaterial);
@@ -85,7 +86,8 @@ if(isset($_POST['Name'])){
 		$err3 .= $clsFn->setForm('Name',$mdlUpgrade,true);
 		$err3 .= $clsFn->setForm('Description',$mdlUpgrade,true);
 		$err3 .= $clsFn->setForm('Price',$mdlUpgrade,true);
-		$err3 .= $clsFn->setForm('PriceType',$mdlUpgrade,true);
+		// $err3 .= $clsFn->setForm('PriceType',$mdlUpgrade,true);
+		$mdlUpgrade->setPriceType("0");
 
 		if($err3 == ""){
 			$duplicate = $clsUpgrade->IsExist($mdlUpgrade);
@@ -284,7 +286,7 @@ if(isset($_POST['Name'])){
                       <p class="font-weight-bold"><?php echo $mdlPart->getName(); ?></p>
                     </div>
                   </div>
-                  <div class="row mb-2">
+                  <!-- <div class="row mb-2">
                     <div class="col-12">
                       <label class="form-control-label" for="inputArea">Area:</label>
                       <p class="font-weight-bold"><?php echo $mdlPart->getArea(); ?></p>
@@ -295,7 +297,7 @@ if(isset($_POST['Name'])){
                       <label class="form-control-label" for="inputPiece">Piece:</label>
                       <p class="font-weight-bold"><?php echo $mdlPart->getPiece(); ?></p>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row">
                     <div class="col-sm-3 offset-sm-3">
 											<a href="EditPart.php?Id=<?php echo $mdlPart->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
@@ -334,19 +336,19 @@ if(isset($_POST['Name'])){
 														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlMaterial->getName(); ?>" onblur="checkInput('inputName')">
 														<small id="notif-inputName" class="invalid-feedback">This is required</small>
 		  										</div>
-		  										<div class="form-group col-md-3">
+		  										<div class="form-group col-md-6">
 		  											<label class="form-control-label" for="inputPrice">Price: </label>
 														<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlMaterial->getPrice(); ?>" onblur="checkInput('inputPrice')">
 														<small id="notif-inputPrice" class="invalid-feedback">This is required</small>
 		  										</div>
-		  										<div class="form-group col-md-3">
+		  										<!-- <div class="form-group col-md-3">
 		  											<label class="form-control-label" for="inputPriceType">Price Type: </label>
 														<select class="form-control" id="inputPriceType" name="PriceType" onblur="checkInput('inputPriceType')">
 															<option value="0" <?php echo ($mdlMaterial->getPriceType() == "0")?'selected':''; ?>>per Area</option>
 															<option value="1" <?php echo ($mdlMaterial->getPriceType() == "1")?'selected':''; ?>>per Piece</option>
 														</select>
 														<small id="notif-inputPriceType" class="invalid-feedback">This is required</small>
-		  										</div>
+		  										</div> -->
 												</div>
 		  									<div class="row">
 		  										<div class="form-group col-md-12">
@@ -463,19 +465,19 @@ if(isset($_POST['Name'])){
 														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlUpgrade->getName(); ?>" onblur="checkInput('inputName')">
 														<small id="notif-inputName" class="invalid-feedback">This is required</small>
 		  										</div>
-		  										<div class="form-group col-md-3">
+		  										<div class="form-group col-md-6">
 		  											<label class="form-control-label" for="inputPrice">Price: </label>
 														<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlUpgrade->getPrice(); ?>" onblur="checkInput('inputPrice')">
 														<small id="notif-inputPrice" class="invalid-feedback">This is required</small>
 		  										</div>
-		  										<div class="form-group col-md-3">
+		  										<!-- <div class="form-group col-md-3">
 		  											<label class="form-control-label" for="inputPriceType">Price Type: </label>
 														<select class="form-control" id="inputPriceType" name="PriceType" onblur="checkInput('inputPriceType')">
 															<option value="0" <?php echo ($mdlUpgrade->getPriceType() == "0")?'selected':''; ?>>per Area</option>
 															<option value="1" <?php echo ($mdlUpgrade->getPriceType() == "1")?'selected':''; ?>>per Piece</option>
 														</select>
 														<small id="notif-inputPriceType" class="invalid-feedback">This is required</small>
-		  										</div>
+		  										</div> -->
 												</div>
 		  									<div class="row">
 		  										<div class="form-group col-md-12">

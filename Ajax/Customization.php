@@ -82,6 +82,10 @@ function filterPlan($Size_Min,$Size_Max, $Price_Min,$Price_Max, $Bedroom_Min,$Be
 
 	$lstPlan = $clsPlan->SearchByMinMax($mdlPlanMin,$mdlPlanMax);
 
+	if (count($lstPlan) <= 0) {
+		echo "No Plans Found";
+	}
+
 	foreach ($lstPlan as $mdlPlan) {
 		$imgLocation = "";
 		$lstImage = $clsImage->GetByDetail("plan",$mdlPlan->getId(),"original");
@@ -350,6 +354,9 @@ function displayMaterial($Part_Id){
 							<strong>
 								<?php echo $mdlMaterial->getName(); ?>
 							</strong>
+							<p>
+								+ <?php echo $mdlMaterial->getPrice(); ?> Php
+							</p>
 						</label>
 					</center>
 				</div>
@@ -452,6 +459,9 @@ function displayUpgrade($Part_Id){
 							<strong>
 								<?php echo $mdlUpgrade->getName(); ?>
 							</strong>
+							<p>
+								+ <?php echo $mdlUpgrade->getPrice(); ?> Php
+							</p>
 						</label>
 					</center>
 				</div>
@@ -511,7 +521,14 @@ function ProjectItem()
 	$lstUP = $clsUP->GetByProject_Id($_SESSION['projectId']);
 	$Plan_Id = $clsProject->GetPlan_IdById($_SESSION['projectId']);
 
+
 	$mdlPlan = $clsPlan->GetById($Plan_Id);
+	$totalPrice = $mdlPlan->getPrice();
+	$txtout .= '
+	<div class="col-sm-6" style="padding:0px;">Base Price: </div>
+	<div class="col-sm-6 text-right" style="padding:0px;">'.$totalPrice.'Php</div>
+	';
+	$txtout .= '<hr>';
 	$txtout .= '<ul>';
 	$txtout .= '<li>'.$mdlPlan->getName().'</li>';
 

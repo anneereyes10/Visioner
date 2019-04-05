@@ -142,10 +142,12 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
                   <div class="row mb-2">
                     <div class="form-group col-md-12 text-center">
 											<?php
+											$img = "";
 											$lstImage = $clsImage->GetByDetail("material",$mdlMaterial->getId(),"original");
 											foreach($lstImage as $mdlImage){
-												echo '<img src="../'.$clsImage->ToLocation($mdlImage).'" style="max-height:200px;">';
+												$img = '<img src="../'.$clsImage->ToLocation($mdlImage).'" style="max-height:200px;">';
 											}
+											echo $img;
 											?>
 
                     </div>
@@ -168,12 +170,12 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
                       <p class="font-weight-bold"><?php echo $mdlMaterial->getPrice(); ?></p>
                     </div>
                   </div>
-									<div class="row mb-2">
+									<!-- <div class="row mb-2">
                     <div class="col-12">
                       <label class="form-control-label" for="inputPriceType">PriceType:</label>
                       <p class="font-weight-bold"><?php echo ($mdlMaterial->getPriceType() == "0")?'per Area':'per Piece'; ?></p>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row">
                     <div class="col-sm-4 offset-sm-4">
                     </div>

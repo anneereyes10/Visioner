@@ -19,8 +19,10 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
 if(isset($_POST['Name'])){
 
 	$err .= $clsFn->setForm('Name',$mdlPart,true);
-	$err .= $clsFn->setForm('Area',$mdlPart,true);
-	$err .= $clsFn->setForm('Piece',$mdlPart,true);
+	// $err .= $clsFn->setForm('Area',$mdlPart,true);
+	// $err .= $clsFn->setForm('Piece',$mdlPart,true);
+	$mdlPart->setArea("1");
+	$mdlPart->setPiece("1");
 
 	if($err == ""){
 		$duplicate = $clsPart->IsExist($mdlPart);
@@ -109,7 +111,7 @@ if(isset($_POST['Name'])){
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
-  									<div class="row mb-2">
+  									<!-- <div class="row mb-2">
   										<div class="col-12">
   											<label class="form-control-label" for="inputArea">Area</label>
   											<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Area" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
@@ -122,7 +124,7 @@ if(isset($_POST['Name'])){
   											<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Piece" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
-  									</div>
+  									</div> -->
   									<div class="row">
   										<div class="col-sm-4 offset-sm-4">
   										</div>

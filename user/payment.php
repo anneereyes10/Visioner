@@ -8,6 +8,11 @@ require_once ("../App_Code/UploadPlace.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/Project.php");
 
+if (empty($_SESSION['uid'])) {
+  header("Location: ../index.php?login");
+  die();
+}
+
 $msg = "";
 $err = "";
 
@@ -247,11 +252,9 @@ $name=$row_pro['full_name'];
 					<div class="btn-group">
 						<button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
 						<ul class="dropdown-menu">
-							<li><a href="user_account.php?edit_profile">Edit Information</a></li>
+							<li><a href="../user/index.php?edit_profile">Edit Information</a></li> 
 							<li><a href="payment.php">Check Transaction</a></li>
-							<li><a href="user_account.php?check_payment">Check Payment</a></li>
-							<li><a href="user_account.php?check_date">Check Appointment Date</a></li>
-							<li><a href="user_account.php?change_password">Change Password</a></li>
+							<li><a href="change_password.php">Change Password</a></li>
 							<li><a href="logout.php">Logout</a></li>
 						</ul>
 					</div>
@@ -273,7 +276,7 @@ $name=$row_pro['full_name'];
 				</div>
 				<ul class="main-nav nav navbar-nav navbar-right">
 					<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
-					<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?services">Services</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="services.php">Services</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?gallery">Gallery</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.4s"><a href="../index.php?contact">Contact</a></li>
 				</ul>
@@ -318,13 +321,13 @@ $name=$row_pro['full_name'];
 								<form action="" method="post" enctype="multipart/form-data">
 									<div class="profiel-header">
 										<h3>
-											<b>MY PAYMENTS</b></h4>
+											MY <b>PAYMENTS</b></h4>
 											</ul>
 											<br>
 										</h3>
 										<hr>
 									</div>
-									</p>
+									
 									<?php echo $msg; ?>
 									<br>
 									<form method="post" action="" enctype="multipart/form-data" autocomplete="off">
@@ -398,15 +401,22 @@ $name=$row_pro['full_name'];
 												</div>
 											</div>
 										</div>
-										<div class="col-sm-4 offset-sm-4">
-											<button type="submit" id="submit" class="btn btn-primary w-full">Submit</button>
+										<div class="col-sm-12">
+											<center><button type="submit" id="submit" class="btn btn-primary w-full">Submit</button></center>
 										</div>
 									</form>
-									<br>
-									<div class="panel-heading">
-										<br>
-										<h3 class="panel-title">Transaction</h3>
+									<br><br>
+								<hr>
+								<div class="profiel-header">
+										<h3>
+											MY <b>TRANSACTIONS</b>
+											</ul>
+											<br>
+										</h3>
+										<hr>
 									</div>
+									
+									
 									<div class="panel-body">
 										<table id="example" class="table table-striped table-bordered" style="width:100%">
 											<thead>
@@ -476,7 +486,7 @@ $name=$row_pro['full_name'];
 
 															if (!empty($mdlPayment->getMessage())) {
 																?>
-																<div class="alert alert-info">
+																<div class="alert alert-danger">
 																	<strong><?php echo $mdlPayment->getMessage(); ?></strong>
 																</div>
 																<?php
