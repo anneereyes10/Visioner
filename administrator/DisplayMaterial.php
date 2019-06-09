@@ -2,7 +2,11 @@
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Material.php");
 require_once ("../App_Code/Image.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $msg = "";
 $err = "";
 
@@ -133,12 +137,13 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
 
 					<div class="row">
 						<div class="col-12">
-              <div class="panel">
-                <div class="panel-heading">
-                  <h3 class="panel-title">Material Details</h3>
-                </div>
+                <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Material Details</h6>
+            </div>
+
                 <?php echo $msg; ?>
-                <div class="panel-body">
+                <div class="card-body">
                   <div class="row mb-2">
                     <div class="form-group col-md-12 text-center">
 											<?php
@@ -154,37 +159,37 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
                   </div>
                   <div class="row">
                     <div class="form-group col-md-12">
-                      <label class="form-control-label" for="inputName">Name:</label>
-                      <p class="font-weight-bold"><?php echo $mdlMaterial->getName(); ?></p>
+                      <label class="form-control-label" for="inputName"><b>Name:</b></label>
+                      <p class="form-control" readonly><?php echo $mdlMaterial->getName(); ?></p>
                     </div>
                   </div>
                   <div class="row mb-2">
                     <div class="col-12">
-                      <label class="form-control-label" for="inputDescription">Description:</label>
-                      <p class="font-weight-bold"><?php echo $mdlMaterial->getDescription(); ?></p>
+                      <label class="form-control-label" for="inputDescription"><b>Description:</b></label>
+                      <p class="form-control"readonly><?php echo $mdlMaterial->getDescription(); ?></p>
                     </div>
                   </div>
 									<div class="row mb-2">
                     <div class="col-12">
-                      <label class="form-control-label" for="inputPrice">Price:</label>
-                      <p class="font-weight-bold"><?php echo $mdlMaterial->getPrice(); ?></p>
+                      <label class="form-control-label" for="inputPrice"><b>Price:</b></label>
+                      <p class="form-control" readonly><?php echo $mdlMaterial->getPrice(); ?></p>
                     </div>
                   </div>
-									<!-- <div class="row mb-2">
+									<div class="row mb-2">
                     <div class="col-12">
-                      <label class="form-control-label" for="inputPriceType">PriceType:</label>
-                      <p class="font-weight-bold"><?php echo ($mdlMaterial->getPriceType() == "0")?'per Area':'per Piece'; ?></p>
+                      <label class="form-control-label" for="inputPriceType"><b>PriceType:</b></label>
+                      <p class="form-control" readonly><?php echo ($mdlMaterial->getPriceType() == "0")?'per Area':'per Piece'; ?></p>
                     </div>
-                  </div> -->
+                  </div>
                   <div class="row">
                     <div class="col-sm-4 offset-sm-4">
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-3 offset-sm-3">
+                    <div class="col-sm-1 offset-sm-5">
 											<a href="EditMaterial.php?Id=<?php echo $mdlMaterial->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-1">
 											<a href="DisplayPart.php?Id=<?php echo $mdlMaterial->getPart_Id(); ?>" class="btn btn-secondary w-100">Back</a>
                     </div>
                   </div>
@@ -250,3 +255,4 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
   </body>
 
 </html>
+<?php } ?>

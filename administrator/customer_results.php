@@ -1,10 +1,8 @@
 <?php 
 //all of these codes are needed to secure the website that the user is logged in
 
-session_start(); 
-
 if(!isset($_SESSION['email'])){
-	
+
 	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
 }
 else {
@@ -387,4 +385,4 @@ else {
 
 </html>
 
-<?php } ?>
+<?php  }?>

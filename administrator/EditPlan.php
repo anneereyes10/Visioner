@@ -3,7 +3,11 @@ require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Plan.php");
 require_once ("../App_Code/Image.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $msg = "";
 $err = "";
 
@@ -110,75 +114,81 @@ if(isset($_POST['Name'])){
           <form method="post" action="" enctype="multipart/form-data" autocomplete="off">
   					<div class="row">
   						<div class="col-12">
-  							<div class="panel">
-  								<div class="panel-heading">
-  									<h3 class="panel-title">Plan Details</h3>
-  								</div>
+  							 <div class="card shadow mb-4">
+  							     <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Plan Details</h6>
+                                </div>
   								<?php echo $msg; ?>
-  								<div class="panel-body">
-  									<div class="row">
-  										<div class="form-group col-md-12">
-  											<label class="form-control-label" for="inputName">Name</label>
+  								<div class="card-body">
+  									<div class="row mb-2">
+  									    <!-- Name --> 
+  										<div class="form-group col-md-4">
+  											<label class="form-control-label" for="inputName"><b>Name:</b></label>
   											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPlan->getName(); ?>" onblur="checkInput('inputName')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
-  									</div>
-  									<div class="row mb-2">
-  										<div class="col-12">
-  											<label class="form-control-label" for="inputDescription">Description</label>
-												<textarea class="form-control" id="inputDescription" name="Description"><?php echo $mdlPlan->getDescription(); ?></textarea>
-  											<small id="notif-inputName" class="invalid-feedback">This is required</small>
-  										</div>
-  									</div>
-  									<div class="row mb-2">
-  										<div class="col-12">
-  											<label class="form-control-label" for="inputSize">Size</label>
+  										<!--  -->
+  										<div class="col-4">
+  											<label class="form-control-label" for="inputSize"><b>Size:</b></label>
   											<input type="number" class="form-control" id="inputSize" name="Size" placeholder="Size" value="<?php echo $mdlPlan->getSize(); ?>" onblur="checkInput('inputSize')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
-  									</div>
-  									<div class="row mb-2">
-  										<div class="col-12">
-  											<label class="form-control-label" for="inputPrice">Price</label>
+  										
+  										<div class="col-4">
+  											<label class="form-control-label" for="inputPrice"><b>Price:</b></label>
   											<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlPlan->getPrice(); ?>" onblur="checkInput('inputPrice')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
+
+  									<!--  -->
   									<div class="row mb-2">
-  										<div class="col-12">
-  											<label class="form-control-label" for="inputBedroom">Bedroom</label>
+  									    <!-- --> 
+  										<div class="col-4">
+  											<label class="form-control-label" for="inputBedroom"><b>Bedroom:</b></label>
   											<input type="number" class="form-control" id="inputBedroom" name="Bedroom" placeholder="Bedroom" value="<?php echo $mdlPlan->getBedroom(); ?>" onblur="checkInput('inputBedroom')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
-  									</div>
-  									<div class="row mb-2">
-  										<div class="col-12">
-  											<label class="form-control-label" for="inputBathroom">Bathroom</label>
+  										<!-- -->
+  										<div class="col-4">
+  											<label class="form-control-label" for="inputBathroom"><b>Bathroom:</b></label>
   											<input type="number" class="form-control" id="inputBathroom" name="Bathroom" placeholder="Bathroom" value="<?php echo $mdlPlan->getBathroom(); ?>" onblur="checkInput('inputBathroom')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
-  									</div>
-  									<div class="row mb-2">
-  										<div class="col-12">
-  											<label class="form-control-label" for="inputParking">Parking</label>
+  										<!-- -->
+  										<div class="col-4">
+  											<label class="form-control-label" for="inputParking"><b>Parking:</b></label>
   											<input type="number" class="form-control" id="inputParking" name="Parking" placeholder="Parking" value="<?php echo $mdlPlan->getParking(); ?>" onblur="checkInput('inputParking')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
-  									</div>
+  									</div><br>
+  									
   									<div class="row mb-2">
-  										<div class="form-group col-md-12">
-  											<label class="form-control-label" for="inputImage">Picture</label>
+  										<div class="col-12">
+  											<label class="form-control-label" for="inputDescription"><b>Description:</b></label>
+												<textarea class="form-control" id="inputDescription" name="Description"><?php echo $mdlPlan->getDescription(); ?></textarea>
+  											<small id="notif-inputName" class="invalid-feedback">This is required</small>
+  										</div>
+  									</div>
+                                        <br>
+                                    <center> 
+  									<div class="card" style="width: 18rem;">
+                                        <div class="card-body">
+  											<label class="form-control-label" for="inputImage"><b>Upload an Image:</b></label>
   											<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
   										</div>
   									</div>
+  									</center><br><br>
+  									<!--  -->
   									<div class="row">
-	                    <div class="col-sm-3 offset-sm-3">
+	                                    <div class="col-sm-2 offset-sm-4">
 												<button type="submit" id="submit" class="btn btn-primary w-100">Submit</button>
-	                    </div>
-	                    <div class="col-sm-3">
+	                                    </div>
+	                                        <div class="col-sm-2">
 												<a href="DisplayPlan.php?Id=<?php echo $mdlPlan->getId(); ?>" class="btn btn-secondary w-100">Back</a>
-	                    </div>
+	                                         </div>
   									</div>
+  									
   								</div>
   							</div>
   						</div>
@@ -220,3 +230,4 @@ if(isset($_POST['Name'])){
   </body>
 
 </html>
+<?php } ?>

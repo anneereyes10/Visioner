@@ -6,6 +6,11 @@ require_once ("../App_Code/Payment.php");
 require_once ("../App_Code/Place.php");
 require_once ("../App_Code/PaymentType.php");
 require_once ("../App_Code/Image.php");
+if(!isset($_SESSION['email'])){
+
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 ?>
 <div class="container-fluid">
 
@@ -27,57 +32,48 @@ require_once ("../App_Code/Image.php");
               <th>Appointment Status</th>
             </tr>
           </thead>
-          <tfoot>
-            <tr align="center">
-              <th>Name</th>
-              <th>Email</th>
-              <th>Contact No.</th>
-              <th>Other Details </th>
-              <th>Payment Status</th>
-              <th>Appointment Status</th>
-            </tr>
-          </tfoot>
-
-
-          <?php
-        	include("includes/db.php");
-
-        	$get_c = "select * from
-        			  user_account
-        			  inner join payment_status
-        			  on user_account.user_id = payment_status.user_id
-        			  inner join appointment
-        			  on payment_status.user_id = appointment.user_id";
-
-        	$run_c = mysqli_query($con, $get_c);
-
-        	$i = 0;
-        	while ($row_c=mysqli_fetch_array($run_c)){
-
-
-        		$user_id=$row_c['user_id'];
-        		$c_name = $row_c['full_name'];
-        		$c_email = $row_c[2];
-        		$c_cont = $row_c['contact'];
-        		$c_gend = $row_c['gender'];
-        		$c_bd = $row_c['birthdate'];
-        		$c_add = $row_c['address'];
-        		$p_id=$user_id;
-        		$p_type=$row_c['type_selected'];
-        		$p_status=$row_c['pay_status'];
-        		$p_dp=$row_c['date_paid'];
-        		$p_img=$row_c['payment_image'];
-        		$p_imgd=$row_c['image_date'];
-        		$a_id=$user_id;
-        		$a_status=$row_c['appointment_status'];
-        		$a_ds=$row_c['appointment_date'];
-        		$a_dm=$row_c['appointment_made'];
-        		$i++;
 
 
 
-        	?>
-          <tr align="center">
+         <?php 
+	include("includes/db.php");
+	
+	$get_c = "select * from 
+			  user_account
+			  inner join payment_status
+			  on user_account.user_id = payment_status.user_id
+			  inner join appointment 
+			  on payment_status.user_id = appointment.user_id";
+	
+	$run_c = mysqli_query($con, $get_c); 
+	
+	$i = 0;
+	while ($row_c=mysqli_fetch_array($run_c)){
+		
+
+		$user_id=$row_c['user_id'];
+		$c_name = $row_c['full_name'];
+		$c_email = $row_c['user_email'];
+		$c_cont = $row_c['contact'];
+		$c_gend = $row_c['gender'];
+		$c_bd = $row_c['birthdate'];
+		$c_add = $row_c['address'];
+		$p_id=$user_id;
+		$p_type=$row_c['type_selected'];
+		$p_status=$row_c['pay_status'];
+		$p_dp=$row_c['date_paid'];
+		$p_img=$row_c['payment_image'];
+		$p_imgd=$row_c['image_date'];
+		$a_id=$user_id;
+		$a_status=$row_c['appointment_status'];
+		$a_ds=$row_c['appointment_date'];
+		$a_dm=$row_c['appointment_made'];
+		$i++;
+		
+
+	
+	?>
+	<tr align="center">
 
             <td>
               <?php echo $c_name;?>
@@ -259,6 +255,7 @@ require_once ("../App_Code/Image.php");
                   <?php
         $lstPayment = $clsPayment->GetByUserId($user_id);
         foreach ($lstPayment as $mdlPayment) {
+          if ($mdlPayment->getAppointmentStatus() == 1) {
           ?>
                   <div class="row m-0">
                     <div class="col-sm-2 border">
@@ -300,7 +297,7 @@ require_once ("../App_Code/Image.php");
                     </div>
                     <?php
                     if ($mdlProject->getType() == "2") {
-                      $mdlUploadPlace = $clsUploadPlace->GetById($mdlProject->getPlan_Id());
+                      $mdlUploadPlace = $clsUploadPlace->GetById($mdlPayment->getPlace_Id());
                       ?>
                       <div class="col-sm-2 border">
                         <?php echo $mdlUploadPlace->getDateTime(); ?>
@@ -322,19 +319,20 @@ require_once ("../App_Code/Image.php");
                     ?>
                     <div class="col-sm-2 border">
                       <?php
-                if($mdlPayment->getReceiptStatus() == 0){
-                  echo "Pending";
-                } elseif($mdlPayment->getReceiptStatus() == 1){
-                  echo "Approved";
-                } else {
-                  echo "Declined";
-                }
-                ?>
+                      if($mdlPayment->getAppointmentStatus() == 0){
+                        echo "Pending";
+                      } elseif($mdlPayment->getAppointmentStatus() == 1){
+                        echo "Approved";
+                      } else {
+                        echo "Declined";
+                      }
+                      ?>
                     </div>
                   </div>
                   <?php
-        }
-        ?>
+                  }
+                }
+                  ?>
                 </div>
                 <div class="modal-footer">
                   <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
@@ -344,7 +342,10 @@ require_once ("../App_Code/Image.php");
           </div>
           <?php } ?>
         </table>
+		
       </div>
+
+
     </div>
   </div>
 
@@ -352,3 +353,4 @@ require_once ("../App_Code/Image.php");
 
 </div>
 <!-- /.container-fluid -->
+<?php } ?>

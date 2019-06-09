@@ -114,9 +114,7 @@ $name=$row_pro['full_name'];
 							<ul class="dropdown-menu">
                                 <li><a href="user_account.php?edit_profile">Edit Information</a></li>
 								<li><a href="payment.php">Check Transaction</a></li>
-                                <li><a href="user_account.php?check_payment">Check Payment</a></li>
-                                <li><a href="user_account.php?check_date">Check Appointment Date</a></li>
-                                <li><a href="user_account.php?change_password">Change Password</a></li>
+                                <li><a href="change_password.php">Change Password</a></li>
 								<li><a href="logout.php">Logout</a></li>
                             </ul>
 						</div>

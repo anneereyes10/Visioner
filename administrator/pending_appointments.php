@@ -1,7 +1,11 @@
 <?php
 include("includes/db.php");
 date_default_timezone_set('Asia/Manila');
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 ?>
 
 
@@ -181,4 +185,4 @@ date_default_timezone_set('Asia/Manila');
 
         </div>
         <!-- /.container-fluid -->
-
+<?php } ?>

@@ -60,37 +60,25 @@ include("../functions/functions.php");
             <div class="container">
 
 	<!-- Login Area -->
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="box-for overflow">
                         <div class="col-md-12 col-xs-12 login-blocks">
-                            <h2>Want to Create your dream house?</h2>
+                            <center><h4>WANT TO CREATE YOUR <strong>DREAM HOUSE?</strong></h4></center>
+                            <hr>
                             <form action="" method="post">
                                 <br><br>
                                 <div class="text-center">
-                                    <h2><a href="customization.php">START NOW</a></h2>
+                                    <h2><a href="customization.php" class="btn btn-finish btn-primary pull-right">START NOW</a></h2>
                                 </div>
 								<br><br>
 								<p align="center">Have your own house plan?</p>
 								<div class="text-center">
-                                    <h2><a href="upload.php">UPLOAD</a></h2>
+                                    <h2><a href="upload.php" class="btn btn-finish btn-primary pull-right">UPLOAD</a></h2>
                                 </div>
                             </form>
 
                         </div>
 
-                    </div>
-                </div>
-				<div class="col-md-6">
-                    <div class="box-for overflow">
-                        <div class="col-md-12 col-xs-12 register-blocks">
-                            <h2>Looking to get our services?</h2>
-                            <form action="" method="post">
-                                <br><br>
-                                <div class="text-center">
-                                    <h2><a href="servicelist.php">CLICK HERE</a></h2>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>

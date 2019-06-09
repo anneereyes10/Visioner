@@ -10,7 +10,7 @@ body {
     margin:0;
     font-size:14px;
     line-height: 28px;
-    color: #777;
+    color: #000000;
     background: #fff;
     position: relative;
 }
@@ -53,7 +53,7 @@ p{
     line-height: 1.6180em;
 }
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
-    color: #999999;
+    color: #494949;
     font-weight: 300;
     line-height: 1;
 }
@@ -83,7 +83,7 @@ a:hover {
     transition: all .8s ease;
 }
 a:focus {
-    color: #999696;
+    color: #494949;
     text-decoration: none;
 }
 img {
@@ -314,7 +314,7 @@ input[type="search"]::-webkit-search-decoration {
     background-color: #fff;
     border-radius: 5px;
     padding: 20px 0;
-    border: 1px solid #E6E6E6;
+    border: 1px solid #494949;
     box-sizing: border-box;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -327,7 +327,7 @@ input[type="search"]::-webkit-search-decoration {
 .form-inline .form-control, .form-inline .form-control {
     background: rgba(252, 252, 252, 0.35);
     border-radius: 1px;
-    color: #ADADAD;
+    color: #494949;
     height: 40px;
     margin-right: 10px;
     width: 195px;
@@ -342,7 +342,7 @@ input[type="search"]::-webkit-search-decoration {
     color: #555;
     background-color: #FFF;
     background-image: none;
-    border: 1px solid #EAE9E9;
+    border: 1px solid #494949;
     border-radius: 4px;
     box-shadow: 0px 1px 1px rgba(179, 179, 179, 0.1) inset;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
@@ -364,19 +364,19 @@ input[type="search"]::-webkit-search-decoration {
     background: #00A2DE
 }
 .form-control::-moz-placeholder{
-    color: #DDDDDD;
+    color: #c5c5c5;
     opacity: 1;
 }
 .form-control:-moz-placeholder{
-    color: #DDDDDD;
+    color: #c5c5c5;
     opacity: 1;
 }
 .form-control::-webkit-input-placeholder{
-    color: #DDDDDD;
+    color: #c5c5c5;
     opacity: 1;
 }
 .form-control:-ms-input-placeholder{
-    color: #DDDDDD;
+    color: #c5c5c5;
     opacity: 1;
 }
 
@@ -403,10 +403,10 @@ input[type="search"]::-webkit-search-decoration {
     padding: 6px 12px;
     font-size: 13px;
     line-height: 1.42857;
-    color: #838383;
+    color: #494949;
     background-color: #FFF;
     background-image: none;
-    border: 1px solid #DADADA;
+    border: 1px solid #494949;
     box-shadow: 0px 1px 1px rgba(179, 179, 179, 0.1) inset;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 }
@@ -522,7 +522,7 @@ label small{
     background-color: #3472F7;
 }
 .label-info.label-fill, .progress-bar-info{
-    background-color: #2CA8FF;
+    background-color: #669900;
 }
 .label-success.label-fill, .progress-bar-success{
     background-color: #05AE0E;
@@ -600,7 +600,7 @@ label small{
 .nav-pills.ct-azure > li.active > a, .nav-pills.ct-azure > li.active > a:hover, .nav-pills.ct-azure > li.active > a:focus,
 .pagination.ct-azure > .active > a, .pagination.ct-azure > .active > span, .pagination.ct-azure > .active > a:hover,
 .pagination.ct-azure > .active > span:hover, .pagination.ct-azure > .active > a:focus, .pagination.ct-azure > .active > span:focus{
-    background-color: #2CA8FF;
+    background-color: #228B22;
 }
 .nav-pills.ct-green > li.active > a, .nav-pills.ct-green > li.active > a:hover, .nav-pills.ct-green > li.active > a:focus,
 .pagination.ct-green > .active > a, .pagination.ct-green > .active > span, .pagination.ct-green > .active > a:hover,
@@ -660,10 +660,10 @@ label small{
 .pagination > li > a, .pagination > li > span, .pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
     border-radius: 50%;
     margin: 0 2px;
-    color: #777777;
+    color: #494949;
 }
 .pagination > li.active > a, .pagination > li.active > span, .pagination > li.active > a:hover, .pagination > li.active > span:hover, .pagination > li.active > a:focus, .pagination > li.active > span:focus {
-    background-color: #2CA8FF;
+    background-color: #32cd32;
     border: 0;
     color: #FFFFFF;
     padding: 7px 13px;
@@ -887,7 +887,7 @@ label small{
     padding: 4px 0;
 }
 .navbar .yamm-content ul li a {
-    color: #777;
+    color: #494949;
     font-size: 14px;
     display: block;
     font-weight: 300;
@@ -1110,7 +1110,7 @@ page-header
 }
 .layout-switcher a{
     font-size: 25px;
-    color:#777;
+    color:#494949;
 }
 .layout-switcher a:hover{
     color:#32CD32;
@@ -1216,7 +1216,7 @@ Asside widgets CSS
     background: yellow;
 }
 .panel.sidebar-menu .panel-body label {
-    color: #777;
+    color: #494949;
     font-size: 13px;
     font-weight: 300;
     margin-bottom: 0px;
@@ -2235,7 +2235,7 @@ Welcom
 .welcome-icon {
     height: 90px;
     width: 90px;
-    border: 2px solid #777;
+    border: 2px solid #494949;
     border-radius: 100%;
     display: inline-block;
     position: relative;
@@ -2312,7 +2312,7 @@ count-area
 .count-area .count-item-circle {
     height: 100px;
     width: 100px;
-    border: 1px solid #777;
+    border: 1px solid #494949;
     border-radius: 100%;
     margin: 0px auto;
     position: relative;
@@ -2478,7 +2478,7 @@ count-area
 .search-form .search-toggle {
     margin-top: 20px;
     overflow: hidden;
-    color: #777;
+    color: #494949;
     border-top: 1px solid #EAEAEA;
     padding: 15px;
 }
@@ -2845,7 +2845,7 @@ padding-top: 7px;
 .footer-title-line {
     width: 100px;
     height: 2px;
-    background: #FFA600;
+    background: #00FF00;
     margin: 0px 0px 33px;
     position: relative;
     top: -2px;
@@ -3042,4 +3042,50 @@ padding: 10px;
 }
 #map {
     height: 300px;
+}
+
+
+/* Portfolio Section */
+#portfolio {
+	padding: 100px 0;
+	background: #f6f6f6;
+}
+.portfolio-item {
+	margin: 15px 0;
+}
+.portfolio-item .hover-bg {
+	overflow: hidden;
+	position: relative;
+}
+.hover-bg .hover-text {
+	position: absolute;
+	text-align: center;
+	margin: 0 auto;
+	color: #fff;
+	background: rgba(31, 56, 110, 0.8);
+	padding: 30% 0 0 0;
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+	transition: all 0.5s;
+}
+.hover-bg .hover-text>h4 {
+	opacity: 0;
+	color: #fff;
+	-webkit-transform: translateY(100%);
+	transform: translateY(100%);
+	transition: all 0.3s;
+	font-size: 17px;
+	letter-spacing: 1px;
+	font-weight: 400;
+	text-transform: uppercase;
+}
+.hover-bg:hover .hover-text>h4 {
+	opacity: 1;
+	-webkit-backface-visibility: hidden;
+	-webkit-transform: translateY(0);
+	transform: translateY(0);
+}
+.hover-bg:hover .hover-text {
+	opacity: 1;
 }

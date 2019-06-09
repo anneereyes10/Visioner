@@ -252,7 +252,7 @@ $name=$row_pro['full_name'];
 					<div class="btn-group">
 						<button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
 						<ul class="dropdown-menu">
-							<li><a href="../user/index.php?edit_profile">Edit Information</a></li> 
+							<li><a href="edit_profile.php">Edit Information</a></li>
 							<li><a href="payment.php">Check Transaction</a></li>
 							<li><a href="change_password.php">Change Password</a></li>
 							<li><a href="logout.php">Logout</a></li>
@@ -271,12 +271,12 @@ $name=$row_pro['full_name'];
 			          }
 			          ?>
 					<div class="btn-group">
-						<button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('../builddesign/start.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
+						<button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('../builddesign/customization.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
 					</div>
 				</div>
 				<ul class="main-nav nav navbar-nav navbar-right">
 					<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
-					<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="services.php">Services</a></li>
+					<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../services.php">Services</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?gallery">Gallery</a></li>
 					<li class="wow fadeInDown" data-wow-delay="0.4s"><a href="../index.php?contact">Contact</a></li>
 				</ul>
@@ -327,7 +327,7 @@ $name=$row_pro['full_name'];
 										</h3>
 										<hr>
 									</div>
-									
+
 									<?php echo $msg; ?>
 									<br>
 									<form method="post" action="" enctype="multipart/form-data" autocomplete="off">
@@ -365,7 +365,7 @@ $name=$row_pro['full_name'];
 																		echo "Upload: ";
 																		break;
 																	}
-																	echo $mdlProject->getName() . " (" . $mdlProject->getDateCreated() . ")";
+																	echo $mdlProject->getName() ;
 																	?>
 																</option>
 															<?php
@@ -415,8 +415,8 @@ $name=$row_pro['full_name'];
 										</h3>
 										<hr>
 									</div>
-									
-									
+
+
 									<div class="panel-body">
 										<table id="example" class="table table-striped table-bordered" style="width:100%">
 											<thead>
@@ -427,14 +427,6 @@ $name=$row_pro['full_name'];
 													<th>Status</th>
 												</tr>
 											</thead>
-											<tfoot>
-												<tr>
-													<th>Image</th>
-													<th>Project</th>
-													<th>Payment Date</th>
-													<th>Staus</th>
-												</tr>
-											</tfoot>
 											<tbody>
 												<?php
 					                    $lstPayment = $clsPayment->GetByUserId($_SESSION['uid']);
@@ -486,7 +478,7 @@ $name=$row_pro['full_name'];
 
 															if (!empty($mdlPayment->getMessage())) {
 																?>
-																<div class="alert alert-danger">
+																<div class="alert alert-info">
 																	<strong><?php echo $mdlPayment->getMessage(); ?></strong>
 																</div>
 																<?php

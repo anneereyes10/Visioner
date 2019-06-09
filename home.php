@@ -1,4 +1,7 @@
-<div class='slider-area'>
+<?php
+// header("Location: index.php?home");
+
+  ?><div class='slider-area'>
 						<div class='slider'>
 							<div id='bg-slider' class='owl-carousel owl-theme'>
 

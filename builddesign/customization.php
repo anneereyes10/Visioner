@@ -319,16 +319,29 @@ $err = "";
           							<input type="text" class="form-control" id="inputProject_Name" name="Project_Name" placeholder="Project Name">
                       </div>
                     </div>
+                    
+                    
                     <div class="row">
                       <div class="col-md-12 text-center">
                         <button type="button" class="btn btn-primary" onclick="addProject();" style="margin-top:10px;">Create</button>
                       </div>
                     </div>
-
                     <hr>
+                    
+                     <div class="well well-lg col-md-6 col-sm-offset-3">
+                                <p align="center"><b>-OR-<br><br>Have your own house plan? <a data-tooltip="Have your own House Plan? Upload it here!"
+       data-tooltip-location="right"> (?)</a></b></p>
+								<div class="col-md-12 text-center">
+                                    <h2><a href="upload.php" type="button" class="btn btn-primary">UPLOAD HERE</a></h2>
+                                </div>
+                    </div>
+                    
+                    
+                    
                     <div class="row">
                       <div class="col-md-8 col-md-offset-2">
                         <div class="panel">
+                            <hr>
 
                           <div class="panel-heading">
                             <h3 class="panel-title"><strong>My Projects<a data-tooltip="View and manage your projects here! Use the search bar on the right to search for your project."
@@ -388,8 +401,8 @@ $err = "";
                   <div class="row">
                     <div class="col-lg-8">
 
-                        <!-- FILTERPLANS --> 
-                    
+                        <!-- FILTERPLANS -->
+
                         <div id="order-summary" class="well well-lg col-md-12">
                           <div class="box-header mt-0">
                             <h3>Filter Plans </h3>
@@ -398,7 +411,7 @@ $err = "";
        data-tooltip-location="top"> (?)</a></p>
                           <div class="table-responsive" id="layoutfilter">
 
-                          
+
                             <div class="col-md-12">
 
                                 <!-- Start -->
@@ -489,10 +502,10 @@ $err = "";
                           </div>
 
                           </div>
-                        
-                      
-                      
-                      <!-- END OF FILTER PLANS --> 
+
+
+
+                      <!-- END OF FILTER PLANS -->
 
 
 
@@ -625,21 +638,29 @@ $err = "";
                       </div>
 
 
-                     
+
                     </div>
 
 
 
                     <!-- Specification Summary -->
                     <div class="col-lg-4">
-                      
+
+                            <div class="well well-lg col-md-12">
+                                <p align="center"><b>Have your own house plan? <a data-tooltip="Have your own House Plan? Upload it here!"
+                                      data-tooltip-location="top"> (?)</a></b></p>
+								<div class="col-md-12 text-center">
+                                    <h2><a href="upload.php" type="button" class="btn btn-primary">UPLOAD</a></h2>
+                                </div>
+                            </div>
+
                       <div class="row">
-                        <div id="order-summary" class="box mt-0 mb-4 p-0" style="height:1550px;width:375px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+                        <div id="order-summary" class="box mt-0 mb-4 p-0" style="height:1380px;width:375px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
                           <div class="box-header mt-0">
                             <h3>Specification Summary</h3>
                           </div>
                           <p class="text-muted">Your new home specifications. <a data-tooltip="This function shows the breakdown of the prices of the features/specifications you choosed."
-       data-tooltip-location="top"> (?)</a></p>
+       data-tooltip-location="bottom"> (?)</a></p>
                           <hr>
                           <div class="table-responsive" id="projectlist">
                           </div>
@@ -666,13 +687,6 @@ $err = "";
                 <!--  End step 1 -->
 
 
-
-
-
-                <!-- Start Step 3 -->
-
-
-
                 <!-- Start Step 4 (Finished Tab) -->
                 <div class="tab-pane <?php echo ((empty($_GET['finalP']))?'':'active'); ?>" id="step3">
                   <div class="row">
@@ -683,12 +697,12 @@ $err = "";
                           <form method="get" action="">
                             <div class="table-responsive">
                                 <table class="table table-striped">
-                            
+
                                 <h5 class="info-text"> <b>Home Specifications</b></h5><hr>
-                                
+
                                     <thead>
                                         <tr>
-                                          
+
                                           <th scope="col">Description</th>
                                           <th scope="col">Total</th>
                                         </tr>
@@ -699,14 +713,15 @@ $err = "";
                                   $FinalProj = (empty($_GET['finalP']))?'0':$_GET['finalP'];
                                   $Plan_Id = $clsProject->GetPlan_IdById($FinalProj);
                                   $mdlPlan = $clsPlan->GetById($Plan_Id);
+                                  $totalPrice += $mdlPlan->getPrice();
                                   ?>
                                   <ul>
-                                    <li><b>Plan Type: </b><?php echo $mdlPlan->getName(); ?></li>
+                                    <li><b>Plan Type: </b><?php echo $mdlPlan->getName(); ?> (Base Price: PHP <?php echo $totalPrice; ?>)</li>
                                   <?php
                                   $lstCategory = $clsCategory->GetByPlan_Id($Plan_Id);
                                   foreach ($lstCategory as $mdlCategory){
                                     ?>
-                                    
+
                                     <hr>
                                     <ul>
                                       <li><b><?php echo $mdlCategory->getName(); ?></b></li>
@@ -981,8 +996,8 @@ $err = "";
                 <div class="clearfix"></div>
               </div>
               <!-- End Previous & Next Buttons -->
-              
-              
+
+
             </form>
           </div>
           <!-- End submit form -->

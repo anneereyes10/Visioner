@@ -25,19 +25,23 @@ session_start();
 
   </head>
 
-  <body class="bg-light">
-<h2 style="color:Red; text-align:center;"><?php echo @$_GET['not_admin']; ?></h2>
+  <body class="bg-light"><br>
+<h5 style="color:Red; text-align:center;"><?php echo @$_GET['not_admin']; ?></h5>
+<br>
+<h5 style="color:Red; text-align:center;"><?php echo @$_GET['logged_out']; ?></h5>
 
-<h2 style="color:Red; text-align:center;"><?php echo @$_GET['logged_out']; ?></h2>
+<br><br><br>
+<center><img src="logo.png" height="80" width="400"></center>
+
     <div class="container">
       <div class="card card-login mx-auto mt-5">
-        <div class="card-header">Login</div>
+        <center><div class="card-header"><b>Login</b></div></center>
         <div class="card-body">
           <form method="post" action="login.php">
             <div class="form-group">
               <div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required="required" autofocus="autofocus"/>
-                <label for="inputEmail">Email address</label>
+                <input type="email" class="form-control" placeholder="Username" name="email" required="required" autofocus="autofocus"/>
+                <label for="inputEmail">Username</label>
               </div>
             </div>
             <div class="form-group">
@@ -83,12 +87,12 @@ include("includes/db.php");
 	
 			$_SESSION['email']=$email; 
 	
-			echo "<script>window.open('index.php?logged_in=You Have Successfully Logged In!','_self')</script>";
+			echo "<script>window.open('index.php?logged_in=Welcome!','_self')</script>";
 	
 		}
 		else 
 		{
-			echo "<script>alert('Password or Email is wrong, try again!')</script>";
+			echo "<script>alert('Username or Password is incorrect, please try again!')</script>";
 		}
 	}
 	

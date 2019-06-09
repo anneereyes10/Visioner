@@ -5,7 +5,11 @@ require_once ("../App_Code/Material.php");
 require_once ("../App_Code/MaterialModel.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $msg = "";
 $err = "";
 
@@ -21,8 +25,7 @@ if(isset($_POST['Name'])){
 	$err .= $clsFn->setForm('Name',$mdlMaterial,true);
 	$err .= $clsFn->setForm('Description',$mdlMaterial,true);
 	$err .= $clsFn->setForm('Price',$mdlMaterial,true);
-	// $err .= $clsFn->setForm('PriceType',$mdlMaterial,true);
-	$mdlMaterial->setPriceType("0");
+	$err .= $clsFn->setForm('PriceType',$mdlMaterial,true);
 
 	if($err == ""){
 		$duplicate = $clsMaterial->IsExist($mdlMaterial);
@@ -110,34 +113,34 @@ if(isset($_POST['Name'])){
           <form method="post" action="" enctype="multipart/form-data" autocomplete="off">
   					<div class="row">
   						<div class="col-12">
-  							<div class="panel">
-  								<div class="panel-heading">
-  									<h3 class="panel-title">Material Details</h3>
-  								</div>
+						    <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Material Details</h6>
+                  </div>
   								<?php echo $msg; ?>
-  								<div class="panel-body">
+  								<div class="card-body">
   									<div class="row">
   										<div class="form-group col-md-12">
-  											<label class="form-control-label" for="inputName">Name</label>
+  											<label class="form-control-label" for="inputName"><b>Name:</b></label>
   											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlMaterial->getName(); ?>" onblur="checkInput('inputName')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
   									<div class="row mb-2">
   										<div class="col-12">
-  											<label class="form-control-label" for="inputDescription">Description</label>
+  											<label class="form-control-label" for="inputDescription"><b>Description:</b></label>
   											<input type="text" class="form-control" id="inputDescription" name="Description" placeholder="Description" value="<?php echo $mdlMaterial->getDescription(); ?>" onblur="checkInput('inputDescription')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
 										<div class="row mb-2">
   										<div class="col-12">
-  											<label class="form-control-label" for="inputPrice">Price</label>
+  											<label class="form-control-label" for="inputPrice"><b>Price:</b></label>
   											<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlMaterial->getPrice(); ?>" onblur="checkInput('inputPrice')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
-										<!-- <div class="row mb-2">
+										<div class="row mb-2">
   										<div class="col-12">
   											<label class="form-control-label" for="inputPriceType">Price Type</label>
 												<select class="form-control" id="inputPriceType" name="PriceType" onblur="checkInput('inputPriceType')">
@@ -146,18 +149,25 @@ if(isset($_POST['Name'])){
 												</select>
 												<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
-  									</div> -->
+  									</div>
+										<br>
   									<div class="row mb-2">
   										<div class="form-group col-md-12">
-  											<label class="form-control-label" for="inputImage">Picture</label>
-  											<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
-  										</div>
+												<center>
+											    <div class="card" style="width: 18rem;">
+	          								<div class="card-body">
+															<label class="form-control-label" for="inputImage"><b>Picture: </b></label>
+															<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
+	  												</div>
+													</div>
+												</center>
+											</div>
   									</div>
 	                  <div class="row">
-	                    <div class="col-sm-3 offset-sm-3">
+	                    <div class="col-sm-1 offset-sm-5">
 												<button type="submit" id="submit" class="btn btn-primary w-100">Submit</button>
 	                    </div>
-	                    <div class="col-sm-3">
+	                    <div class="col-sm-1">
 												<a href="DisplayMaterial.php?Id=<?php echo $mdlMaterial->getId(); ?>" class="btn btn-secondary w-100">Back</a>
 	                    </div>
 	                  </div>
@@ -202,3 +212,4 @@ if(isset($_POST['Name'])){
   </body>
 
 </html>
+<?php } ?>

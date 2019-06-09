@@ -11,7 +11,11 @@ require_once ("../App_Code/Upgrade.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
 
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $lstFinish = $clsFinish->Get();
 $lstPlan = $clsPlan->Get();
 ?>
@@ -74,8 +78,12 @@ $lstPlan = $clsPlan->Get();
 								<div class="col-md-12">
 									<div class="panel item-wrapper">
 
+
+<hr>
+
+                                    <div class="panel-body m-4">
 										<div class="panel-heading">
-											<h4 class="panel-title">Select Finish</h4>
+											<h6 class="panel-title">Select Finish</h6>
 										</div>
 										<div class="panel-body mb-4">
 											<div class="row">
@@ -102,6 +110,9 @@ $lstPlan = $clsPlan->Get();
 												</div>
 											</div>
 										</div>
+										</div>
+										
+										<hr>
 
 										<!-- <div class="panel-heading">
 											<h4 class="panel-title">Select Plan</h4>
@@ -140,9 +151,9 @@ $lstPlan = $clsPlan->Get();
 												</div>
 											</div> -->
 										</div>
-
+<div class="panel-body m-4">
                     <div class="panel-heading">
-											<h4 class="panel-title">Select Plan</h4>
+											<h6 class="panel-title">Select Plan</h6>
 										</div>
 										<div class="panel-body mb-4">
 											<div class="row">
@@ -154,9 +165,12 @@ $lstPlan = $clsPlan->Get();
 												</div>
 											</div>
 										</div>
-
+										</div>
+										
+										<hr>
+<div class="panel-body m-4">
 										<div class="panel-heading">
-											<h4 class="panel-title">Select Category</h4>
+											<h6 class="panel-title">Select Category</h6>
 										</div>
 										<div class="panel-body mb-4">
 											<div class="row">
@@ -168,9 +182,12 @@ $lstPlan = $clsPlan->Get();
 												</div>
 											</div>
 										</div>
+										</div>
 
+                                        <hr>
+<div class="panel-body m-4">
 										<div class="panel-heading">
-											<h4 class="panel-title">Select Part</h4>
+											<h6 class="panel-title">Select Part</h6>
 										</div>
 										<div class="panel-body mb-4">
 											<div class="row">
@@ -182,6 +199,8 @@ $lstPlan = $clsPlan->Get();
 												</div>
 											</div>
 										</div>
+										</div>
+										<hr>
 
                     <div class="panel-body m-4">
                       <div class="panel-heading">
@@ -199,6 +218,8 @@ $lstPlan = $clsPlan->Get();
   										</div>
 
   									</div>
+  									
+  									<hr>
                   </div>
 								</div>
 							</div>
@@ -254,3 +275,4 @@ $lstPlan = $clsPlan->Get();
   </body>
 
 </html>
+<?php } ?>

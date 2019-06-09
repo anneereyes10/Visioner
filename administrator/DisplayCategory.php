@@ -1,10 +1,15 @@
 <?php
+
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Category.php");
 require_once ("../App_Code/Part.php");
 require_once ("../App_Code/Image.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $msg = "";
 $err = "";
 
@@ -23,10 +28,8 @@ if(isset($_POST['Name'])){
 
 	$mdlPart->setCategory_Id($mdlCategory->getId());
 	$err2 .= $clsFn->setForm('Name',$mdlPart,true);
-	$mdlPart->setArea("1");
-	$mdlPart->setPiece("1");
-	// $err2 .= $clsFn->setForm('Area',$mdlPart,true);
-	// $err2 .= $clsFn->setForm('Piece',$mdlPart,true);
+	$err2 .= $clsFn->setForm('Area',$mdlPart,true);
+	$err2 .= $clsFn->setForm('Piece',$mdlPart,true);
 
 	if($err2 == ""){
 		$duplicate = $clsPart->IsExist($mdlPart);
@@ -156,23 +159,23 @@ if(isset($_POST['Name'])){
 
 					<div class="row">
 						<div class="col-12">
-              <div class="panel">
-                <div class="panel-heading">
-                  <h3 class="panel-title">Category Details</h3>
-                </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Category Details</h6>
+            </div>
                 <?php echo $msg; ?>
-                <div class="panel-body">
+                <div class="card-body">
                   <div class="row">
                     <div class="form-group col-md-12">
-                      <label class="form-control-label" for="inputName">Name:</label>
-                      <p class="font-weight-bold"><?php echo $mdlCategory->getName(); ?></p>
+                      <label class="form-control-label" for="inputName"><b>Rename Category Name:</b></label>
+                      <p class="form-control" readonly><?php echo $mdlCategory->getName(); ?></p>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-3 offset-sm-3">
+                    <div class="col-sm-1 offset-sm-5">
                       <a href="EditCategory.php?Id=<?php echo $mdlCategory->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-1">
 											<a href="DisplayPlan.php?Id=<?php echo $mdlCategory->getPlan_Id(); ?>" class="btn btn-secondary w-100">Back</a>
                     </div>
                   </div>
@@ -182,31 +185,28 @@ if(isset($_POST['Name'])){
 					</div>
 
 
-					<div class="row mt-4">
-						<div class="col-12">
-							<hr />
-						</div>
-					</div>
 
 					<div class="row mt-4">
 						<div class="col-12">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">Part</h3>
-								</div>
+
+			<div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Part</h6>
+                </div>
+
                 <?php echo $msg2; ?>
 
-								<div class="panel-body">
+								<div class="card-body">
 									<div class="row m-4">
 										<div class="col-sm-12">
 											<form action="?Id=<?php echo $_GET['Id']; ?>" method="post">
 		  									<div class="row">
 		  										<div class="form-group col-md-12">
-		  											<label class="form-control-label" for="inputName">Name: </label>
+		  											<label class="form-control-label" for="inputName"><b>Name: </b></label>
 														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPart->getName(); ?>" onblur="checkInput('inputName')">
 														<small id="notif-inputName" class="invalid-feedback">This is required</small>
 													</div>
-													<!-- <div class="form-group col-md-3">
+													<div class="form-group col-md-3">
 														<label class="form-control-label" for="inputArea">Area: </label>
 														<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Area in SQM" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
 														<small id="notif-inputArea" class="invalid-feedback">This is required</small>
@@ -215,7 +215,7 @@ if(isset($_POST['Name'])){
 		  											<label class="form-control-label" for="inputPiece">Pieces: </label>
 														<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Number of Pieces" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
 														<small id="notif-inputPiece" class="invalid-feedback">This is required</small>
-													</div> -->
+													</div>
 												</div>
 												<div class="row">
 		  										<div class="col-sm-4">
@@ -333,3 +333,4 @@ if(isset($_POST['Name'])){
   </body>
 
 </html>
+<?php } ?>

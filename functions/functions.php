@@ -1,7 +1,7 @@
 <?php
-
-// $con = mysqli_connect("localhost","u841288402_build","4L;sw0^JdrL|RxE","u841288402_build");
-$con = mysqli_connect("localhost","root","","designbuild3");
+require_once(dirname(__FILE__)."/../App_Code/DatabaseModel.php");
+$con = mysqli_connect($mdlDB->getHost(),$mdlDB->getUser(),$mdlDB->getPassword(),$mdlDB->getDbName());
+// $con = mysqli_connect("localhost","root","","designbuild3");
 
 if (mysqli_connect_errno())
 {

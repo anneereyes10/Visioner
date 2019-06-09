@@ -109,8 +109,7 @@ if (empty($_SESSION['uid'])) {
                   <button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
                   <ul class="dropdown-menu">
                     <li><a href="../user/user_account.php?edit_profile">Edit Information</a></li>
-                    <li><a href="../user/user_account.php?check_payment">Check Payment</a></li>
-                    <li><a href="../user/user_account.php?check_date">Check Appointment Date</a></li>
+                    <li><a href="../user/user_account.php?payment">Check Transaction</a></li>
                     <li><a href="../user/user_account.php?change_password">Change Password</a></li>
                     <li><a href="../user/logout.php">Logout</a></li>
                   </ul>
@@ -165,9 +164,23 @@ if (empty($_SESSION['uid'])) {
               <div class="container">
                 <div class="clearfix">
                   <div class="col-md-12">
-                    <p class="text-muted lead"> Select from the available services that Visioner Design & Builders can provide for you</p>
+                   
+                    
+    <div class="container">
+		<div class="row">
+			<div class="col-sm-10 col-sm-offset-1 profiel-container">
+                    
+                    <div class="profiel-header">
+						<h3>
+							<b>SELECT</b> FROM OUR SERVICES <br>
+							<hr>
+							<small>Select from the available services that Visioner Design & Builders can provide for you.</small>
+						</h3>
+						
+					</div>
+                    
                     <div class="box mt-0 mb-lg-0">
-                      <p>Select from our services:</p>
+                     
 
                       <?php
                       $lstServices = $clsServices->Get();
@@ -180,7 +193,8 @@ if (empty($_SESSION['uid'])) {
                     </div>
                   </div>
 
-                </div>
+                </div></div>
+                 </div></div>
               </div>
             </div>
           </div>

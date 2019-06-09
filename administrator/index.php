@@ -66,7 +66,7 @@ else {
             <i class="fas fa-user-circle fa-fw"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" href="ExportFiles.php">Export</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
           </div>
@@ -84,6 +84,7 @@ else {
 
         <div class="container-fluid">
          <h2><?php echo @$_GET['logged_in']; ?></h2>
+         
 			<?php
 			if(isset($_GET['new_payments'])){
 
@@ -149,9 +150,9 @@ else {
 			include("user_uploads.php");
 
 			}
-
+            
 			?>
-
+			
 
         </div>
         <!-- /.container-fluid -->
@@ -160,7 +161,7 @@ else {
         <footer class="sticky-footer">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright © Your Website 2018</span>
+              <span>Copyright © Visioner Design and Builders 2018</span>
             </div>
           </div>
         </footer>

@@ -8,7 +8,11 @@ require_once ("../App_Code/User.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
 
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,6 +52,7 @@ require_once ("../App_Code/ImageModel.php");
         if (this.readyState == 4 && this.status == 200) {
           document.getElementById("modalContent").innerHTML = this.responseText;
           document.getElementById("status_"+PaymentId).innerHTML = "Approved";
+          document.getElementById("tdclear"+PaymentId).innerHTML = "";
         }
       };
       url = "../Ajax/ViewPayment.php";
@@ -67,6 +72,7 @@ require_once ("../App_Code/ImageModel.php");
           document.getElementById("modalContent").innerHTML = this.responseText;
 
           document.getElementById("status_"+PaymentId).innerHTML = "Declined";
+          document.getElementById("tdclear"+PaymentId).innerHTML = "";
         }
       };
       url = "../Ajax/ViewPayment.php";
@@ -104,11 +110,11 @@ require_once ("../App_Code/ImageModel.php");
 
 					<div class="row">
 						<div class="col-12">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">Payments</h3>
-								</div>
-								<div class="panel-body">
+							<div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">View Payments</h6>
+                                </div>
+								<div class="card-body">
                   <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                       <tr>
@@ -146,7 +152,7 @@ require_once ("../App_Code/ImageModel.php");
                           				<!-- Modal -->
                           				<div class="modal fade" id="MW<?php echo $mdlPayment->getId(); ?>" aria-hidden="true" aria-labelledby="MW<?php echo $mdlPayment->getId(); ?>" role="dialog" tabindex="-1">
                           					<div class="modal-dialog modal-lg">
-                          						<div class="modal-content" id="modalContent">
+                          						<div class="modal-content">
                           							<div class="modal-body text-center" style="overflow: auto;">
                           								<?php
                                           if ($imgLocation != '') {
@@ -180,14 +186,58 @@ require_once ("../App_Code/ImageModel.php");
                           }
                           ?>
                         </td>
-                        <td>
-							<?php
-							if($mdlPayment->getReceiptStatus() == 0)
-							{
-							?>"
-                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Confirm</button>
-                            <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">Deny</button>";
-							<?php
+                        <td id="tdclear<?php echo $mdlPayment->getId(); ?>">
+            							<?php
+            							if($mdlPayment->getReceiptStatus() == 0)
+            							{
+            							?>
+                            <button type="submit" id="submit" class="btn btn-primary w-full" data-toggle="modal" data-target="#modal_approve<?php echo $mdlPayment->getId(); ?>" >Confirm</button>
+                            <button type="submit" id="submit" class="btn btn-primary w-full" data-toggle="modal" data-target="#modal_decline<?php echo $mdlPayment->getId(); ?>" >Deny</button>
+
+
+                    				<!-- Modal -->
+                    				<div class="modal fade" id="modal_approve<?php echo $mdlPayment->getId(); ?>" aria-hidden="true" aria-labelledby="MW<?php echo $mdlPayment->getId(); ?>" role="dialog" tabindex="-1">
+                    					<div class="modal-dialog modal-lg">
+                    						<div class="modal-content">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title">Approve Payment</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">×</span>
+                                    </button>
+                                  </div>
+                    							<div class="modal-body text-center" style="overflow: auto;">
+                    								Are you sure you want to approve this payment?
+                    							</div>
+                    							<div class="modal-footer">
+                    								<button type="button" class="btn btn-success" data-dismiss="modal" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Confirm</button>
+                    								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    							</div>
+                    						</div>
+                    					</div>
+                    				</div>
+                    				<!-- End Modal -->
+                    				<!-- Modal -->
+                    				<div class="modal fade" id="modal_decline<?php echo $mdlPayment->getId(); ?>" aria-hidden="true" aria-labelledby="MW<?php echo $mdlPayment->getId(); ?>" role="dialog" tabindex="-1">
+                    					<div class="modal-dialog modal-lg">
+                    						<div class="modal-content">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title">Decline Payment</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">×</span>
+                                    </button>
+                                  </div>
+                    							<div class="modal-body text-center" style="overflow: auto;">
+                                    Are you sure you want to decline this playment?
+                    							</div>
+                    							<div class="modal-footer">
+                                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">Confirm</button>
+                    								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    							</div>
+                    						</div>
+                    					</div>
+                    				</div>
+                    				<!-- End Modal -->
+	                        <?php
                           } else {
                             echo " ";
                           }
@@ -260,3 +310,4 @@ require_once ("../App_Code/ImageModel.php");
   </body>
 
 </html>
+<?php } ?>

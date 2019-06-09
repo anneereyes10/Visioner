@@ -1,3 +1,6 @@
+ <?php
+header("Location: index.php?contact");
+?>
  <div class="page-head"> 
             <div class="container">
                 <div class="row">

@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 class Database{
 /**
  * Connect to the mysql database.
@@ -12,7 +13,7 @@ class Database{
 		// $dbuser = 'u841288402_build';
 		// $dbpass = '4L;sw0^JdrL|RxE';
 		// $dbname = 'u841288402_build';
-		
+
 		$dbhost = 'localhost';
 		$dbuser = 'root';
 		$dbpass = '';

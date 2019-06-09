@@ -24,7 +24,7 @@
             <div class="footer-title-line"></div>
             <ul class="footer-menu">
               <li><a href="../index.php?about">About</a> </li>
-              <li><a href="../index.php?services">Service</a> </li>
+              <li><a href="../services.php">Service</a> </li>
               <li><a href="../index.php?login">Login</a></li>
               <li><a href="../index.php?contact">Contact</a></li>
 

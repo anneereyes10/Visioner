@@ -1,5 +1,7 @@
 <?php
 
+// header("Location: index.php?login");
+
 include("includes/db.php");
 ?>
 
@@ -7,7 +9,7 @@ include("includes/db.php");
             <div class="container">
                 <div class="row">
                     <div class="page-head-content">
-                        <h1 class="page-title">Log In</h1>
+                        <h1 class="page-title">LOG-IN</h1>
                     </div>
                 </div>
             </div>
@@ -32,18 +34,19 @@ include("includes/db.php");
                 <div class="col-md-6">
                   <div class="box-for overflow">
                     <div class="col-md-12 col-xs-12 login-blocks">
-                      <h2>Login : </h2>
+                      <center><h4><strong>LOG</strong>-IN</h4></center>
+                      <hr>
                       <form action="" method="post">
                         <div class="form-group">
-                          <label for="email">Email</label>
-                          <input type="email" class="form-control" name="u_email" placeholder="Enter Email" required />
+                          <label for="email">Email Address:</label>
+                          <input type="email" class="form-control" name="u_email" placeholder="Enter Email Address" required />
                         </div>
                         <div class="form-group">
-                          <label for="password">Password</label>
+                          <label for="password">Password:</label>
                           <input type="password" class="form-control" name="u_pass" placeholder="Enter Password" required />
                         </div>
                         <div class="text-center">
-                          <input type="submit" class="btn btn-default" name="login" value="Login" />
+                          <input type="submit" class="btn btn-finish btn-primary pull-right" name="login" value="Login" />
                         </div>
                         <div class="form-group">
                           <a href="user/forgotpassword.php">Forgot Password?</a>
@@ -55,11 +58,12 @@ include("includes/db.php");
           			<div class="col-md-6">
                   <div class="box-for overflow">
                     <div class="col-md-12 col-xs-12 register-blocks">
-                      <h2>Not yet Registered? </h2>
+                      <center><h4>NOT YET <strong>REGISTERED?</strong></h4></center>
+                      <hr>
                       <form action="" method="post">
                         <br><br>
                         <div class="text-center">
-                          <h2><a href="register.php">New? Register here</a></h2>
+                          <h2><a href="register.php" class="btn btn-finish btn-primary pull-right" >New? Register here</a></h2><br><br><br>
                         </div>
                       </form>
                     </div>
@@ -102,8 +106,8 @@ include("includes/db.php");
       		$_SESSION['user_email']=$email;
           		$_SESSION['uid']=$uid;
 
-		echo "<script>alert('Login Successful!')</script>";
-		echo "<script>window.open('user/user_account.php','_self')</script>";
+
+		echo "<script>window.open('index.php?home','_self')</script>";
 
 		}
 		else

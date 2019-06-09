@@ -38,8 +38,9 @@ function addProject($id)
 	$mdl->setName($clsServices->GetNameById($id));
 	$mdl->setPlan_Id($id);
 
-	$mdl = $cls->Add($mdl);
-	echo $clsFn->alert("Get a Service", "Successfully Booked a Service!");
+	$id = $cls->Add($mdl);
+	$cls->UpdateName($id,$mdl->getName() . " (ref: #".$id.")");
+	echo $clsFn->alert("Get a Service", "Successfully Booked a Service! (reference: #".$id.")");
 }
 function deleteShow($id)
 {

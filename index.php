@@ -98,11 +98,9 @@ include("functions/functions.php");
 						<div class="btn-group">
 						<button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
 							<ul class="dropdown-menu">
-                                <li><a href="user/user_account.php?edit_profile">Edit Information</a></li>
+                                <li><a href="user/edit_profile.php">Edit Information</a></li>
 								<li><a href="user/payment.php">Check Transaction</a></li>
-                                <li><a href="user/user_account.php?check_payment">Check Payment</a></li>
-                                <li><a href="user/user_account.php?check_date">Check Appointment Date</a></li>
-                                <li><a href="user/user_account.php?change_password">Change Password</a></li>
+                                <li><a href="user/change_password.php">Change Password</a></li>
 								<li><a href="user/logout.php">Logout</a></li>
                             </ul>
 						</div>
@@ -124,13 +122,13 @@ include("functions/functions.php");
 						
 						<div class="btn-group">
 						
-                        <button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('builddesign/start.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
+                        <button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('builddesign/customization.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
 						</div>
 						
                     </div>
                     <ul class="main-nav nav navbar-nav navbar-right">
 						<li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="index.php?about">About</a></li>
-                        <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="index.php?services">Services</a></li>
+                        <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="services.php">Services</a></li>
                         <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="index.php?gallery">Gallery</a></li>
                         <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="index.php?contact">Contact</a></li>
                     </ul>
@@ -208,7 +206,7 @@ include("functions/functions.php");
                                 <div class="footer-title-line"></div>
                                 <ul class="footer-menu">
                                     <li><a href="index.php?about">About</a>  </li> 
-                                    <li><a href="index.php?services">Service</a>  </li> 
+                                    <li><a href="services.php">Service</a>  </li> 
                                     <li><a href="index.php?login">Login</a></li> 
                                     <li><a href="index.php?contact">Contact</a></li> 
                                     

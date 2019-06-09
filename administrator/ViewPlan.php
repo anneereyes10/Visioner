@@ -2,7 +2,11 @@
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Plan.php");
 require_once ("../App_Code/Image.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,14 +90,15 @@ require_once ("../App_Code/Image.php");
       <div id="content-wrapper">
         <div class="container-fluid">
 
-
+  					
 					<div class="row">
 						<div class="col-12">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">Plan List</h3>
-								</div>
-								<div class="panel-body">
+						     
+							<div class="card shadow mb-8">
+  								<div class="card-header py-3">
+  									<h6 class="m-0 font-weight-bold text-info">Plan List</h6>
+  								</div>
+								 <div class="card-body">
 									<table id="example" class="table table-striped table-bordered" style="width:100%">
 										<thead>
 											<tr>
@@ -216,3 +221,4 @@ require_once ("../App_Code/Image.php");
   </body>
 
 </html>
+<?php } ?>

@@ -1,10 +1,15 @@
 <?php
+
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Services.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $msg = "";
 $msg2 = "";
 $err = "";
@@ -154,41 +159,43 @@ if(isset($_POST['Name'])){
           <form method="post" action="" enctype="multipart/form-data" autocomplete="off">
   					<div class="row">
   						<div class="col-12">
-  							<div class="panel">
-  								<div class="panel-heading">
-  									<h3 class="panel-title">Services Details</h3>
-  								</div>
+  							<div class="card shadow mb-4">
+  								<div class="card-header py-3">
+                                     <h6 class="m-0 font-weight-bold text-primary">Services Details</h6>
+                                 </div>
+  								
   								<?php echo $msg; ?>
-  								<div class="panel-body">
+  								<div class="card-body">
   									<div class="row">
-  										<div class="form-group col-md-12">
-  											<label class="form-control-label" for="inputName">Name</label>
+  										<div class="form-group col-md-6 offset-sm-3"> 
+  											<label class="form-control-label" for="inputName"><b>Service Name:</b></label>
   											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlServices->getName(); ?>" onblur="checkInput('inputName')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
   									<div class="row mb-2">
-  										<div class="col-12">
-  											<label class="form-control-label" for="inputDescription">Description</label>
+  										<div class="col-6 offset-sm-3">
+  											<label class="form-control-label" for="inputDescription"><b>Service Description:</b></label>
 												<textarea name="Description" class="form-control" id="inputDescription"><?php echo $mdlServices->getDescription(); ?></textarea>
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
 										<div class="row mb-2">
-  										<div class="col-12">
-  											<label class="form-control-label" for="inputPrice">Price</label>
+  										<div class="col-6 offset-sm-3">
+  											<label class="form-control-label" for="inputPrice"><b>Service Price:</b></label>
   											<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlServices->getPrice(); ?>" onblur="checkInput('inputPrice')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
   									<div class="row mb-2">
-  										<div class="form-group col-md-12">
-  											<label class="form-control-label" for="inputImage">Picture</label>
+  										<div class="form-group col-md-6 offset-sm-3">
+  											<label class="form-control-label" for="inputImage"><b>Upload Image:</b> </label>
   											<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
   										</div>
   									</div>
+  									<hr>
   									<div class="row">
-  										<div class="col-sm-4 offset-sm-4">
+  										<div class="col-sm-4 offset-sm-6">
   											<button type="submit" id="submit" class="btn btn-primary w-full">Submit</button>
   										</div>
   									</div>
@@ -199,15 +206,14 @@ if(isset($_POST['Name'])){
   				</form>
 
 
-										<div class="row mt-4">
-											<div class="col-12">
-												<div class="panel">
-													<div class="panel-heading">
-														<h3 class="panel-title">Services</h3>
-													</div>
+										 <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">List of Services</h6>
+            </div>
+            <div class="card-body">
 					                <?php echo $msg2; ?>
 
-													<div class="panel-body">
+												
 														<div class="row">
 															<div class="col-sm-12">
 																<table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -217,12 +223,7 @@ if(isset($_POST['Name'])){
 							                        <th>Action</th>
 							                      </tr>
 							                    </thead>
-							                    <tfoot>
-							                      <tr>
-							                        <th>Name</th>
-							                        <th>Action</th>
-							                      </tr>
-							                    </tfoot>
+
 							                    <tbody>
 							                      <?php
 							                      $lstServices = $clsServices->Get();
@@ -316,7 +317,6 @@ if(isset($_POST['Name'])){
 							                  </table>
 															</div>
 														</div>
-													</div>
 												</div>
 											</div>
 										</div>
@@ -380,3 +380,4 @@ if(isset($_POST['Name'])){
   </body>
 
 </html>
+<?php } ?>

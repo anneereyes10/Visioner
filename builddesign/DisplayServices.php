@@ -6,6 +6,11 @@ require_once ("../App_Code/Project.php");
 require_once ("../App_Code/Image.php");
 include("../functions/functions.php");
 
+if (empty($_SESSION['uid'])) {
+  header("Location: ../index.php?login");
+  die();
+}
+
 ?>
 
 <!DOCTYPE>
@@ -65,7 +70,7 @@ include("../functions/functions.php");
     </head>
     <body>
 
-        <div id="preloader">
+       <div id="preloader">
             <div id="status">&nbsp;</div>
         </div>
         <!-- Body content -->
@@ -95,69 +100,68 @@ include("../functions/functions.php");
         <!--End top header -->
 
         <nav class="navbar navbar-default ">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="../index.php/?home"><img src="../assets/img/logo.png" alt=""></a>
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="../index.php?home"><img src="../assets/img/logo.png" alt=""></a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse yamm" id="navigation">
+              <div class="button navbar-right">
+
+                <?php
+        						if(isset($_SESSION['user_email']))
+        						{
+        						?>
+                <div class="btn-group">
+                  <button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('../user/logout.php', '_self')" data-wow-delay="0.4s">Logout</button>
+                </div>
+                <div class="btn-group">
+                  <button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="../user/edit_profile.php">Edit Information</a></li>
+                    <li><a href="../user/payment.php">Check Transaction</a></li>
+                    <li><a href="../user/change_password.php">Change Password</a></li>
+                    <li><a href="../user/logout.php">Logout</a></li>
+                  </ul>
+                </div>
+                <?php
+        						}
+        						else
+        						{
+        						?>
+                <div class="btn-group">
+                  <button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('index.php?login', '_self')" data-wow-delay="0.4s">Login</button>
+                </div>
+                <div class="btn-group">
+                  <button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.open('index.php?login', '_self')" data-wow-delay="0.5s">Account</button>
                 </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse yamm" id="navigation">
-                    <div class="button navbar-right">
+                <?php
+        						}
+        						?>
 
-						<?php
-						if(isset($_SESSION['user_email']))
-						{
-						?>
-						<div class="btn-group">
-						<button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('../user/logout.php', '_self')" data-wow-delay="0.4s">Logout</button>
-						</div>
-						<div class="btn-group">
-						<button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
-							<ul class="dropdown-menu">
-                <li><a href="../user/user_account.php?edit_profile">Edit Information</a></li>
-                <li><a href="../user/user_account.php?check_payment">Check Payment</a></li>
-                <li><a href="../user/user_account.php?check_date">Check Appointment Date</a></li>
-                <li><a href="../user/user_account.php?change_password">Change Password</a></li>
-                <li><a href="../user/logout.php">Logout</a></li>
+                <div class="btn-group">
+
+                  <button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('customization.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
+                </div>
+
+              </div>
+              <ul class="main-nav nav navbar-nav navbar-right">
+                <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../services.php">Services</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?gallery">Gallery</a></li>
+                <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="../index.php?contact">Contact</a></li>
               </ul>
-						</div>
-						<?php
-						}
-						else
-						{
-						?>
-						<div class="btn-group">
-						<button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('../index.php?login', '_self')" data-wow-delay="0.4s">Login</button>
-						</div>
-						<div class="btn-group">
-						<button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.open('../index.php?login', '_self')" data-wow-delay="0.5s">Account</button>
-						</div>
-
-						<?php
-						}
-						?>
-
-						<div class="btn-group">
-
-                        <button class="navbar-btn nav-button wow fadeInRight" onclick=" window.open('start.php', '_self')" data-wow-delay="0.5s">Start Design & Build</button>
-						</div>
-
-                    </div>
-                    <ul class="main-nav nav navbar-nav navbar-right">
-                      <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
-                      <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?services">Services</a></li>
-                      <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?gallery">Gallery</a></li>
-                      <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="../index.php?contact">Contact</a></li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
         </nav>
         <!-- End of nav bar -->
 
@@ -273,7 +277,7 @@ include("../functions/functions.php");
                                 <div class="footer-title-line"></div>
                                 <ul class="footer-menu">
                                     <li><a href="../index.php?about">About</a>  </li>
-                                    <li><a href="../index.php?services">Service</a>  </li>
+                                    <li><a href="../services.php">Service</a>  </li>
                                     <li><a href="../index.php?login">Login</a></li>
                                     <li><a href="../index.php?contact">Contact</a></li>
 

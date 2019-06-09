@@ -1,11 +1,17 @@
 <?php
+
+
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Floor.php");
 require_once ("../App_Code/FloorModel.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $msg = "";
 $err = "";
 
@@ -177,3 +183,4 @@ if(isset($_POST['Name'])){
   </body>
 
 </html>
+<?php } ?>

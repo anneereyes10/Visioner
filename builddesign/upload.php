@@ -158,63 +158,87 @@ if(isset($_POST['Name'])){
     <div class="register-area" style="background-color: rgb(249, 249, 249);">
       <div class="container">
         <div class="row">
-          <div class="col-md-12">
-            <h2> Upload your own Design </h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
+          <div class="col-sm-10 col-sm-offset-1 profiel-container">
+              
+                <div class="profiel-header">
+                    <h3> SO YOU HAVE <strong>A PLAN</strong></h3>
+                </div>
+                <hr>
+                
+                 <div class="col-sm-8 col-sm-offset-2">
+                                    
+                                    <p class="text-muted">VisioNer is glad to further assist you. This page allows you a step closer to done. 
+As soon as we receive your existing files, whether it be Drawings, Layouts, Land Title, Pictures or Plans, our next meeting will already be - to finalize a proposal. <strong>Quick and Easy.</strong></p>
+                                   <hr>
+                                </div>
+                
+                
+                
+                
+                
+                <div class="clear">
+                    <div class="row">
+                        
+                        
+          <div class="col-md-8 col-md-offset-2">
             <?php echo $msg; ?>
           </div>
         </div>
         <form method="post" action="" enctype="multipart/form-data" autocomplete="off">
           <div class="row" style="margin-bottom:10px;">
-            <div class="col-md-6">
+            
 
               <div class="row">
-                <div class="col-md-12">
-                  <h4>Project Name</h4>
+                <div class="col-md-8 col-md-offset-2">
+                  <h5><strong>Project Name:</strong></h5>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8 col-md-offset-2">
                   <input type="text" class="form-control" id="inputName" name="Name" value="<?php echo $mdlProject->getName(); ?>"/>
                 </div>
               </div>
-
+<br>
               <div class="row">
-                <div class="col-md-12">
-                  <h4>Files</h4>
+                <div class="col-md-8 col-md-offset-2">
+                  <h5><strong>Files:</strong></h5>
                 </div>
               </div>
+              
+              <div class="well col-md-8 col-md-offset-2">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8 col-md-offset-2">
                   <input type="file" class="form-control-file" multiple="multiple" name="fileToUpload[]"/>
                 </div>
-              </div>
+              </div></div>
 
-            </div>
-            <div class="col-md-6">
+            
 
               <div class="row">
-                <div class="col-md-12">
-                  <h4>Description</h4>
+                <div class="col-md-8 col-md-offset-2">
+                  <h5><strong>Description:</strong></h5>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8 col-md-offset-2">
                   <textarea class="form-control" rows="8" name="Description"><?php echo $mdlUpload->getDescription(); ?></textarea>
                 </div>
               </div>
 
-            </div>
+            
           </div>
           <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-              <input type="submit" class="form-control" value="Submit" />
+            <div class="col-md-6 col-md-offset-5">
+              <input type="submit" class="btn btn-finish btn-primary" value="Submit" />
             </div>
           </div>
         </form>
+                    
+                </div>
+          </div>
+        </div>
+        
+        
       </div>
     </div>
 

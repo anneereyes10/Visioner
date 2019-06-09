@@ -1,10 +1,15 @@
 <?php
+
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Place.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $msg = "";
 $msg2 = "";
 $err = "";
@@ -140,21 +145,23 @@ if(isset($_POST['Name'])){
           <form method="post" action="" enctype="multipart/form-data" autocomplete="off">
   					<div class="row">
   						<div class="col-12">
-  							<div class="panel">
-  								<div class="panel-heading">
-  									<h3 class="panel-title">Place Details</h3>
-  								</div>
+  						    
+  							<div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Place Details</h6>
+                                </div>
+  								
   								<?php echo $msg; ?>
-  								<div class="panel-body">
+  								<div class="card-body">
   									<div class="row">
   										<div class="form-group col-md-12">
-  											<label class="form-control-label" for="inputName">Name</label>
+  											<label class="form-control-label" for="inputName"><b>Name:</b></label>
   											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPlace->getName(); ?>" onblur="checkInput('inputName')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
   									<div class="row">
-  										<div class="col-sm-4 offset-sm-4">
+  										<div class="col-sm-4 offset-sm-5">
   											<button type="submit" id="submit" class="btn btn-primary w-full">Submit</button>
   										</div>
   									</div>
@@ -167,13 +174,14 @@ if(isset($_POST['Name'])){
 
 										<div class="row mt-4">
 											<div class="col-12">
-												<div class="panel">
-													<div class="panel-heading">
-														<h3 class="panel-title">Place</h3>
-													</div>
+											    
+												<div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Place</h6>
+            </div>
 					                <?php echo $msg2; ?>
 
-													<div class="panel-body">
+													<div class="card-body">
 														<div class="row">
 															<div class="col-sm-12">
 																<table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -183,12 +191,7 @@ if(isset($_POST['Name'])){
 							                        <th>Action</th>
 							                      </tr>
 							                    </thead>
-							                    <tfoot>
-							                      <tr>
-							                        <th>Name</th>
-							                        <th>Action</th>
-							                      </tr>
-							                    </tfoot>
+
 							                    <tbody>
 							                      <?php
 							                      $lstPlace = $clsPlace->Get();
@@ -237,7 +240,7 @@ if(isset($_POST['Name'])){
 																		</button>
 																	</div>
 																	<div class="modal-body">
-																		<p>One fine body…</p>
+																		<p>Loading..</p>
 																	</div>
 																	<div class="modal-footer">
 																		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -284,3 +287,4 @@ if(isset($_POST['Name'])){
   </body>
 
 </html>
+<?php } ?>

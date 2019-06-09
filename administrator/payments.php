@@ -4,6 +4,11 @@
 	</script>
 <?php
 include("includes/db.php");
+if(!isset($_SESSION['email'])){
+
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 ?>
 <div>
 <form method="get" action="edit_payment.php" enctype="multipart/form-data">
@@ -53,4 +58,4 @@ Payment Name: <input type="text" name="new_payment" placeholder="New Payment Typ
 		}
 	}
 
-?>
+}?>

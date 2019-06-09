@@ -9,7 +9,11 @@ require_once ("../App_Code/Place.php");
 require_once ("../App_Code/User.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,6 +82,22 @@ require_once ("../App_Code/ImageModel.php");
       xmlhttp.open("GET", url, true);
       xmlhttp.send();
 		}
+
+    function displayDetail(id){
+
+      var xmlhttp = new XMLHttpRequest();
+      var url = "";
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("modalContent").innerHTML = this.responseText;
+        }
+      };
+      url = "../Ajax/ViewPayment.php";
+      url += "?call=displayDetail";
+      url += "&Id=" + id;
+      xmlhttp.open("GET", url, true);
+      xmlhttp.send();
+    }
     </script>
   </head>
 
@@ -91,15 +111,17 @@ require_once ("../App_Code/ImageModel.php");
 
 					<div class="row">
 						<div class="col-12">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">Appointments</h3>
-								</div>
-								<div class="panel-body">
+						    <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Appointments</h6>
+                                </div>
+						    
+						
+								<div class="card-body">
                   <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                       <tr>
-                        <th>User_Id</th>
+                        <th>Name</th>
                         <th>Project</th>
                         <th>Appointment Date</th>
                         <th>Place</th>
@@ -107,16 +129,7 @@ require_once ("../App_Code/ImageModel.php");
                         <th>Action</th>
                       </tr>
                     </thead>
-                    <tfoot>
-                      <tr>
-                        <th>User_Id</th>
-                        <th>Project</th>
-                        <th>Appointment Date</th>
-                        <th>Place</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </tfoot>
+
                     <tbody>
                       <?php
                       $lstPayment = $clsPayment->GetByReceiptStatus(1);
@@ -127,11 +140,15 @@ require_once ("../App_Code/ImageModel.php");
                         ?>
                         <tr>
                           <td><?php echo $clsUser->GetNameById($clsProject->GetUser_IdById($mdlPayment->getProject_Id())); ?></td>
-                          <td><?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?></td>
+                          <td>
+                            <?php echo $clsProject->GetNameById($mdlPayment->getProject_Id()); ?>
+                            <br />
+                            <button class="btn btn-default" data-toggle="modal" data-target="#ModalWrapper" onclick="displayDetail(<?php echo $mdlPayment->getProject_Id(); ?>)"> View </button>
+                          </td>
                           <?php
                           $mdlProject = $clsProject->GetById($mdlPayment->getProject_Id());
                           if ($mdlProject->getType() == "2"){
-                            $mdlUploadPlace = $clsUploadPlace->GetById($mdlProject->getPlan_Id());
+                            $mdlUploadPlace = $clsUploadPlace->GetById($mdlPayment->getPlace_Id());
                             ?>
                               <td><?php echo $mdlUploadPlace->getDateTime(); ?></td>
                               <td><?php echo $mdlUploadPlace->getPlace(); ?></td>
@@ -161,10 +178,56 @@ require_once ("../App_Code/ImageModel.php");
                             $type = $clsProject->GetTypeById($mdlPayment->getProject_Id());
                             if ($type != "2") {
                               ?>
-                              <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Yes</button>
-                              <button type="submit" id="submit" class="btn btn-primary w-full" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">No</button>
+                              <button type="submit" id="submit" class="btn btn-primary w-full" data-toggle="modal" data-target="#modal_approve<?php echo $mdlPayment->getId(); ?>">Confirm</button>
+                              <button type="submit" id="submit" class="btn btn-primary w-full" data-toggle="modal" data-target="#modal_decline<?php echo $mdlPayment->getId(); ?>">Deny</button>
                               <br />
+              							  (Optional) Send a message to the user for suggestions
+              							  <br />
                               <textarea id="payment_message<?php echo $mdlPayment->getId();?>"><?php echo $mdlPayment->getMessage();?></textarea>
+
+
+                      				<!-- Modal -->
+                      				<div class="modal fade" id="modal_approve<?php echo $mdlPayment->getId(); ?>" aria-hidden="true" aria-labelledby="MW<?php echo $mdlPayment->getId(); ?>" role="dialog" tabindex="-1">
+                      					<div class="modal-dialog modal-lg">
+                      						<div class="modal-content">
+                                    <div class="modal-header">
+                                      <h4 class="modal-title">Approve Appointment</h4>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                      </button>
+                                    </div>
+                      							<div class="modal-body text-center" style="overflow: auto;">
+                      								Are you sure you want to approve this Appointment?
+                      							</div>
+                      							<div class="modal-footer">
+                      								<button type="button" class="btn btn-success" data-dismiss="modal" onclick="UpdateStatApproved(<?php echo $mdlPayment->getId(); ?>);">Confirm</button>
+                      								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      							</div>
+                      						</div>
+                      					</div>
+                      				</div>
+                      				<!-- End Modal -->
+                      				<!-- Modal -->
+                      				<div class="modal fade" id="modal_decline<?php echo $mdlPayment->getId(); ?>" aria-hidden="true" aria-labelledby="MW<?php echo $mdlPayment->getId(); ?>" role="dialog" tabindex="-1">
+                      					<div class="modal-dialog modal-lg">
+                      						<div class="modal-content">
+                                    <div class="modal-header">
+                                      <h4 class="modal-title">Decline Appointment</h4>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                      </button>
+                                    </div>
+                      							<div class="modal-body text-center" style="overflow: auto;">
+                                      Are you sure you want to decline this Appointment?
+                      							</div>
+                      							<div class="modal-footer">
+                                      <button type="button" class="btn btn-success" data-dismiss="modal" onclick="UpdateStatDeclined(<?php echo $mdlPayment->getId(); ?>);">Confirm</button>
+                      								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      							</div>
+                      						</div>
+                      					</div>
+                      				</div>
+                      				<!-- End Modal -->
                               <?php
                             }
                             ?>
@@ -206,7 +269,7 @@ require_once ("../App_Code/ImageModel.php");
 								</button>
 							</div>
 							<div class="modal-body">
-								<p>One fine body…</p>
+								<p>Loading..</p>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -240,3 +303,4 @@ require_once ("../App_Code/ImageModel.php");
   </body>
 
 </html>
+<?php } ?>

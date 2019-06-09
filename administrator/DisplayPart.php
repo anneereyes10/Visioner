@@ -5,7 +5,11 @@ require_once ("../App_Code/Part.php");
 require_once ("../App_Code/Material.php");
 require_once ("../App_Code/Upgrade.php");
 require_once ("../App_Code/Image.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $msg = "";
 $err = "";
 
@@ -28,8 +32,7 @@ if(isset($_POST['Name'])){
 		$err2 .= $clsFn->setForm('Name',$mdlMaterial,true);
 		$err2 .= $clsFn->setForm('Description',$mdlMaterial,true);
 		$err2 .= $clsFn->setForm('Price',$mdlMaterial,true);
-		// $err2 .= $clsFn->setForm('PriceType',$mdlMaterial,true);
-		$mdlMaterial->setPriceType("0");
+		$err2 .= $clsFn->setForm('PriceType',$mdlMaterial,true);
 
 		if($err2 == ""){
 			$duplicate = $clsMaterial->IsExist($mdlMaterial);
@@ -86,8 +89,7 @@ if(isset($_POST['Name'])){
 		$err3 .= $clsFn->setForm('Name',$mdlUpgrade,true);
 		$err3 .= $clsFn->setForm('Description',$mdlUpgrade,true);
 		$err3 .= $clsFn->setForm('Price',$mdlUpgrade,true);
-		// $err3 .= $clsFn->setForm('PriceType',$mdlUpgrade,true);
-		$mdlUpgrade->setPriceType("0");
+		$err3 .= $clsFn->setForm('PriceType',$mdlUpgrade,true);
 
 		if($err3 == ""){
 			$duplicate = $clsUpgrade->IsExist($mdlUpgrade);
@@ -272,21 +274,23 @@ if(isset($_POST['Name'])){
         <div class="container-fluid">
 
 
-					<div class="row">
-						<div class="col-12">
-              <div class="panel">
-                <div class="panel-heading">
-                  <h3 class="panel-title">Part Details</h3>
-                </div>
+    		<div class="row">
+    			<div class="col-12">
+
+    	<div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Part Details</h6>
+            </div>
+
                 <?php echo $msg; ?>
-                <div class="panel-body">
+                <div class="card-body">
                   <div class="row">
                     <div class="form-group col-md-12">
-                      <label class="form-control-label" for="inputName">Name:</label>
-                      <p class="font-weight-bold"><?php echo $mdlPart->getName(); ?></p>
+                      <label class="form-control-label" for="inputName"><b>Rename Part Name:</b></label>
+                      <p class="form-control" readonly><?php echo $mdlPart->getName(); ?></p>
                     </div>
                   </div>
-                  <!-- <div class="row mb-2">
+                  <div class="row mb-2">
                     <div class="col-12">
                       <label class="form-control-label" for="inputArea">Area:</label>
                       <p class="font-weight-bold"><?php echo $mdlPart->getArea(); ?></p>
@@ -297,12 +301,12 @@ if(isset($_POST['Name'])){
                       <label class="form-control-label" for="inputPiece">Piece:</label>
                       <p class="font-weight-bold"><?php echo $mdlPart->getPiece(); ?></p>
                     </div>
-                  </div> -->
+                  </div>
                   <div class="row">
-                    <div class="col-sm-3 offset-sm-3">
+                    <div class="col-sm-1 offset-sm-5">
 											<a href="EditPart.php?Id=<?php echo $mdlPart->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-1">
 											<a href="DisplayCategory.php?Id=<?php echo $mdlPart->getCategory_Id(); ?>" class="btn btn-secondary w-100">Back</a>
                     </div>
                   </div>
@@ -314,64 +318,66 @@ if(isset($_POST['Name'])){
 
 					<div class="row mt-4">
 						<div class="col-12">
-							<hr />
-						</div>
-					</div>
 
-					<div class="row mt-4">
-						<div class="col-12">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">Material</h3>
+						    <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Material</h6>
+                                </div>
 									<?php echo $msg2; ?>
-								</div>
 
-								<div class="panel-body">
+
+								<div class="card-body">
 									<div class="row m-4">
 										<div class="col-sm-12">
 											<form action="?Id=<?php echo $_GET['Id']; ?>" method="post" enctype="multipart/form-data" autocomplete="off">
 		  									<div class="row">
-		  										<div class="form-group col-md-6">
-		  											<label class="form-control-label" for="inputName">Name: </label>
+		  										<div class="form-group col-md-4">
+		  											<label class="form-control-label" for="inputName"><b>Name:</b> </label>
 														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlMaterial->getName(); ?>" onblur="checkInput('inputName')">
 														<small id="notif-inputName" class="invalid-feedback">This is required</small>
 		  										</div>
-		  										<div class="form-group col-md-6">
-		  											<label class="form-control-label" for="inputPrice">Price: </label>
+		  										<div class="form-group col-md-4">
+		  											<label class="form-control-label" for="inputPrice"><b>Price:</b> </label>
 														<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlMaterial->getPrice(); ?>" onblur="checkInput('inputPrice')">
 														<small id="notif-inputPrice" class="invalid-feedback">This is required</small>
 		  										</div>
-		  										<!-- <div class="form-group col-md-3">
-		  											<label class="form-control-label" for="inputPriceType">Price Type: </label>
+		  										<div class="form-group col-md-4">
+		  											<label class="form-control-label" for="inputPriceType"><b>Price Type: </b></label>
 														<select class="form-control" id="inputPriceType" name="PriceType" onblur="checkInput('inputPriceType')">
 															<option value="0" <?php echo ($mdlMaterial->getPriceType() == "0")?'selected':''; ?>>per Area</option>
 															<option value="1" <?php echo ($mdlMaterial->getPriceType() == "1")?'selected':''; ?>>per Piece</option>
 														</select>
 														<small id="notif-inputPriceType" class="invalid-feedback">This is required</small>
-		  										</div> -->
+		  										</div>
 												</div>
 		  									<div class="row">
 		  										<div class="form-group col-md-12">
-		  											<label class="form-control-label" for="inputDescription">Description: </label>
+		  											<label class="form-control-label" for="inputDescription"><b>Description:</b> </label>
 														<textarea type="text" class="form-control" id="inputDescription" name="Description" placeholder="Description"><?php echo $mdlMaterial->getDescription(); ?> </textarea>
 														<small id="notif-inputDescription" class="invalid-feedback">This is required</small>
 		  										</div>
-												</div>
+												</div><br>
 		  									<div class="row mb-2">
 		  										<div class="form-group col-md-12">
-		  											<label class="form-control-label" for="inputImage">Picture</label>
-		  											<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
-		  										</div>
+	  										    <center>
+		  										    <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+		  														<label class="form-control-label" for="inputImage"><b>Picture:</b></label>
+		  														<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
+		  													</div>
+															</div>
+														</center>
+													</div>
 		  									</div>
 
 												<div class="row">
-		  										<div class="col-sm-4">
+		  										<div class="col-sm-5 offset-sm-5">
 		  											<button type="submit" id="submit" class="btn btn-primary w-full">Submit</button>
 		  										</div>
 		  									</div>
 											</form>
 										</div>
-									</div>
+									</div><hr>
 									<div class="row">
 										<div class="col-sm-12">
 											<table id="table1" class="table table-striped table-bordered" style="width:100%">
@@ -443,58 +449,62 @@ if(isset($_POST['Name'])){
 
 					<div class="row mt-4">
 						<div class="col-12">
-							<hr />
 						</div>
 					</div>
 
 					<div class="row mt-4">
 						<div class="col-12">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">Upgrade</h3>
-									<?php echo $msg3; ?>
-								</div>
 
-								<div class="panel-body">
+						    <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Upgrade</h6>
+                                </div>
+									<?php echo $msg3; ?>
+
+								<div class="card-body">
 									<div class="row m-4">
 										<div class="col-sm-12">
 											<form action="?Id=<?php echo $_GET['Id']; ?>&add=upgrade" method="post" enctype="multipart/form-data" autocomplete="off">
 		  									<div class="row">
-		  										<div class="form-group col-md-6">
-		  											<label class="form-control-label" for="inputName">Name: </label>
+		  										<div class="form-group col-md-4">
+		  											<label class="form-control-label" for="inputName"><b>Name:</b> </label>
 														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlUpgrade->getName(); ?>" onblur="checkInput('inputName')">
 														<small id="notif-inputName" class="invalid-feedback">This is required</small>
 		  										</div>
-		  										<div class="form-group col-md-6">
-		  											<label class="form-control-label" for="inputPrice">Price: </label>
+		  										<div class="form-group col-md-4">
+		  											<label class="form-control-label" for="inputPrice"><b>Price:</b> </label>
 														<input type="number" class="form-control" id="inputPrice" name="Price" placeholder="Price" value="<?php echo $mdlUpgrade->getPrice(); ?>" onblur="checkInput('inputPrice')">
 														<small id="notif-inputPrice" class="invalid-feedback">This is required</small>
 		  										</div>
-		  										<!-- <div class="form-group col-md-3">
-		  											<label class="form-control-label" for="inputPriceType">Price Type: </label>
+		  										<div class="form-group col-md-4">
+		  											<label class="form-control-label" for="inputPriceType"><b>Price Type: </b></label>
 														<select class="form-control" id="inputPriceType" name="PriceType" onblur="checkInput('inputPriceType')">
 															<option value="0" <?php echo ($mdlUpgrade->getPriceType() == "0")?'selected':''; ?>>per Area</option>
 															<option value="1" <?php echo ($mdlUpgrade->getPriceType() == "1")?'selected':''; ?>>per Piece</option>
 														</select>
 														<small id="notif-inputPriceType" class="invalid-feedback">This is required</small>
-		  										</div> -->
+		  										</div>
 												</div>
 		  									<div class="row">
 		  										<div class="form-group col-md-12">
-		  											<label class="form-control-label" for="inputDescription">Description: </label>
+		  											<label class="form-control-label" for="inputDescription"><b>Description: </b></label>
 														<textarea type="text" class="form-control" id="inputDescription" name="Description" placeholder="Description"><?php echo $mdlUpgrade->getDescription(); ?> </textarea>
 														<small id="notif-inputDescription" class="invalid-feedback">This is required</small>
 		  										</div>
 												</div>
 		  									<div class="row mb-2">
-		  										<div class="form-group col-md-12">
-		  											<label class="form-control-label" for="inputImage">Picture</label>
+
+		  										<div class="form-group col-md-12"><center>
+		  										    <div class="card" style="width: 18rem;">
+                                                         <div class="card-body">
+		  											<label class="form-control-label" for="inputImage"><b>Picture: </b></label>
 		  											<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
-		  										</div>
+		  										</div></div></div></center>
+
 		  									</div>
 
 												<div class="row">
-		  										<div class="col-sm-4">
+		  										<div class="col-sm-4 offset-sm-5">
 		  											<button type="submit" id="submit" class="btn btn-primary w-full">Submit</button>
 		  										</div>
 		  									</div>
@@ -626,3 +636,4 @@ if(isset($_POST['Name'])){
   </body>
 
 </html>
+<?php } ?>

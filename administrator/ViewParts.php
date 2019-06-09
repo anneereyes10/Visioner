@@ -4,7 +4,11 @@ require_once ("../App_Code/Parts.php");
 require_once ("../App_Code/PartsModel.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -218,3 +222,4 @@ require_once ("../App_Code/ImageModel.php");
   </body>
 
 </html>
+<?php } ?>

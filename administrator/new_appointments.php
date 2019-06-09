@@ -2,6 +2,11 @@
 include("includes/db.php");
 date_default_timezone_set('Asia/Manila');
 $today = date('Y-m-d');
+if(!isset($_SESSION['email'])){
+
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 ?>
 
 Users that made appointments today as of: <b><?php echo $today ?></b>
@@ -174,4 +179,4 @@ Users that made appointments today as of: <b><?php echo $today ?></b>
 
         </div>
         <!-- /.container-fluid -->
-
+<?php } ?>

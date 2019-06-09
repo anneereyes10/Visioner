@@ -4,12 +4,24 @@ require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/User.php");
 
 if (!empty($_POST['email'])) {
-  $subject = "Forgot Password - Visioner";
+  $subject = "Reset Password - Visioner";
   $code = $clsUser->GetCodeByEmail($_POST['email']);
-  $message = "Your account had recieved this email to reset your password at Visioner Designand Builders<br />";
-  $message .= "To reset your password, kindly click this <a href='https://visionerdesignandbuilders.com/user/resetpassword.php?e=".$_POST['email']."&c=".$code."'>Link</a>.<br />";
-  $message .= "Or manually go to this link: 'https://visionerdesignandbuilders.com/user/resetpassword.php?e=".$_POST['email']."&c=".$code."'<br /><br />";
-  $message .= "Please ignore this email if you are not the one who sent this request.<br />";
+  
+  $message .= "Hey there, <br /><br />";
+  
+  $message .= "You recently requested your password for Visioner Design and Builders account. Click the button below to reset it.  <br /><br />
+  
+  <a href='https://visionerdesignandbuilders.com/user/resetpassword.php?e=".$_POST['email']."&c=".$code."'>Link</a>.<br /><br />";
+  
+  $message .= "If you did not request a password reset, please ignore this email. <br /><br />";
+
+  $message .= "If you're having trouble clicking the password reset button, copy and paste the URL below into your web browser. <br  /> 'https://visionerdesignandbuilders.com/user/resetpassword.php?e=".$_POST['email']."&c=".$code."'<br /><br />";
+  
+  $message .= "Thanks, 
+<br /><strong>Visioner Design and Builders Team</strong><br /><br />";
+$message .= '(C) Visioner Design and Builders , All rights reserved 2018 <br />
+ 30-B Bascom St. North Fairview, Quezon City, Philippines.';
+  
   $clsFn->SendEmail($_POST['email'],$subject,$message);
 }
 ?>
@@ -120,12 +132,11 @@ if (!empty($_POST['email'])) {
           <div class="btn-group">
             <button class="main-nav navbar-btn nav-button wow bounceInRight login dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-wow-delay="0.5s">Account<b class="caret"></b></button>
             <ul class="dropdown-menu">
-              <li><a href="user_account.php?edit_profile">Edit Information</a></li>
-              <li><a href="payment.php">Check Transaction</a></li>
-              <li><a href="user_account.php?check_payment">Check Payment</a></li>
-              <li><a href="user_account.php?check_date">Check Appointment Date</a></li>
-              <li><a href="user_account.php?change_password">Change Password</a></li>
-              <li><a href="logout.php">Logout</a></li>
+              <li><a href="edit_profile.php">Edit Information</a></li>
+							<li><a href="payment.php">Check Transaction</a></li>
+							
+							<li><a href="change_password.php">Change Password</a></li>
+							<li><a href="logout.php">Logout</a></li>
             </ul>
           </div>
           <?php
@@ -134,10 +145,10 @@ if (!empty($_POST['email'])) {
           {
           ?>
           <div class="btn-group">
-            <button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('index.php?login', '_self')" data-wow-delay="0.4s">Login</button>
+            <button class="navbar-btn nav-button wow bounceInRight login" onclick="window.open('../index.php?login', '_self')" data-wow-delay="0.4s">Login</button>
           </div>
           <div class="btn-group">
-            <button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.open('index.php?login', '_self')" data-wow-delay="0.5s">Account</button>
+            <button class="navbar-btn nav-button wow bounceInRight login" onclick=" window.open('../index.php?login', '_self')" data-wow-delay="0.5s">Account</button>
           </div>
 
           <?php
@@ -152,7 +163,7 @@ if (!empty($_POST['email'])) {
         </div>
         <ul class="main-nav nav navbar-nav navbar-right">
           <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?about">About</a></li>
-          <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?services">Services</a></li>
+          <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../services.php">Services</a></li>
           <li class="wow fadeInDown" data-wow-delay="0.1s"><a class="" href="../index.php?gallery">Gallery</a></li>
           <li class="wow fadeInDown" data-wow-delay="0.4s"><a href="../index.php?contact">Contact</a></li>
         </ul>
@@ -175,34 +186,39 @@ if (!empty($_POST['email'])) {
     <div class="properties-area recent-property" style="background-color: #FFF;">
       <div class="container">
         <form method="post">
-          <div class="row" style="margin-bottom:10px;">
-            <div class="col-md-12">
-              <h2>Forgot Password</h2>
+          <div class="row">
+              <br>
+            <div class="col-sm-10 col-sm-offset-1 profiel-container">
+              <div class="profiel-header">
+                                <h3>
+                                    <b>FORGOT</b> YOUR PASSWORD? <br>
+                                </h3>
+                                <hr>
+                                <h5><center>
+                                    Enter your Email Address to reset your password.
+                                </h5></center>
+                                <hr>
+               </div>
+          <br>
+          
+          <div class="clear">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="form-group">
+              <label>Email Address: </label>
+              <input type="email" class="form-control" name="email" placeholder="email@exampleemail.com" required />
             </div>
-          </div>
-          <div class="row" style="margin-bottom:10px;">
-            <div class="col-md-12">
-              <h4>Enter your email to reset your password. </h4>
             </div>
-          </div>
-          <div class="row" style="margin-bottom:10px;">
-            <div class="col-md-2 text-right">
-              <h5>Email:<h5>
+            
+           <div class="col-sm-10 col-sm-offset-5">
+              <input type="submit" class="btn btn-finish btn-primary pull-center" value="Submit Email Address"/> <br><br>
             </div>
-            <div class="col-md-8">
-              <input type="text" class="form-control" name="email" />
-            </div>
-          </div>
-          <div class="row" style="margin-bottom:10px;">
-            <div class="col-md-4 col-md-offset-4">
-              <input type="submit" class="form-control"/>
-            </div>
+            
           </div>
         </form>
-      </div>
+      </div> <br>
     </div>
 
-  </div>
+  </div> <br>
 
 
   <!-- Footer area-->

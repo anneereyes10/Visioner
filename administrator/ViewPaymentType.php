@@ -3,7 +3,11 @@ require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/PaymentType.php");
 require_once ("../App_Code/Image.php");
+if(!isset($_SESSION['email'])){
 
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 $msg = "";
 $err = "";
 
@@ -137,31 +141,32 @@ if(isset($_POST['Name'])){
           <form method="post" action="" enctype="multipart/form-data" autocomplete="off">
   					<div class="row">
   						<div class="col-12">
-  							<div class="panel">
-  								<div class="panel-heading">
-  									<h3 class="panel-title">PaymentType Details</h3>
-  								</div>
+  						    <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Payment Type Details</h6>
+                                </div>
   								<?php echo $msg; ?>
-  								<div class="panel-body">
-  									<div class="row">
-  										<div class="form-group col-md-12">
-  											<label class="form-control-label" for="inputName">Name</label>
+  								<div class="card-body">
+  									 <div class="row justify-content-center">
+  										<div class="form-group col-md-6">
+  											<label class="form-control-label" for="inputName"><b>Name: </b></label>
   											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPaymentType->getName(); ?>" onblur="checkInput('inputName')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
-  									<div class="row">
-  										<div class="col-sm-4 offset-sm-4">
+  									 <div class="row justify-content-center">
+  										<div class="col-sm-6 offset-sm-5">
   											<button type="submit" id="submit" class="btn btn-primary w-full">Submit</button>
-  										</div>
+  										</div></div>
   									</div>
   								</div>
 
+                                    <div class="card shadow mb-4">
+                                            <div class="card-header py-3">
+                                              <h6 class="m-0 font-weight-bold text-primary">Payment Type List</h6>
+                                            </div>
 
-									<div class="panel-heading">
-										<h3 class="panel-title">Payment Type List</h3>
-									</div>
-									<div class="panel-body">
+									<div class="card-body">
 										<table id="example" class="table table-striped table-bordered" style="width:100%">
 											<thead>
 												<tr>
@@ -262,3 +267,4 @@ if(isset($_POST['Name'])){
   </body>
 
 </html>
+<?php } ?>

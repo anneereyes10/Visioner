@@ -3,7 +3,13 @@
 		tinymce.init({selector:'textarea'});
 	</script>
 <?php
+
 include("includes/db.php");
+if(!isset($_SESSION['email'])){
+
+	echo "<script>window.open('login.php?not_admin=You are not an Admin!','_self')</script>";
+}
+else {
 ?>
 <form action="" method="post" style="padding:80px;" enctype="multipart/form-data">
 <b>Add a new available Service</b>
@@ -41,5 +47,5 @@ Total Fee for Services: <input type="text" name="new_tsfee" placeholder="Input H
 			echo "<script>window.open('index.php?add_services','_self')</script>";
 		}
 	}
-
+}
 ?>
