@@ -319,15 +319,15 @@ $err = "";
           							<input type="text" class="form-control" id="inputProject_Name" name="Project_Name" placeholder="Project Name">
                       </div>
                     </div>
-                    
-                    
+
+
                     <div class="row">
                       <div class="col-md-12 text-center">
                         <button type="button" class="btn btn-primary" onclick="addProject();" style="margin-top:10px;">Create</button>
                       </div>
                     </div>
                     <hr>
-                    
+
                      <div class="well well-lg col-md-6 col-sm-offset-3">
                                 <p align="center"><b>-OR-<br><br>Have your own house plan? <a data-tooltip="Have your own House Plan? Upload it here!"
        data-tooltip-location="right"> (?)</a></b></p>
@@ -335,9 +335,9 @@ $err = "";
                                     <h2><a href="upload.php" type="button" class="btn btn-primary">UPLOAD HERE</a></h2>
                                 </div>
                     </div>
-                    
-                    
-                    
+
+
+
                     <div class="row">
                       <div class="col-md-8 col-md-offset-2">
                         <div class="panel">
@@ -802,13 +802,16 @@ $err = "";
                                       ₱ <?php echo $totalPrice; ?>.00
                                     </div>
                                   </div>
-                            </div>
-                            </table>
-                            <div class="box-footer d-flex justify-content-between align-items-center">
-                            </div>
-                          </form>
+                                </div>
+                              </table>
+                              <div class="box-footer d-flex justify-content-between align-items-center">
+                              </div>
+                            </form>
+                          </div>
                         </div>
-                      </div>
+                        <div class="col-sm-10 col-sm-offset-1">
+                          <a href="exportToExcel.php?finalP=<?php echo $_GET['finalP']; ?>" class="btn btn-primary" target="_blank">Export to Excel</a>
+                        </div>
 
 
 
