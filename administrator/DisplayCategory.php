@@ -4,6 +4,7 @@ require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Category.php");
 require_once ("../App_Code/Part.php");
+require_once ("../App_Code/Unit.php");
 require_once ("../App_Code/Image.php");
 if(!isset($_SESSION['email'])){
 
@@ -29,6 +30,7 @@ if(isset($_POST['Name'])){
 	$mdlPart->setCategory_Id($mdlCategory->getId());
 	$err2 .= $clsFn->setForm('Name',$mdlPart,true);
 	$err2 .= $clsFn->setForm('Area',$mdlPart,true);
+	$err2 .= $clsFn->setForm('Unit_Id',$mdlPart,true);
 	$err2 .= $clsFn->setForm('Piece',$mdlPart,true);
 
 	if($err2 == ""){
@@ -206,12 +208,24 @@ if(isset($_POST['Name'])){
 														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPart->getName(); ?>" onblur="checkInput('inputName')">
 														<small id="notif-inputName" class="invalid-feedback">This is required</small>
 													</div>
-													<div class="form-group col-md-3">
+													<div class="form-group col-md-4">
 														<label class="form-control-label" for="inputArea">Area: </label>
-														<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Area in SQM" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
+														<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Value of area" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
 														<small id="notif-inputArea" class="invalid-feedback">This is required</small>
 													</div>
-		  										<div class="form-group col-md-3">
+													<div class="form-group col-md-4">
+														<label class="form-control-label" for="inputArea">Unit of Area: </label>
+														<select class="form-control" id="inputUnit" name="Unit_Id">
+															<?php
+															$lstUnit = $clsUnit->Get();
+															foreach ($lstUnit as $mdlUnit) {
+																echo '<option value="'.$mdlUnit->getId().'">'.$mdlUnit->getName().'</option>';
+															}
+															?>
+														</select>
+														<small id="notif-inputArea" class="invalid-feedback">This is required</small>
+													</div>
+		  										<div class="form-group col-md-4">
 		  											<label class="form-control-label" for="inputPiece">Pieces: </label>
 														<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Number of Pieces" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
 														<small id="notif-inputPiece" class="invalid-feedback">This is required</small>

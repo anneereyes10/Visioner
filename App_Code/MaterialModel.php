@@ -8,6 +8,9 @@ class MaterialModel{
 	private $Description = "";
 	private $Price = "";
 	private $PriceType = "";
+	private $Unit_Id = "";
+	private $Width = "";
+	private $Height = "";
 	private $DateCreated = "";
 	private $Status = "";
 
@@ -118,6 +121,60 @@ class MaterialModel{
 
 	public function setPriceType($PriceType){
 		$this->PriceType = $PriceType;
+	}
+
+
+	//Unit_Id
+	public function getUnit_Id(){
+		return $this->Unit_Id;
+	}
+
+	public function getsqlUnit_Id(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->Unit_Id);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setUnit_Id($Unit_Id){
+		$this->Unit_Id = $Unit_Id;
+	}
+
+
+	//Width
+	public function getWidth(){
+		return $this->Width;
+	}
+
+	public function getsqlWidth(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->Width);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setWidth($Width){
+		$this->Width = $Width;
+	}
+
+
+	//Height
+	public function getHeight(){
+		return $this->Height;
+	}
+
+	public function getsqlHeight(){
+		$Database = new Database();
+		$conn = $Database->GetConn();
+		$value = mysqli_real_escape_string($conn,$this->Height);
+		mysqli_close($conn);
+		return $value;
+	}
+
+	public function setHeight($Height){
+		$this->Height = $Height;
 	}
 
 

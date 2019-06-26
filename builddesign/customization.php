@@ -15,6 +15,8 @@ require_once ("../App_Code/Part.php");
 require_once ("../App_Code/Material.php");
 require_once ("../App_Code/Upgrade.php");
 
+require_once ("../App_Code/Unit.php");
+
 require_once ("../App_Code/Payment.php");
 
 $clsFn->IsLogged();
@@ -743,20 +745,64 @@ $err = "";
                                           $mdlUserProject->setUpgrade_Id('0');
                                           if ($clsUserProject->IsExist($mdlUserProject)) {
                                 						if ($mdlMaterial->getPriceType() == "0") {
-                                							$PMprice = $mdlMaterial->getPrice() * $mdlPart->getArea();
+                                              $M_width = $mdlMaterial->getWidth() * $clsUnit->getConversionById($mdlMaterial->getUnit_Id());
+                                							$M_height = $mdlMaterial->getHeight() * $clsUnit->getConversionById($mdlMaterial->getUnit_Id());
+                                							$M_area = $M_width * $M_height;
+
+                                							$P_area = $mdlPart->getArea() * pow($clsUnit->getConversionById($mdlPart->getUnit_Id()),2);
+                                							$Needed = ceil($P_area / $M_area);
+
+                                							$PMprice = $Needed * $mdlMaterial->getPrice();
+                                							// $PMprice = $mdlMaterial->getPrice() * $mdlPart->getArea();
                                 							$totalPrice += $PMprice;
+                                              ?>
+                                              <ul>
+                                                <li>
+                                                  <i>Material: <?php echo $mdlMaterial->getName(); ?></i>
+                                                </li>
+                                                <ul>
+                                                  <li>
+                                                    Price:
+                                                    <?php echo
+                                                    'Php '.$mdlMaterial->getPrice().' / '.
+                                                    $mdlMaterial->getWidth().' '. $clsUnit->GetNicknameById($mdlMaterial->getUnit_Id())
+                                                    .' x '.
+                                                    $mdlMaterial->getHeight().' '. $clsUnit->GetNicknameById($mdlMaterial->getUnit_Id());
+                                                    ?>
+                                                  </li>
+                                                  <li>
+                                                    Needed: <?php echo $mdlPart->getArea().' sq. '.$clsUnit->GetNicknameById($mdlPart->getUnit_Id()); ?>
+                                                  </li>
+                                                  <li>
+                                                    Total: Php <?php echo $PMprice; ?>
+                                                  </li>
+                                                </ul>
+                                              </ul>
+                                              <?php
                                 						}else{
                                 							$PMprice = $mdlMaterial->getPrice() * $mdlPart->getPiece();
                                 							$totalPrice += $PMprice;
+                                              ?>
+                                              <ul>
+                                                <li>
+                                                  <i>Material: <?php echo $mdlMaterial->getName(); ?></i>
+                                                </li>
+                                                <ul>
+                                                  <li>
+                                                    Price:
+                                                    <?php echo 'Php '.$mdlMaterial->getPrice().' / piece';
+                                                    ?>
+                                                  </li>
+                                                  <li>
+                                                    Needed: <?php echo $mdlPart->getPiece().' piece/s. '; ?>
+                                                  </li>
+                                                  <li>
+                                                    Total: Php <?php echo $PMprice; ?>
+                                                  </li>
+                                                </ul>
+                                              </ul>
+                                              <?php
                                 						}
-                                            ?>
-                                            <ul>
-                                              <li>
-                                                <div class="col-sm-6" style="padding:0px;"><?php echo $mdlMaterial->getName(); ?></div>
-                                                <div class="col-sm-6 text-right" style="padding:0px;">₱ <?php echo $PMprice; ?>.00</div>
-                                              </li>
-                                            </ul>
-                                            <?php
                                           }
                                         }
 
@@ -768,20 +814,64 @@ $err = "";
                                           $mdlUserProject->setUpgrade_Id($mdlUpgrade->getId());
                                           if ($clsUserProject->IsExist($mdlUserProject)) {
                                 						if ($mdlUpgrade->getPriceType() == "0") {
-                                							$PUprice = $mdlUpgrade->getPrice() * $mdlPart->getArea();
+                                              $M_width = $mdlUpgrade->getWidth() * $clsUnit->getConversionById($mdlUpgrade->getUnit_Id());
+                                							$M_height = $mdlUpgrade->getHeight() * $clsUnit->getConversionById($mdlUpgrade->getUnit_Id());
+                                							$M_area = $M_width * $M_height;
+
+                                							$P_area = $mdlPart->getArea() * pow($clsUnit->getConversionById($mdlPart->getUnit_Id()),2);
+                                							$Needed = ceil($P_area / $M_area);
+
+                                							$PUprice = $Needed * $mdlUpgrade->getPrice();
+                                							// $PUprice = $mdlUpgrade->getPrice() * $mdlPart->getArea();
                                 							$totalPrice += $PUprice;
+                                              ?>
+                                              <ul>
+                                                <li>
+                                                  <i>Upgrade: <?php echo $mdlUpgrade->getName(); ?></i>
+                                                </li>
+                                                <ul>
+                                                  <li>
+                                                    Price:
+                                                    <?php echo
+                                                    'Php '.$mdlUpgrade->getPrice().' / '.
+                                                    $mdlUpgrade->getWidth().' '. $clsUnit->GetNicknameById($mdlUpgrade->getUnit_Id())
+                                                    .' x '.
+                                                    $mdlUpgrade->getHeight().' '. $clsUnit->GetNicknameById($mdlUpgrade->getUnit_Id());
+                                                    ?>
+                                                  </li>
+                                                  <li>
+                                                    Needed: <?php echo $mdlPart->getArea().' sq. '.$clsUnit->GetNicknameById($mdlPart->getUnit_Id()); ?>
+                                                  </li>
+                                                  <li>
+                                                    Total: Php <?php echo $PUprice; ?>
+                                                  </li>
+                                                </ul>
+                                              </ul>
+                                              <?php
                                 						}else{
                                 							$PUprice = $mdlUpgrade->getPrice() * $mdlPart->getPiece();
                                 							$totalPrice += $PUprice;
+                                              ?>
+                                              <ul>
+                                                <li>
+                                                  <i>Upgrade: <?php echo $mdlUpgrade->getName(); ?></i>
+                                                </li>
+                                                <ul>
+                                                  <li>
+                                                    Price:
+                                                    <?php echo 'Php '.$mdlUpgrade->getPrice().' / piece';
+                                                    ?>
+                                                  </li>
+                                                  <li>
+                                                    Needed: <?php echo $mdlPart->getPiece().' piece/s. '; ?>
+                                                  </li>
+                                                  <li>
+                                                    Total: Php <?php echo $PUprice; ?>
+                                                  </li>
+                                                </ul>
+                                              </ul>
+                                              <?php
                                 						}
-                                            ?>
-                                            <ul>
-                                              <li>
-                                                <div class="col-sm-6" style="padding:0px;"><?php echo $mdlUpgrade->getName(); ?></div>
-                                                <div class="col-sm-6 text-right" style="padding:0px;">₱ <?php echo $PUprice; ?>.00</div>
-                                              </li>
-                                            </ul>
-                                            <?php
                                           }
                                         }
                                         ?>

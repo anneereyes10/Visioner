@@ -1,6 +1,7 @@
 <?php
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Material.php");
+require_once ("../App_Code/Unit.php");
 require_once ("../App_Code/Image.php");
 if(!isset($_SESSION['email'])){
 
@@ -181,15 +182,31 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
                       <p class="form-control" readonly><?php echo ($mdlMaterial->getPriceType() == "0")?'per Area':'per Piece'; ?></p>
                     </div>
                   </div>
+									<?php
+									if ($mdlMaterial->getPriceType() == "0") {
+										?>
+										<div class="row mb-2">
+	                    <div class="col-4">
+	                      <label class="form-control-label" for="inputWidth"><b>Width:</b></label>
+	                      <p class="form-control" readonly><?php echo $mdlMaterial->getWidth(); ?></p>
+	                    </div>
+	                    <div class="col-4">
+	                      <label class="form-control-label" for="inputHeight"><b>Height:</b></label>
+	                      <p class="form-control" readonly><?php echo $mdlMaterial->getHeight(); ?></p>
+	                    </div>
+	                    <div class="col-4">
+	                      <label class="form-control-label" for="inputUnit_Id"><b>Unit:</b></label>
+	                      <p class="form-control" readonly><?php echo $clsUnit->GetNameById($mdlMaterial->getUnit_Id()); ?></p>
+	                    </div>
+	                  </div>
+										<?php
+									}
+									?>
                   <div class="row">
-                    <div class="col-sm-4 offset-sm-4">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-1 offset-sm-5">
+                    <div class="col-sm-2 offset-sm-4">
 											<a href="EditMaterial.php?Id=<?php echo $mdlMaterial->getId(); ?>" id="submit" class="btn btn-primary w-100">Edit</a>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
 											<a href="DisplayPart.php?Id=<?php echo $mdlMaterial->getPart_Id(); ?>" class="btn btn-secondary w-100">Back</a>
                     </div>
                   </div>

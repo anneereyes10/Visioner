@@ -1,9 +1,9 @@
 <?php
-require_once ("PartModel.php");
-$clsPart = new Part();
-class Part{
+require_once ("UnitModel.php");
+$clsUnit = new Unit();
+class Unit{
 
-	private $table = "part";
+	private $table = "unit";
 
 	public function __construct(){}
 
@@ -13,17 +13,13 @@ class Part{
 		$conn = $Database->GetConn();
 		$sql = "INSERT INTO `".$this->table."`
 			(
-				`Category_Id`,
-				`Part_Name`,
-				`Part_Area`,
-				`Unit_Id`,
-				`Part_Piece`
+				`Unit_Name`,
+				`Unit_Nickname`,
+				`Unit_Conversion`
 			) VALUES (
-				'".$mdl->getsqlCategory_Id()."',
 				'".$mdl->getsqlName()."',
-				'".$mdl->getsqlArea()."',
-				'".$mdl->getsqlUnit_Id()."',
-				'".$mdl->getsqlPiece()."'
+				'".$mdl->getsqlNickname()."',
+				'".$mdl->getsqlConversion()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -37,34 +33,15 @@ class Part{
 		$Database = new Database();
 		$conn = $Database->GetConn();
 		$sql="UPDATE `".$this->table."` SET
-				 `Category_Id`='".$mdl->getsqlCategory_Id()."',
-				 `Part_Name`='".$mdl->getsqlName()."',
-				 `Part_Area`='".$mdl->getsqlArea()."',
-				 `Unit_Id`='".$mdl->getsqlUnit_Id()."',
-				 `Part_Piece`='".$mdl->getsqlPiece()."',
-				 `Part_Status`='".$mdl->getsqlStatus()."'
-		 WHERE `Part_Id`='".$mdl->getsqlId()."'";
+				 `Unit_Name`='".$mdl->getsqlName()."',
+				 `Unit_Nickname`='".$mdl->getsqlNickname()."',
+				 `Unit_Conversion`='".$mdl->getsqlConversion()."',
+				 `Unit_Status`='".$mdl->getsqlStatus()."'
+		 WHERE `Unit_Id`='".$mdl->getsqlId()."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		 mysqli_close($conn);
-	}
-
-	public function UpdateCategory_Id($id,$value){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="UPDATE `".$this->table."` SET
-			`Category_Id`='".$value."'
-			WHERE `Part_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
 	}
 
 	public function UpdateName($id,$value){
@@ -76,15 +53,15 @@ class Part{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Part_Name`='".$value."'
-			WHERE `Part_Id` = '".$id."'";
+			`Unit_Name`='".$value."'
+			WHERE `Unit_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateArea($id,$value){
+	public function UpdateNickname($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -93,15 +70,15 @@ class Part{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Part_Area`='".$value."'
-			WHERE `Part_Id` = '".$id."'";
+			`Unit_Nickname`='".$value."'
+			WHERE `Unit_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
 	}
 
-	public function UpdateUnit_Id($id,$value){
+	public function UpdateConversion($id,$value){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -110,25 +87,8 @@ class Part{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Unit_Id`='".$value."'
-			WHERE `Part_Id` = '".$id."'";
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-	}
-
-	public function UpdatePiece($id,$value){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$id = mysqli_real_escape_string($conn,$id);
-
-		$sql="UPDATE `".$this->table."` SET
-			`Part_Piece`='".$value."'
-			WHERE `Part_Id` = '".$id."'";
+			`Unit_Conversion`='".$value."'
+			WHERE `Unit_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -144,8 +104,8 @@ class Part{
 		$id = mysqli_real_escape_string($conn,$id);
 
 		$sql="UPDATE `".$this->table."` SET
-			`Part_Status`='".$value."'
-			WHERE `Part_Id` = '".$id."'";
+			`Unit_Status`='".$value."'
+			WHERE `Unit_Id` = '".$id."'";
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -158,7 +118,7 @@ class Part{
 		$conn = $Database->GetConn();
 		$id = mysqli_real_escape_string($conn,$id);
 		$sql="DELETE FROM `".$this->table."`
-			WHERE `Part_Id` = '".$id."'";
+			WHERE `Unit_Id` = '".$id."'";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 			mysqli_close($conn);
@@ -173,18 +133,59 @@ class Part{
 		$val = false;
 		$msg = "";
 
-		// Category_Id with Part_Name
+		// Unit_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
-			`Part_Id` != '".$mdl->getsqlId()."' AND
-			`Category_Id` = '".$mdl->getsqlCategory_Id()."' AND
-			`Part_Name` = '".$mdl->getsqlName()."'
+			`Unit_Id` != '".$mdl->getsqlId()."' AND
+			`Unit_Id` = '".$mdl->getsqlId()."'
+		";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputId\")'>Id</a>: " . $mdl->getId() . "</p>";
+			$val = true;
+		}
+
+		// Unit_Name
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`Unit_Id` != '".$mdl->getsqlId()."' AND
+			`Unit_Name` = '".$mdl->getsqlName()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
 		if($rows[0] > 0)
 		{
 			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputName\")'>Name</a>: " . $mdl->getName() . "</p>";
+			$val = true;
+		}
+
+		// Unit_Nickname
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`Unit_Id` != '".$mdl->getsqlId()."' AND
+			`Unit_Nickname` = '".$mdl->getsqlNickname()."'
+		";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputNickname\")'>Nickname</a>: " . $mdl->getNickname() . "</p>";
+			$val = true;
+		}
+
+		// Unit_Conversion
+		$sql = "SELECT COUNT(*) FROM `".$this->table."`
+			WHERE
+			`Unit_Id` != '".$mdl->getsqlId()."' AND
+			`Unit_Conversion` = '".$mdl->getsqlConversion()."'
+		";
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		$rows = mysqli_fetch_row($result);
+		if($rows[0] > 0)
+		{
+			$msg .= "<p><a href='javascript:void(0)' class='alert-link' onclick='setFocus(\"inputConversion\")'>Conversion</a>: " . $mdl->getConversion() . "</p>";
 			$val = true;
 		}
 
@@ -201,7 +202,7 @@ class Part{
 
 		$sql = "SELECT * FROM `".$this->table."`";
 		if ($status !== "") {
-			$sql .= "WHERE `Part_Status` = '".$status."'";
+			$sql .= "WHERE `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -209,32 +210,6 @@ class Part{
 		mysqli_close($conn);
 
 		return $this->ListTransfer($result);
-	}
-
-	public function GetCategory_IdById($id,$status=""){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = "";
-		$id = mysqli_real_escape_string($conn,$id);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql = "SELECT `Category_Id` FROM `".$this->table."`
-			WHERE `Part_Id` = '".$id."'";
-		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
-		}
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		while($row = mysqli_fetch_array($result))
-		{
-			$value = $row['Category_Id'];
-		}
-
-		mysqli_close($conn);
-
-		return $value;
 	}
 
 	public function GetNameById($id,$status=""){
@@ -246,16 +221,16 @@ class Part{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql = "SELECT `Part_Name` FROM `".$this->table."`
-			WHERE `Part_Id` = '".$id."'";
+		$sql = "SELECT `Unit_Name` FROM `".$this->table."`
+			WHERE `Unit_Id` = '".$id."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Part_Name'];
+			$value = $row['Unit_Name'];
 		}
 
 		mysqli_close($conn);
@@ -263,7 +238,7 @@ class Part{
 		return $value;
 	}
 
-	public function GetAreaById($id,$status=""){
+	public function GetNicknameById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -272,16 +247,16 @@ class Part{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql = "SELECT `Part_Area` FROM `".$this->table."`
-			WHERE `Part_Id` = '".$id."'";
+		$sql = "SELECT `Unit_Nickname` FROM `".$this->table."`
+			WHERE `Unit_Id` = '".$id."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Part_Area'];
+			$value = $row['Unit_Nickname'];
 		}
 
 		mysqli_close($conn);
@@ -289,7 +264,7 @@ class Part{
 		return $value;
 	}
 
-	public function GetUnit_IdById($id,$status=""){
+	public function GetConversionById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -298,42 +273,16 @@ class Part{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql = "SELECT `Unit_Id` FROM `".$this->table."`
-			WHERE `Part_Id` = '".$id."'";
+		$sql = "SELECT `Unit_Conversion` FROM `".$this->table."`
+			WHERE `Unit_Id` = '".$id."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Unit_Id'];
-		}
-
-		mysqli_close($conn);
-
-		return $value;
-	}
-
-	public function GetPieceById($id,$status=""){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = "";
-		$id = mysqli_real_escape_string($conn,$id);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql = "SELECT `Part_Piece` FROM `".$this->table."`
-			WHERE `Part_Id` = '".$id."'";
-		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
-		}
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-		while($row = mysqli_fetch_array($result))
-		{
-			$value = $row['Part_Piece'];
+			$value = $row['Unit_Conversion'];
 		}
 
 		mysqli_close($conn);
@@ -350,16 +299,16 @@ class Part{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql = "SELECT `Part_Status` FROM `".$this->table."`
-			WHERE `Part_Id` = '".$id."'";
+		$sql = "SELECT `Unit_Status` FROM `".$this->table."`
+			WHERE `Unit_Id` = '".$id."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
 		{
-			$value = $row['Part_Status'];
+			$value = $row['Unit_Status'];
 		}
 
 		mysqli_close($conn);
@@ -376,9 +325,9 @@ class Part{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-			WHERE `Part_Id` = '".$value."'";
+			WHERE `Unit_Id` = '".$value."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -386,27 +335,6 @@ class Part{
 		mysqli_close($conn);
 
 		return $this->ModelTransfer($result);
-	}
-
-	public function GetByCategory_Id($value,$status=""){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT * FROM `".$this->table."`
-			WHERE `Category_Id` = '".$value."'";
-		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
-		}
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
 	}
 
 	public function GetByName($value,$status=""){
@@ -418,9 +346,9 @@ class Part{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-			WHERE `Part_Name` = '".$value."'";
+			WHERE `Unit_Name` = '".$value."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -430,7 +358,7 @@ class Part{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByArea($value,$status=""){
+	public function GetByNickname($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -439,9 +367,9 @@ class Part{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-			WHERE `Part_Area` = '".$value."'";
+			WHERE `Unit_Nickname` = '".$value."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -451,7 +379,7 @@ class Part{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByUnit_Id($value,$status=""){
+	public function GetByConversion($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -460,30 +388,9 @@ class Part{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-			WHERE `Unit_Id` = '".$value."'";
+			WHERE `Unit_Conversion` = '".$value."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
-		}
-
-		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
-
-		mysqli_close($conn);
-
-		return $this->ListTransfer($result);
-	}
-
-	public function GetByPiece($value,$status=""){
-
-		$Database = new Database();
-		$conn = $Database->GetConn();
-
-		$value = mysqli_real_escape_string($conn,$value);
-		$status = mysqli_real_escape_string($conn,$status);
-
-		$sql="SELECT * FROM `".$this->table."`
-			WHERE `Part_Piece` = '".$value."'";
-		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -502,9 +409,9 @@ class Part{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-			WHERE `Part_DateCreated` = '".$value."'";
+			WHERE `Unit_DateCreated` = '".$value."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -523,9 +430,9 @@ class Part{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-			WHERE `Part_Status` = '".$value."'";
+			WHERE `Unit_Status` = '".$value."'";
 		if ($status !== "") {
-			$sql .= "AND `Part_Status` = '".$status."'";
+			$sql .= "AND `Unit_Status` = '".$status."'";
 		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
@@ -552,7 +459,7 @@ class Part{
 
 	public function ModelTransfer($result){
 
-		$mdl = new PartModel();
+		$mdl = new UnitModel();
 		while($row = mysqli_fetch_array($result))
 		{
 			$mdl = $this->ToModel($row);
@@ -564,7 +471,7 @@ class Part{
 		$lst = array();
 		while($row = mysqli_fetch_array($result))
 		{
-			$mdl = new PartModel();
+			$mdl = new UnitModel();
 			$mdl = $this->ToModel($row);
 			array_push($lst,$mdl);
 		}
@@ -572,15 +479,13 @@ class Part{
 	}
 
 	public function ToModel($row){
-		$mdl = new PartModel();
-		$mdl->setId((isset($row['Part_Id'])) ? $row['Part_Id'] : '');
-		$mdl->setCategory_Id((isset($row['Category_Id'])) ? $row['Category_Id'] : '');
-		$mdl->setName((isset($row['Part_Name'])) ? $row['Part_Name'] : '');
-		$mdl->setArea((isset($row['Part_Area'])) ? $row['Part_Area'] : '');
-		$mdl->setUnit_Id((isset($row['Unit_Id'])) ? $row['Unit_Id'] : '');
-		$mdl->setPiece((isset($row['Part_Piece'])) ? $row['Part_Piece'] : '');
-		$mdl->setDateCreated((isset($row['Part_DateCreated'])) ? $row['Part_DateCreated'] : '');
-		$mdl->setStatus((isset($row['Part_Status'])) ? $row['Part_Status'] : '');
+		$mdl = new UnitModel();
+		$mdl->setId((isset($row['Unit_Id'])) ? $row['Unit_Id'] : '');
+		$mdl->setName((isset($row['Unit_Name'])) ? $row['Unit_Name'] : '');
+		$mdl->setNickname((isset($row['Unit_Nickname'])) ? $row['Unit_Nickname'] : '');
+		$mdl->setConversion((isset($row['Unit_Conversion'])) ? $row['Unit_Conversion'] : '');
+		$mdl->setDateCreated((isset($row['Unit_DateCreated'])) ? $row['Unit_DateCreated'] : '');
+		$mdl->setStatus((isset($row['Unit_Status'])) ? $row['Unit_Status'] : '');
 		return $mdl;
 	}
 }

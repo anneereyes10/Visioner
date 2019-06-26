@@ -1,8 +1,6 @@
 <?php
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
-require_once ("../App_Code/Part.php");
-require_once ("../App_Code/PartModel.php");
 require_once ("../App_Code/Unit.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
@@ -12,24 +10,21 @@ if(!isset($_SESSION['email'])){
 }
 else {
 $msg = "";
+$msg2 = "";
 $err = "";
-
 if(isset($_GET['Id']) && $_GET['Id'] != ""){
-	$mdlPart = $clsPart->GetById($_GET['Id']);
+	$mdlUnit = $clsUnit->GetById($_GET['Id']);
 }else{
-	header('Location: ViewPart.php');
+	header('Location: AddUnit.php');
 	die();
 }
 
 if(isset($_POST['Name'])){
 
-	$err .= $clsFn->setForm('Name',$mdlPart,true);
-	$err .= $clsFn->setForm('Area',$mdlPart,true);
-	$err .= $clsFn->setForm('Unit_Id',$mdlPart,true);
-	$err .= $clsFn->setForm('Piece',$mdlPart,true);
+	$err .= $clsFn->setForm('Name',$mdlUnit,true);
 
 	if($err == ""){
-		$duplicate = $clsPart->IsExist($mdlPart);
+		$duplicate = $clsUnit->IsExist($mdlUnit);
 		if($duplicate['val']){
 			$msg .= '
 			<div class="alert alert-danger alert-dismissible" role="alert">
@@ -37,19 +32,22 @@ if(isset($_POST['Name'])){
 			<span aria-hidden="true">×</span>
 			<span class="sr-only">Close</span>
 			</button>
-			<h6>Duplicate of Information Detected. </h6>
+			<h4>Duplicate of Information Detected. </h4>
 			'.$duplicate['msg'].'
 			</div>';
 		}else{
-			$clsPart->Update($mdlPart);
+			$clsUnit->Update($mdlUnit);
 			$msg .= '
-			<div class="alert alert-success alert-dismissible" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">×</span>
-			<span class="sr-only">Close</span>
-			</button>
-			<h6>Successfully Updated Part. </h6>
-			</div>';
+				<div class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+				<span class="sr-only">Close</span>
+				</button>
+				<h6>
+					Successfully Updated Unit.
+				</h6>
+				</div>
+			     ';
 		}
 	}else{
 		$msg .= '
@@ -88,6 +86,54 @@ if(isset($_POST['Name'])){
 
     <!-- Custom styles for this template-->
     <link href="styles/css/sb-admin.css" rel="stylesheet">
+				<!-- JumEE Css -->
+		    <link href="../JumEE/css/bootstrap-extended.css" rel="stylesheet">
+		<script>
+
+						function deleteShow(Id) {
+							var modal = document.getElementById("ModalWrapper");
+							modal.classList.remove("modal-success");
+							modal.classList.add("modal-danger");
+
+							var xmlhttp = new XMLHttpRequest();
+							var url = "";
+							var btn = "";
+							xmlhttp.onreadystatechange = function() {
+								if (this.readyState == 4 && this.status == 200) {
+									document.getElementById("modalContent").innerHTML = this.responseText;
+								}
+							};
+							url = "../Ajax/DisplayUnit.php";
+							url += "?call=deleteShow";
+							url += "&Id=" + Id;
+							xmlhttp.open("GET", url, true);
+							xmlhttp.send();
+
+						}
+						function deleteItem(Id) {
+							var modal = document.getElementById("ModalWrapper");
+							modal.classList.add("modal-success");
+							modal.classList.remove("modal-danger");
+							var table = $('#example').DataTable();
+							console.log(table);
+							table.rows('#tr'+Id).remove().draw();
+
+							var xmlhttp = new XMLHttpRequest();
+							var url = "";
+							var btn = "";
+							xmlhttp.onreadystatechange = function() {
+								if (this.readyState == 4 && this.status == 200) {
+									document.getElementById("modalContent").innerHTML = this.responseText;
+								}
+							};
+							url = "../Ajax/DisplayUnit.php";
+							url += "?call=deleteItem";
+							url += "&Id=" + Id;
+							xmlhttp.open("GET", url, true);
+							xmlhttp.send();
+
+						}
+		</script>
 
   </head>
 
@@ -102,70 +148,32 @@ if(isset($_POST['Name'])){
           <form method="post" action="" enctype="multipart/form-data" autocomplete="off">
   					<div class="row">
   						<div class="col-12">
-						    <div class="card shadow mb-4">
-                  <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Part Details</h6>
-                  </div>
+  							<div class="panel">
+  								<div class="panel-heading">
+  									<h3 class="panel-title">Unit Details</h3>
+  								</div>
   								<?php echo $msg; ?>
-  								<div class="card-body">
+  								<div class="panel-body">
   									<div class="row">
   										<div class="form-group col-md-12">
-  											<label class="form-control-label" for="inputName"><b>Rename Part Details Name: </b></label>
-  											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPart->getName(); ?>" onblur="checkInput('inputName')">
-  											<small id="notif-inputName" class="invalid-feedback">This is required</small>
-  										</div>
-  									</div>
-  									<div class="row mb-2">
-  										<div class="col-6">
-  											<label class="form-control-label" for="inputArea">Area</label>
-  											<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Area" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
-  											<small id="notif-inputName" class="invalid-feedback">This is required</small>
-  										</div>
-  										<div class="col-6">
-												<label class="form-control-label" for="inputArea">Unit of Area: </label>
-												<select class="form-control" id="inputUnit" name="Unit_Id">
-													<?php
-													$lstUnit = $clsUnit->Get();
-													foreach ($lstUnit as $mdlUnit) {
-														if ($mdlPart->getUnit_Id() == $mdlUnit->getId()) {
-															echo '<option value="'.$mdlUnit->getId().'" selected>'.$mdlUnit->getName().'</option>';
-														} else {
-															echo '<option value="'.$mdlUnit->getId().'">'.$mdlUnit->getName().'</option>';
-														}
-													}
-													?>
-												</select>
-												<small id="notif-inputArea" class="invalid-feedback">This is required</small>
-  										</div>
-  									</div>
-  									<div class="row mb-2">
-  										<div class="col-12">
-  											<label class="form-control-label" for="inputPiece">Pieces</label>
-  											<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Piece" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
+  											<label class="form-control-label" for="inputName">Name</label>
+  											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlUnit->getName(); ?>" onblur="checkInput('inputName')">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
   									<div class="row">
-  										<div class="col-sm-4 offset-sm-4">
+  										<div class="col-sm-3 offset-sm-3">
+  											<button type="submit" id="submit" class="btn btn-primary w-100">Submit</button>
+  										</div>
+  										<div class="col-sm-3">
+												<a href="AddUnit.php" class="btn btn-secondary w-100">Back</a>
   										</div>
   									</div>
-	                  <div class="row">
-	                    <div class="col-sm-2 offset-sm-4">
-												<button type="submit" id="submit" class="btn btn-primary w-100">Submit</button>
-	                    </div>
-	                    <div class="col-sm-2">
-												<a href="DisplayPart.php?Id=<?php echo $mdlPart->getId(); ?>" class="btn btn-secondary w-100">Back</a>
-	                    </div>
-	                  </div>
   								</div>
   							</div>
   						</div>
   					</div>
   				</form>
-
-
-
-
 
 
         </div>
@@ -179,8 +187,6 @@ if(isset($_POST['Name'])){
       <i class="fas fa-angle-up"></i>
     </a>
 
-
-
     <?php include 'logoutmodal.php';?>
 
     <!-- Bootstrap core JavaScript-->
@@ -192,9 +198,16 @@ if(isset($_POST['Name'])){
 
     <!-- Custom scripts for all pages-->
     <script src="styles/js/sb-admin.min.js"></script>
+		<script type="text/javascript" src="../JumEE/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="../JumEE/js/dataTables.bootstrap4.min.js"></script>
 
     <!-- JumEE Plugin -->
 
+				    <script>
+				    $(document).ready(function() {
+				        $('#example').DataTable();
+				    } );
+				    </script>
   </body>
 
 </html>

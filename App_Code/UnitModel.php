@@ -1,13 +1,11 @@
 <?php
-$mdlPart = new PartModel();
-class PartModel{
+$mdlUnit = new UnitModel();
+class UnitModel{
 
 	private $Id = "";
-	private $Category_Id = "";
 	private $Name = "";
-	private $Area = "";
-	private $Unit_Id = "";
-	private $Piece = "";
+	private $Nickname = "";
+	private $Conversion = "";
 	private $DateCreated = "";
 	private $Status = "";
 
@@ -31,24 +29,6 @@ class PartModel{
 	}
 
 
-	//Category_Id
-	public function getCategory_Id(){
-		return $this->Category_Id;
-	}
-
-	public function getsqlCategory_Id(){
-		$Database = new Database();
-		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Category_Id);
-		mysqli_close($conn);
-		return $value;
-	}
-
-	public function setCategory_Id($Category_Id){
-		$this->Category_Id = $Category_Id;
-	}
-
-
 	//Name
 	public function getName(){
 		return $this->Name;
@@ -67,57 +47,39 @@ class PartModel{
 	}
 
 
-	//Area
-	public function getArea(){
-		return $this->Area;
+	//Nickname
+	public function getNickname(){
+		return $this->Nickname;
 	}
 
-	public function getsqlArea(){
+	public function getsqlNickname(){
 		$Database = new Database();
 		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Area);
+		$value = mysqli_real_escape_string($conn,$this->Nickname);
 		mysqli_close($conn);
 		return $value;
 	}
 
-	public function setArea($Area){
-		$this->Area = $Area;
+	public function setNickname($Nickname){
+		$this->Nickname = $Nickname;
 	}
 
 
-	//Unit_Id
-	public function getUnit_Id(){
-		return $this->Unit_Id;
+	//Conversion
+	public function getConversion(){
+		return $this->Conversion;
 	}
 
-	public function getsqlUnit_Id(){
+	public function getsqlConversion(){
 		$Database = new Database();
 		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Unit_Id);
+		$value = mysqli_real_escape_string($conn,$this->Conversion);
 		mysqli_close($conn);
 		return $value;
 	}
 
-	public function setUnit_Id($Unit_Id){
-		$this->Unit_Id = $Unit_Id;
-	}
-
-
-	//Piece
-	public function getPiece(){
-		return $this->Piece;
-	}
-
-	public function getsqlPiece(){
-		$Database = new Database();
-		$conn = $Database->GetConn();
-		$value = mysqli_real_escape_string($conn,$this->Piece);
-		mysqli_close($conn);
-		return $value;
-	}
-
-	public function setPiece($Piece){
-		$this->Piece = $Piece;
+	public function setConversion($Conversion){
+		$this->Conversion = $Conversion;
 	}
 
 

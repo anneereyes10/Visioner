@@ -10,6 +10,7 @@ require_once ("../App_Code/Category.php");
 require_once ("../App_Code/Part.php");
 require_once ("../App_Code/Material.php");
 require_once ("../App_Code/Upgrade.php");
+require_once ("../App_Code/Unit.php");
 require_once ("../App_Code/Image.php");
 
 $call = $_GET['call'];
@@ -518,6 +519,9 @@ function ProjectItem()
 	$clsU 				= new Upgrade();
 	$mdlU 				= new UpgradeModel();
 
+	$clsUnit			= new Unit();
+	$mdlUnit			= new UnitModel();
+
 	$lstUP = $clsUP->GetByProject_Id($_SESSION['projectId']);
 	$Plan_Id = $clsProject->GetPlan_IdById($_SESSION['projectId']);
 
@@ -529,13 +533,13 @@ function ProjectItem()
 	<div class="col-sm-6 text-right" style="padding:0px;">'.$totalPrice.'Php</div>
 	';
 	$txtout .= '<hr>';
-	$txtout .= '<ul>';
-	$txtout .= '<li>'.$mdlPlan->getName().'</li>';
+	$txtout .= '<ul style="padding:0px !important;">';
+	$txtout .= '<li><b><u>'.$mdlPlan->getName().'</u></b></li>';
 
 	$lstC = $clsC->GetByPlan_Id($mdlPlan->getId());
 	foreach ($lstC as $mdlC) {
 		$txtout .= '<ul>';
-		$txtout .= '<li>'.$mdlC->getName().'</li>';
+		$txtout .= '<li><b>'.$mdlC->getName().'</b></li>';
 
 		$lstP = $clsP->GetByCategory_Id($mdlC->getId());
 		foreach ($lstP as $mdlP) {
@@ -543,7 +547,7 @@ function ProjectItem()
 				$mdlP->setArea('1');
 			}
 			$txtout .= '<ul>';
-			$txtout .= '<li>'.$mdlP->getName().'</li>';
+			$txtout .= '<li><b>'.$mdlP->getName().'</b></li>';
 
 				$lstM = $clsM->GetByPart_Id($mdlP->getId());
 				foreach ($lstM as $mdlM) {
@@ -552,7 +556,14 @@ function ProjectItem()
 					$mdlUP->setUpgrade_Id('0');
 					if ($clsUP->IsExist($mdlUP)) {
 						if ($mdlM->getPriceType() == "0") {
-							$PMprice = $mdlM->getPrice() * $mdlP->getArea();
+							$M_width = $mdlM->getWidth() * $clsUnit->getConversionById($mdlM->getUnit_Id());
+							$M_height = $mdlM->getHeight() * $clsUnit->getConversionById($mdlM->getUnit_Id());
+							$M_area = $M_width * $M_height;
+
+							$P_area = $mdlP->getArea() * pow($clsUnit->getConversionById($mdlP->getUnit_Id()),2);
+							$Needed = ceil($P_area / $M_area);
+
+							$PMprice = $Needed * $mdlM->getPrice();
 							$totalPrice += $PMprice;
 						}else{
 							$PMprice = $mdlM->getPrice() * $mdlP->getPiece();
@@ -560,10 +571,27 @@ function ProjectItem()
 						}
 						$txtout .= '<ul>';
 						$txtout .= '<li>
-													<div class="col-sm-6" style="padding:0px;">Material: '.$mdlM->getName().'</div>
-													<div class="col-sm-6 text-right" style="padding:0px;">'.$PMprice.'Php</div>
-												</li>';
-						$txtout .= '</ul>';
+													<div class="row">
+														<div class="col-sm-12">
+															Material: '.$mdlM->getName().'
+														</div>
+													</div>';
+
+						if ($mdlM->getPriceType() == "0") {
+						$txtout .=	'	<div class="row">
+														<div class="col-sm-12">
+															Php '.$PMprice.'
+														</div>
+													</div>';
+						}else{
+						$txtout .=	'	<div class="row">
+														<div class="col-sm-12">
+															Php '.$PMprice.'
+														</div>
+													</div>';
+						}
+						$txtout .= '</li>
+												</ul>';
 					}
 				}
 
@@ -574,7 +602,14 @@ function ProjectItem()
 					$mdlUP->setUpgrade_Id($mdlU->getId());
 					if ($clsUP->IsExist($mdlUP)) {
 						if ($mdlU->getPriceType() == "0") {
-							$PUprice = $mdlU->getPrice() * $mdlP->getArea();
+							$M_width = $mdlU->getWidth() * $clsUnit->getConversionById($mdlU->getUnit_Id());
+							$M_height = $mdlU->getHeight() * $clsUnit->getConversionById($mdlU->getUnit_Id());
+							$M_area = $M_width * $M_height;
+
+							$P_area = $mdlP->getArea() * pow($clsUnit->getConversionById($mdlP->getUnit_Id()),2);
+							$Needed = ceil($P_area / $M_area);
+
+							$PUprice = $Needed * $mdlU->getPrice();
 							$totalPrice += $PUprice;
 						}else{
 							$PUprice = $mdlU->getPrice() * $mdlP->getPiece();
@@ -582,10 +617,27 @@ function ProjectItem()
 						}
 						$txtout .= '<ul>';
 						$txtout .= '<li>
-													<div class="col-sm-6" style="padding:0px;">Upgrade: '.$mdlU->getName().'</div>
-													<div class="col-sm-6 text-right" style="padding:0px;">'.$PUprice.'Php</div>
-												</li>';
-						$txtout .= '</ul>';
+													<div class="row">
+														<div class="col-sm-12">
+															Upgrade: '.$mdlU->getName().'
+														</div>
+													</div>';
+
+						if ($mdlU->getPriceType() == "0") {
+						$txtout .=	'	<div class="row">
+														<div class="col-sm-12">
+															Php '.$PUprice.'
+														</div>
+													</div>';
+						}else{
+						$txtout .=	'	<div class="row">
+														<div class="col-sm-12">
+															Php '.$PUprice.'
+														</div>
+													</div>';
+						}
+						$txtout .= '</li>
+												</ul>';
 					}
 				}
 

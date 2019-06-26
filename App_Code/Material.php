@@ -17,13 +17,19 @@ class Material{
 				`Material_Name`,
 				`Material_Description`,
 				`Material_Price`,
-				`Material_PriceType`
+				`Material_PriceType`,
+				`Unit_Id`,
+				`Material_Width`,
+				`Material_Height`
 			) VALUES (
 				'".$mdl->getsqlPart_Id()."',
 				'".$mdl->getsqlName()."',
 				'".$mdl->getsqlDescription()."',
 				'".$mdl->getsqlPrice()."',
-				'".$mdl->getsqlPriceType()."'
+				'".$mdl->getsqlPriceType()."',
+				'".$mdl->getsqlUnit_Id()."',
+				'".$mdl->getsqlWidth()."',
+				'".$mdl->getsqlHeight()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -42,6 +48,9 @@ class Material{
 				 `Material_Description`='".$mdl->getsqlDescription()."',
 				 `Material_Price`='".$mdl->getsqlPrice()."',
 				 `Material_PriceType`='".$mdl->getsqlPriceType()."',
+				 `Unit_Id`='".$mdl->getsqlUnit_Id()."',
+				 `Material_Width`='".$mdl->getsqlWidth()."',
+				 `Material_Height`='".$mdl->getsqlHeight()."',
 				 `Material_Status`='".$mdl->getsqlStatus()."'
 		 WHERE `Material_Id`='".$mdl->getsqlId()."'";
 
@@ -135,6 +144,57 @@ class Material{
 		mysqli_close($conn);
 	}
 
+	public function UpdateUnit_Id($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Unit_Id`='".$value."'
+			WHERE `Material_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdateWidth($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Material_Width`='".$value."'
+			WHERE `Material_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdateHeight($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Material_Height`='".$value."'
+			WHERE `Material_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
 	public function UpdateStatus($id,$value){
 
 		$Database = new Database();
@@ -173,14 +233,12 @@ class Material{
 		$val = false;
 		$msg = "";
 
-
-
-		// Material_Name
+		// Part_Id
 		$sql = "SELECT COUNT(*) FROM `".$this->table."`
 			WHERE
 			`Material_Id` != '".$mdl->getsqlId()."' AND
-			`Material_Name` = '".$mdl->getsqlName()."' AND
-			`Part_Id` = '".$mdl->getsqlPart_Id()."'
+			`Part_Id` = '".$mdl->getsqlPart_Id()."' AND
+			`Material_Name` = '".$mdl->getsqlName()."'
 		";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$rows = mysqli_fetch_row($result);
@@ -196,13 +254,16 @@ class Material{
 
 	}
 
-	public function Get($status=0){
+	public function Get($status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Status` = '".$status."'";
+		$sql = "SELECT * FROM `".$this->table."`";
+		if ($status !== "") {
+			$sql .= "WHERE `Material_Status` = '".$status."'";
+		}
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
@@ -210,7 +271,7 @@ class Material{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetPart_IdById($id,$status=0){
+	public function GetPart_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -219,9 +280,11 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Part_Id` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql = "SELECT `Part_Id` FROM `".$this->table."`
+			WHERE `Material_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -234,7 +297,7 @@ class Material{
 		return $value;
 	}
 
-	public function GetNameById($id,$status=0){
+	public function GetNameById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -243,9 +306,11 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_Name` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql = "SELECT `Material_Name` FROM `".$this->table."`
+			WHERE `Material_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -258,7 +323,7 @@ class Material{
 		return $value;
 	}
 
-	public function GetDescriptionById($id,$status=0){
+	public function GetDescriptionById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -267,9 +332,11 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_Description` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql = "SELECT `Material_Description` FROM `".$this->table."`
+			WHERE `Material_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -282,7 +349,7 @@ class Material{
 		return $value;
 	}
 
-	public function GetPriceById($id,$status=0){
+	public function GetPriceById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -291,9 +358,11 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_Price` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql = "SELECT `Material_Price` FROM `".$this->table."`
+			WHERE `Material_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -306,7 +375,7 @@ class Material{
 		return $value;
 	}
 
-	public function GetPriceTypeById($id,$status=0){
+	public function GetPriceTypeById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -315,9 +384,11 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_PriceType` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql = "SELECT `Material_PriceType` FROM `".$this->table."`
+			WHERE `Material_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -330,7 +401,7 @@ class Material{
 		return $value;
 	}
 
-	public function GetStatusById($id,$status=0){
+	public function GetUnit_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -339,9 +410,89 @@ class Material{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Material_Status` FROM `".$this->table."`
-		WHERE `Material_Id` = '".$id."'
-		AND `Material_Status` = '".$status."'";
+		$sql = "SELECT `Unit_Id` FROM `".$this->table."`
+			WHERE `Material_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Unit_Id'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetWidthById($id,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql = "SELECT `Material_Width` FROM `".$this->table."`
+			WHERE `Material_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Material_Width'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetHeightById($id,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql = "SELECT `Material_Height` FROM `".$this->table."`
+			WHERE `Material_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Material_Height'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetStatusById($id,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql = "SELECT `Material_Status` FROM `".$this->table."`
+			WHERE `Material_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -354,7 +505,7 @@ class Material{
 		return $value;
 	}
 
-	public function GetById($value,$status=0){
+	public function GetById($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -363,8 +514,10 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Id` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+			WHERE `Material_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -373,7 +526,7 @@ class Material{
 		return $this->ModelTransfer($result);
 	}
 
-	public function GetByPart_Id($value,$status=0){
+	public function GetByPart_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -382,8 +535,10 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Part_Id` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+			WHERE `Part_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -392,7 +547,7 @@ class Material{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByName($value,$status=0){
+	public function GetByName($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -401,8 +556,10 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Name` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+			WHERE `Material_Name` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -411,7 +568,7 @@ class Material{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByDescription($value,$status=0){
+	public function GetByDescription($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -420,8 +577,10 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Description` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+			WHERE `Material_Description` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -430,7 +589,7 @@ class Material{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByPrice($value,$status=0){
+	public function GetByPrice($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -439,8 +598,10 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Price` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+			WHERE `Material_Price` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -449,7 +610,7 @@ class Material{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByPriceType($value,$status=0){
+	public function GetByPriceType($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -458,8 +619,10 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_PriceType` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+			WHERE `Material_PriceType` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -468,7 +631,7 @@ class Material{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByDateCreated($value,$status=0){
+	public function GetByUnit_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -477,8 +640,10 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_DateCreated` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+			WHERE `Unit_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -487,7 +652,7 @@ class Material{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByStatus($value,$status=0){
+	public function GetByWidth($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -496,8 +661,73 @@ class Material{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Material_Status` = '".$value."'
-		AND `Material_Status` = '".$status."'";
+			WHERE `Material_Width` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByHeight($value,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+			WHERE `Material_Height` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByDateCreated($value,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+			WHERE `Material_DateCreated` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByStatus($value,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+			WHERE `Material_Status` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Material_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -550,6 +780,9 @@ class Material{
 		$mdl->setDescription((isset($row['Material_Description'])) ? $row['Material_Description'] : '');
 		$mdl->setPrice((isset($row['Material_Price'])) ? $row['Material_Price'] : '');
 		$mdl->setPriceType((isset($row['Material_PriceType'])) ? $row['Material_PriceType'] : '');
+		$mdl->setUnit_Id((isset($row['Unit_Id'])) ? $row['Unit_Id'] : '');
+		$mdl->setWidth((isset($row['Material_Width'])) ? $row['Material_Width'] : '');
+		$mdl->setHeight((isset($row['Material_Height'])) ? $row['Material_Height'] : '');
 		$mdl->setDateCreated((isset($row['Material_DateCreated'])) ? $row['Material_DateCreated'] : '');
 		$mdl->setStatus((isset($row['Material_Status'])) ? $row['Material_Status'] : '');
 		return $mdl;

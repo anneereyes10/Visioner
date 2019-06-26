@@ -3,6 +3,7 @@ require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Material.php");
 require_once ("../App_Code/MaterialModel.php");
+require_once ("../App_Code/Unit.php");
 require_once ("../App_Code/Image.php");
 require_once ("../App_Code/ImageModel.php");
 if(!isset($_SESSION['email'])){
@@ -26,6 +27,9 @@ if(isset($_POST['Name'])){
 	$err .= $clsFn->setForm('Description',$mdlMaterial,true);
 	$err .= $clsFn->setForm('Price',$mdlMaterial,true);
 	$err .= $clsFn->setForm('PriceType',$mdlMaterial,true);
+	$err .= $clsFn->setForm('Width',$mdlMaterial,true);
+	$err .= $clsFn->setForm('Height',$mdlMaterial,true);
+	$err .= $clsFn->setForm('Unit_Id',$mdlMaterial,true);
 
 	if($err == ""){
 		$duplicate = $clsMaterial->IsExist($mdlMaterial);
@@ -150,7 +154,42 @@ if(isset($_POST['Name'])){
 												<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
-										<br>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="card mb-3">
+													<div class="card-header">Details needed if Price Type is per Area</div>
+													<div class="card-body text-secondary">
+														<div class="row">
+															<div class="form-group col-md-4">
+																<label class="form-control-label" for="inputWidth"><b>Width:</b> </label>
+																<input type="text" class="form-control" id="inputWidth" name="Width" placeholder="Width" value="<?php echo $mdlMaterial->getWidth(); ?>" onblur="checkInput('inputWidth')">
+																<small id="notif-inputWidth" class="invalid-feedback">This is required</small>
+															</div>
+															<div class="form-group col-md-4">
+																<label class="form-control-label" for="inputHeight"><b>Height:</b> </label>
+																<input type="text" class="form-control" id="inputHeight" name="Height" placeholder="Height" value="<?php echo $mdlMaterial->getHeight(); ?>" onblur="checkInput('inputHeight')">
+																<small id="notif-inputHeight" class="invalid-feedback">This is required</small>
+															</div>
+															<div class="form-group col-md-4">
+																<label class="form-control-label" for="inputUnit"><b>Unit:</b> </label>
+																<select class="form-control" id="inputUnit" name="Unit_Id">
+																	<?php
+																	$lstUnit = $clsUnit->Get();
+																	foreach ($lstUnit as $mdlUnit) {
+																		if ($mdlMaterial->getUnit_Id() == $mdlUnit->getId()) {
+																			echo '<option value="'.$mdlUnit->getId().'" selected>'.$mdlUnit->getName().'</option>';
+																		} else {
+																			echo '<option value="'.$mdlUnit->getId().'">'.$mdlUnit->getName().'</option>';
+																		}
+																	}
+																	?>
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
   									<div class="row mb-2">
   										<div class="form-group col-md-12">
 												<center>

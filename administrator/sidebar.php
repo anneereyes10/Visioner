@@ -12,9 +12,12 @@
 	  <div class="dropdown-divider"></div>
       <h6 class="dropdown-header">Plan Type</h6>
       <a class="dropdown-item" href="AddFinish.php">Manage</a>
+	  <!-- <div class="dropdown-divider"></div>
+      <h6 class="dropdown-header">Settings</h6>
+      <a class="dropdown-item" href="AddUnit.php">Units</a> -->
     </div>
   </li>
-  
+
   <!-- Start Dropdown Menu for Payments -->
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -65,6 +68,6 @@
       <span>View Customers</span>
     </a>
   </li>
-  
+
 
 </ul>

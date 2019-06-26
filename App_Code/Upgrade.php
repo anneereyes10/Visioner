@@ -17,13 +17,19 @@ class Upgrade{
 				`Upgrade_Name`,
 				`Upgrade_Description`,
 				`Upgrade_Price`,
-				`Upgrade_PriceType`
+				`Upgrade_PriceType`,
+				`Upgrade_Width`,
+				`Upgrade_Height`,
+				`Unit_Id`
 			) VALUES (
 				'".$mdl->getsqlPart_Id()."',
 				'".$mdl->getsqlName()."',
 				'".$mdl->getsqlDescription()."',
 				'".$mdl->getsqlPrice()."',
-				'".$mdl->getsqlPriceType()."'
+				'".$mdl->getsqlPriceType()."',
+				'".$mdl->getsqlWidth()."',
+				'".$mdl->getsqlHeight()."',
+				'".$mdl->getsqlUnit_Id()."'
 			)";
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		$id = mysqli_insert_id($conn);
@@ -42,6 +48,9 @@ class Upgrade{
 				 `Upgrade_Description`='".$mdl->getsqlDescription()."',
 				 `Upgrade_Price`='".$mdl->getsqlPrice()."',
 				 `Upgrade_PriceType`='".$mdl->getsqlPriceType()."',
+				 `Upgrade_Width`='".$mdl->getsqlWidth()."',
+				 `Upgrade_Height`='".$mdl->getsqlHeight()."',
+				 `Unit_Id`='".$mdl->getsqlUnit_Id()."',
 				 `Upgrade_Status`='".$mdl->getsqlStatus()."'
 		 WHERE `Upgrade_Id`='".$mdl->getsqlId()."'";
 
@@ -135,6 +144,57 @@ class Upgrade{
 		mysqli_close($conn);
 	}
 
+	public function UpdateWidth($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Upgrade_Width`='".$value."'
+			WHERE `Upgrade_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdateHeight($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Upgrade_Height`='".$value."'
+			WHERE `Upgrade_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
+	public function UpdateUnit_Id($id,$value){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$id = mysqli_real_escape_string($conn,$id);
+
+		$sql="UPDATE `".$this->table."` SET
+			`Unit_Id`='".$value."'
+			WHERE `Upgrade_Id` = '".$id."'";
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+	}
+
 	public function UpdateStatus($id,$value){
 
 		$Database = new Database();
@@ -194,13 +254,16 @@ class Upgrade{
 
 	}
 
-	public function Get($status=0){
+	public function Get($status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
 
-		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Upgrade_Status` = '".$status."'";
+		$sql = "SELECT * FROM `".$this->table."`";
+		if ($status !== "") {
+			$sql .= "WHERE `Upgrade_Status` = '".$status."'";
+		}
+
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
 		mysqli_close($conn);
@@ -208,7 +271,7 @@ class Upgrade{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetPart_IdById($id,$status=0){
+	public function GetPart_IdById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -217,9 +280,11 @@ class Upgrade{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Part_Id` FROM `".$this->table."`
-		WHERE `Upgrade_Id` = '".$id."'
-		AND `Upgrade_Status` = '".$status."'";
+		$sql = "SELECT `Part_Id` FROM `".$this->table."`
+			WHERE `Upgrade_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -232,7 +297,7 @@ class Upgrade{
 		return $value;
 	}
 
-	public function GetNameById($id,$status=0){
+	public function GetNameById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -241,9 +306,11 @@ class Upgrade{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Upgrade_Name` FROM `".$this->table."`
-		WHERE `Upgrade_Id` = '".$id."'
-		AND `Upgrade_Status` = '".$status."'";
+		$sql = "SELECT `Upgrade_Name` FROM `".$this->table."`
+			WHERE `Upgrade_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -256,7 +323,7 @@ class Upgrade{
 		return $value;
 	}
 
-	public function GetDescriptionById($id,$status=0){
+	public function GetDescriptionById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -265,9 +332,11 @@ class Upgrade{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Upgrade_Description` FROM `".$this->table."`
-		WHERE `Upgrade_Id` = '".$id."'
-		AND `Upgrade_Status` = '".$status."'";
+		$sql = "SELECT `Upgrade_Description` FROM `".$this->table."`
+			WHERE `Upgrade_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -280,7 +349,7 @@ class Upgrade{
 		return $value;
 	}
 
-	public function GetPriceById($id,$status=0){
+	public function GetPriceById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -289,9 +358,11 @@ class Upgrade{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Upgrade_Price` FROM `".$this->table."`
-		WHERE `Upgrade_Id` = '".$id."'
-		AND `Upgrade_Status` = '".$status."'";
+		$sql = "SELECT `Upgrade_Price` FROM `".$this->table."`
+			WHERE `Upgrade_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -304,7 +375,7 @@ class Upgrade{
 		return $value;
 	}
 
-	public function GetPriceTypeById($id,$status=0){
+	public function GetPriceTypeById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -313,9 +384,11 @@ class Upgrade{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Upgrade_PriceType` FROM `".$this->table."`
-		WHERE `Upgrade_Id` = '".$id."'
-		AND `Upgrade_Status` = '".$status."'";
+		$sql = "SELECT `Upgrade_PriceType` FROM `".$this->table."`
+			WHERE `Upgrade_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -328,7 +401,7 @@ class Upgrade{
 		return $value;
 	}
 
-	public function GetStatusById($id,$status=0){
+	public function GetWidthById($id,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -337,9 +410,89 @@ class Upgrade{
 		$id = mysqli_real_escape_string($conn,$id);
 		$status = mysqli_real_escape_string($conn,$status);
 
-		$sql="SELECT `Upgrade_Status` FROM `".$this->table."`
-		WHERE `Upgrade_Id` = '".$id."'
-		AND `Upgrade_Status` = '".$status."'";
+		$sql = "SELECT `Upgrade_Width` FROM `".$this->table."`
+			WHERE `Upgrade_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Upgrade_Width'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetHeightById($id,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql = "SELECT `Upgrade_Height` FROM `".$this->table."`
+			WHERE `Upgrade_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Upgrade_Height'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetUnit_IdById($id,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql = "SELECT `Unit_Id` FROM `".$this->table."`
+			WHERE `Upgrade_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+		while($row = mysqli_fetch_array($result))
+		{
+			$value = $row['Unit_Id'];
+		}
+
+		mysqli_close($conn);
+
+		return $value;
+	}
+
+	public function GetStatusById($id,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = "";
+		$id = mysqli_real_escape_string($conn,$id);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql = "SELECT `Upgrade_Status` FROM `".$this->table."`
+			WHERE `Upgrade_Id` = '".$id."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 		while($row = mysqli_fetch_array($result))
@@ -352,7 +505,7 @@ class Upgrade{
 		return $value;
 	}
 
-	public function GetById($value,$status=0){
+	public function GetById($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -361,8 +514,10 @@ class Upgrade{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Upgrade_Id` = '".$value."'
-		AND `Upgrade_Status` = '".$status."'";
+			WHERE `Upgrade_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -371,7 +526,7 @@ class Upgrade{
 		return $this->ModelTransfer($result);
 	}
 
-	public function GetByPart_Id($value,$status=0){
+	public function GetByPart_Id($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -380,8 +535,10 @@ class Upgrade{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Part_Id` = '".$value."'
-		AND `Upgrade_Status` = '".$status."'";
+			WHERE `Part_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -390,7 +547,7 @@ class Upgrade{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByName($value,$status=0){
+	public function GetByName($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -399,8 +556,10 @@ class Upgrade{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Upgrade_Name` = '".$value."'
-		AND `Upgrade_Status` = '".$status."'";
+			WHERE `Upgrade_Name` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -409,7 +568,7 @@ class Upgrade{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByDescription($value,$status=0){
+	public function GetByDescription($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -418,8 +577,10 @@ class Upgrade{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Upgrade_Description` = '".$value."'
-		AND `Upgrade_Status` = '".$status."'";
+			WHERE `Upgrade_Description` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -428,7 +589,7 @@ class Upgrade{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByPrice($value,$status=0){
+	public function GetByPrice($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -437,8 +598,10 @@ class Upgrade{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Upgrade_Price` = '".$value."'
-		AND `Upgrade_Status` = '".$status."'";
+			WHERE `Upgrade_Price` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -447,7 +610,7 @@ class Upgrade{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByPriceType($value,$status=0){
+	public function GetByPriceType($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -456,8 +619,10 @@ class Upgrade{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Upgrade_PriceType` = '".$value."'
-		AND `Upgrade_Status` = '".$status."'";
+			WHERE `Upgrade_PriceType` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -466,7 +631,7 @@ class Upgrade{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByDateCreated($value,$status=0){
+	public function GetByWidth($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -475,8 +640,10 @@ class Upgrade{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Upgrade_DateCreated` = '".$value."'
-		AND `Upgrade_Status` = '".$status."'";
+			WHERE `Upgrade_Width` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -485,7 +652,7 @@ class Upgrade{
 		return $this->ListTransfer($result);
 	}
 
-	public function GetByStatus($value,$status=0){
+	public function GetByHeight($value,$status=""){
 
 		$Database = new Database();
 		$conn = $Database->GetConn();
@@ -494,8 +661,73 @@ class Upgrade{
 		$status = mysqli_real_escape_string($conn,$status);
 
 		$sql="SELECT * FROM `".$this->table."`
-		WHERE `Upgrade_Status` = '".$value."'
-		AND `Upgrade_Status` = '".$status."'";
+			WHERE `Upgrade_Height` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByUnit_Id($value,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+			WHERE `Unit_Id` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByDateCreated($value,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+			WHERE `Upgrade_DateCreated` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
+
+		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
+
+		mysqli_close($conn);
+
+		return $this->ListTransfer($result);
+	}
+
+	public function GetByStatus($value,$status=""){
+
+		$Database = new Database();
+		$conn = $Database->GetConn();
+
+		$value = mysqli_real_escape_string($conn,$value);
+		$status = mysqli_real_escape_string($conn,$status);
+
+		$sql="SELECT * FROM `".$this->table."`
+			WHERE `Upgrade_Status` = '".$value."'";
+		if ($status !== "") {
+			$sql .= "AND `Upgrade_Status` = '".$status."'";
+		}
 
 		$result=mysqli_query($conn,$sql) or die(mysqli_error($conn));
 
@@ -548,6 +780,9 @@ class Upgrade{
 		$mdl->setDescription((isset($row['Upgrade_Description'])) ? $row['Upgrade_Description'] : '');
 		$mdl->setPrice((isset($row['Upgrade_Price'])) ? $row['Upgrade_Price'] : '');
 		$mdl->setPriceType((isset($row['Upgrade_PriceType'])) ? $row['Upgrade_PriceType'] : '');
+		$mdl->setWidth((isset($row['Upgrade_Width'])) ? $row['Upgrade_Width'] : '');
+		$mdl->setHeight((isset($row['Upgrade_Height'])) ? $row['Upgrade_Height'] : '');
+		$mdl->setUnit_Id((isset($row['Unit_Id'])) ? $row['Unit_Id'] : '');
 		$mdl->setDateCreated((isset($row['Upgrade_DateCreated'])) ? $row['Upgrade_DateCreated'] : '');
 		$mdl->setStatus((isset($row['Upgrade_Status'])) ? $row['Upgrade_Status'] : '');
 		return $mdl;

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 25, 2019 at 05:32 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.2.12
+-- Generation Time: Jun 26, 2019 at 11:28 AM
+-- Server version: 10.1.34-MariaDB
+-- PHP Version: 7.2.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -41,7 +41,8 @@ CREATE TABLE `admin_account` (
 --
 
 INSERT INTO `admin_account` (`id`, `email`, `password`) VALUES
-(1, 'visionertestemail@gmail.com', 'v');
+(1, 'visionertestemail@gmail.com', 'v'),
+(2, '2@2', '2');
 
 -- --------------------------------------------------------
 
@@ -556,7 +557,10 @@ INSERT INTO `image` (`Image_Id`, `Image_Name`, `Image_Table`, `Image_TableId`, `
 (239, '239.jpg', 'material', 155, 'original', '2019-06-09 09:56:53', 0),
 (240, '240.jpg', 'material', 156, 'original', '2019-06-09 09:57:21', 0),
 (241, '241.png', 'material', 95, 'original', '2019-06-09 10:02:40', 0),
-(242, '242.png', 'material', 158, 'original', '2019-06-09 10:36:35', 0);
+(242, '242.png', 'material', 158, 'original', '2019-06-09 10:36:35', 0),
+(243, '243.jpg', 'material', 160, 'original', '2019-06-25 13:57:30', 0),
+(244, '244.jpg', 'upgrade', 18, 'original', '2019-06-25 15:26:33', 0),
+(245, '245.jpg', 'upgrade', 17, 'original', '2019-06-25 15:27:10', 0);
 
 -- --------------------------------------------------------
 
@@ -571,6 +575,9 @@ CREATE TABLE `material` (
   `Material_Description` text NOT NULL,
   `Material_Price` decimal(10,0) NOT NULL,
   `Material_PriceType` tinyint(1) NOT NULL DEFAULT '0',
+  `Unit_Id` int(11) NOT NULL,
+  `Material_Width` int(11) NOT NULL,
+  `Material_Height` int(11) NOT NULL,
   `Material_DateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Material_Status` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -579,143 +586,147 @@ CREATE TABLE `material` (
 -- Dumping data for table `material`
 --
 
-INSERT INTO `material` (`Material_Id`, `Part_Id`, `Material_Name`, `Material_Description`, `Material_Price`, `Material_PriceType`, `Material_DateCreated`, `Material_Status`) VALUES
-(17, 4, 'Material 2', ' Material 2 Description', '1', 0, '2019-02-17 09:00:30', 0),
-(19, 4, 'Material 1', ' Material Desciption', '123', 0, '2019-02-17 09:10:39', 0),
-(20, 4, 'Material 3', ' Material 3 Material 3Material 3', '3456', 0, '2019-02-17 10:01:33', 0),
-(21, 7, 'Material 1 - 3', ' Material 1 - 3 Material 1 - 3', '1307', 0, '2019-02-18 05:39:45', 0),
-(23, 7, 'Material 4', ' Material 4 Piece', '43', 1, '2019-03-05 21:03:22', 0),
-(24, 9, 'mat1', ' asd', '12', 0, '2019-03-06 11:20:43', 0),
-(25, 9, 'mat2', ' ', '200', 1, '2019-03-06 11:21:02', 0),
-(26, 11, 'Default', 'Default selection. \r\n\r\nComes with Plumbing pipes ready for lavatory installation.', '100', 1, '2019-04-02 05:18:29', 0),
-(27, 11, 'Wall-hung', 'Uleya Brand\r\n\r\nColor(s): White', '990', 1, '2019-04-02 05:21:35', 0),
-(28, 11, 'Vessel 1', 'Uleya Brand. Color(s): White, Black', '1825', 1, '2019-04-02 05:22:16', 0),
-(29, 11, 'Vessel 2', ' Depot Brand. Color(s): White, Black', '4875', 1, '2019-04-02 05:23:20', 0),
-(30, 12, 'Default', ' Default selection. Comes with Plumbing pipes ready for shower installation.\r\n', '100', 1, '2019-04-02 05:34:55', 0),
-(31, 12, 'Shower Head', ' Depot Brand', '630', 1, '2019-04-02 05:35:27', 0),
-(32, 12, 'Shower Mixer Set 1', ' Depot Brand. Color(s): White, Black', '3500', 1, '2019-04-02 05:52:08', 0),
-(33, 12, 'Shower Mixer Set 2', ' Depot Brand. Color(s): White, Black', '15000', 1, '2019-04-02 05:52:44', 0),
-(34, 13, 'Aluminum Frame', ' ', '5800', 1, '2019-04-02 06:02:38', 0),
-(35, 13, 'Tempered Glass Enclosure (Frameless)', ' ', '9000', 1, '2019-04-02 06:04:25', 0),
-(36, 10, 'Default', ' Default selection. Comes with Plumbing pipes ready for Water Closet installation.\r\n', '100', 1, '2019-04-02 06:05:31', 0),
-(37, 10, 'Single Flush', ' ', '2850', 1, '2019-04-02 06:05:56', 0),
-(38, 10, 'Dual Flush 1', ' ', '4950', 1, '2019-04-02 06:06:13', 0),
-(39, 10, 'Dual Flush 2', ' ', '15800', 1, '2019-04-02 06:06:26', 0),
-(40, 14, 'Default', 'Main Door Included Only', '0', 0, '2019-04-02 06:17:13', 0),
-(41, 14, 'Flush Door', ' ', '1970', 1, '2019-04-02 06:17:33', 0),
-(42, 14, 'Solid Door 1', ' ', '3790', 1, '2019-04-02 06:18:31', 0),
-(43, 14, 'Solid Door 2', ' ', '6990', 1, '2019-04-02 06:18:56', 0),
-(44, 15, 'Default', ' Default Material', '0', 0, '2019-04-02 06:24:31', 0),
-(45, 15, 'Ceramic Tile', ' ', '40000', 0, '2019-04-02 06:25:01', 0),
-(46, 15, 'Granite Tile 1', ' ', '550', 0, '2019-04-02 06:25:22', 0),
-(47, 15, 'Granite Tile 2', ' ', '800', 0, '2019-04-02 06:25:38', 0),
-(48, 16, 'Default', ' Default Material', '0', 0, '2019-04-02 06:26:33', 0),
-(49, 16, 'Ceramic Tile', ' ', '35000', 0, '2019-04-02 06:26:55', 0),
-(50, 16, 'Granite Tile 1', ' ', '550', 0, '2019-04-02 06:27:07', 0),
-(51, 16, 'Granite Tile 2', ' ', '800', 1, '2019-04-02 06:27:19', 0),
-(52, 16, 'Natural Vinyl', ' ', '980', 0, '2019-04-02 06:27:34', 0),
-(53, 17, 'Default', ' Concrete Slab Ready for Tile Installation', '0', 0, '2019-04-02 06:32:34', 0),
-(54, 17, 'Rough Cement', ' ', '25000', 0, '2019-04-02 06:32:53', 0),
-(55, 17, 'Pebble Finish', ' ', '560', 0, '2019-04-02 06:33:22', 0),
-(56, 17, 'Stone Tile', ' ', '990', 0, '2019-04-02 06:33:32', 0),
-(57, 18, 'Default', ' Concrete Slab w/ Tubular Rail Ready for Tile Installation', '0', 0, '2019-04-02 06:35:47', 0),
-(58, 18, 'Ceramic Tile', ' ', '24000', 0, '2019-04-02 06:36:01', 0),
-(59, 18, 'Granite Tile 1', ' ', '550', 0, '2019-04-02 06:36:13', 0),
-(60, 18, 'Granite Tile 2', ' ', '800', 0, '2019-04-02 06:36:23', 0),
-(61, 19, 'Skim Coat', ' ', '400', 0, '2019-04-03 16:13:54', 0),
-(62, 19, 'Finished Paint', ' ', '500', 0, '2019-04-03 16:14:10', 0),
-(63, 21, 'Royu Switch 1', ' ', '20', 1, '2019-04-03 16:18:30', 0),
-(64, 21, 'Royu Switch 2', ' ', '90', 1, '2019-04-03 16:18:40', 0),
-(65, 21, 'Royu Modern Switch', ' ', '150', 1, '2019-04-03 16:18:58', 0),
-(66, 21, 'Panasonic Branded Switch', ' ', '350', 1, '2019-04-03 16:19:20', 0),
-(67, 20, 'Royu Switch 1', ' ', '20', 1, '2019-04-03 16:20:44', 0),
-(68, 20, 'Royu Switch 2', ' ', '90', 1, '2019-04-03 16:20:53', 0),
-(69, 20, 'Royu Moden Switch', ' ', '150', 1, '2019-04-03 16:21:06', 0),
-(70, 20, 'Panasonic Branded Switch', ' ', '350', 1, '2019-04-03 16:21:19', 0),
-(71, 22, 'Concrete Stairs', ' ', '350', 0, '2019-04-03 16:25:35', 0),
-(72, 22, 'Tile Floor Finish', ' ', '400', 0, '2019-04-03 16:25:50', 0),
-(73, 22, 'Wood Planks - Stainless', ' ', '450', 0, '2019-04-03 16:26:16', 0),
-(74, 22, 'Wood Planks - Glass', ' ', '450', 0, '2019-04-03 16:26:35', 0),
-(75, 24, 'Flush door', ' ', '500', 0, '2019-04-04 16:20:24', 0),
-(76, 25, 'Default', 'With Concrete Wall Ready for Tile Installation ', '0', 0, '2019-04-08 16:44:28', 0),
-(77, 26, 'Default', ' With Concrete Wall Ready for Tile Installation', '0', 0, '2019-04-08 16:46:01', 0),
-(78, 27, 'None', 'No Cabinets Included. ', '0', 0, '2019-04-08 16:47:11', 0),
-(79, 28, 'Default', ' Rough Cement Only', '0', 0, '2019-04-08 17:25:41', 0),
-(80, 28, 'Ceramic Tile', ' ', '10000', 0, '2019-04-08 17:28:01', 0),
-(81, 29, 'Default', ' Default flooring material', '0', 0, '2019-04-08 17:31:46', 0),
-(82, 29, 'Ceramic Tile', 'Mariwasa Brand Cream', '25000', 0, '2019-04-08 17:32:29', 0),
-(83, 30, 'Default', ' Default Material Used', '0', 0, '2019-04-08 17:35:25', 0),
-(84, 30, 'Ceramic Tile', ' ', '24000', 0, '2019-04-08 17:46:09', 0),
-(85, 32, 'Default', ' ', '0', 0, '2019-04-08 17:47:08', 0),
-(86, 32, 'Rough Cement', ' ', '25000', 0, '2019-04-08 17:47:29', 0),
-(87, 31, 'Default', ' ', '0', 0, '2019-04-08 17:47:45', 0),
-(88, 31, 'Ceramic Tile', ' with Tubular Railing', '10000', 0, '2019-04-08 17:48:13', 0),
-(89, 33, 'Default', ' Rough Cement Only', '0', 0, '2019-04-08 17:48:41', 0),
-(90, 33, 'Ceramic Tile', ' ', '10000', 0, '2019-04-08 17:49:04', 0),
-(91, 34, 'Default', ' Default Skim Coat', '0', 0, '2019-04-08 17:50:16', 0),
-(92, 34, 'Skim Coat With Primer', ' ', '50000', 0, '2019-04-08 17:50:34', 0),
-(93, 36, 'Default', ' ', '0', 0, '2019-04-08 17:51:13', 0),
-(94, 35, 'Default', ' ', '0', 0, '2019-04-08 17:51:29', 0),
-(95, 35, 'Concrete Molds', ' per piece', '75000', 1, '2019-04-08 17:51:51', 0),
-(96, 37, 'Main Door Only', ' ', '0', 0, '2019-04-08 17:52:37', 0),
-(97, 37, 'Flush Doors', ' ', '20000', 0, '2019-04-08 17:52:54', 0),
-(98, 38, 'Default', ' U-PVC White', '0', 0, '2019-04-08 17:53:37', 0),
-(99, 38, 'Aluminum', ' ', '85000', 0, '2019-04-08 17:54:09', 0),
-(100, 39, 'Default', 'WITH METAL FURRING READY FOR CEILING INSTALLATION', '0', 0, '2019-04-08 17:55:06', 0),
-(101, 39, 'Flat Ceiling', ' ', '160000', 0, '2019-04-08 17:55:26', 0),
-(102, 40, 'Default', 'Concrete Stairs ', '0', 0, '2019-04-08 17:56:02', 0),
-(103, 40, 'Tile Floor Finish', ' ', '35000', 0, '2019-04-08 17:56:22', 0),
-(104, 41, 'Default', 'Default Depot White ', '0', 0, '2019-04-08 17:57:10', 0),
-(105, 41, 'Pin Bulb', ' Depot Cool White', '2000', 0, '2019-04-08 17:57:56', 0),
-(106, 42, 'Default', 'Royu Brand Default', '0', 0, '2019-04-08 17:58:42', 0),
-(107, 42, 'Royu Brand Classic', ' ', '2500', 0, '2019-04-08 17:59:12', 0),
-(108, 43, 'Default', 'No Cabinets Included ', '0', 0, '2019-04-08 18:00:14', 0),
-(109, 43, 'Kitchen Area', 'Duco Finish - Kitchen Area', '10000', 0, '2019-04-08 18:00:57', 0),
-(110, 44, 'Default', 'G.I. Roof ', '50000', 0, '2019-04-08 18:01:48', 0),
-(111, 46, 'Default', 'W/ PLUMBIN PIPES READY FOR LAVATORY INSTALLATION', '0', 0, '2019-04-08 18:03:13', 0),
-(112, 46, 'Wall-hung', ' ', '5000', 0, '2019-04-08 18:04:21', 0),
-(113, 47, 'Default', ' W/ PLUMBING PIPES READY FOR SHOWER INSTALLATION', '0', 0, '2019-04-08 18:04:47', 0),
-(114, 47, 'Shower Head', ' ', '2200', 0, '2019-04-08 18:05:14', 0),
-(115, 48, 'Default', ' ', '0', 0, '2019-04-08 18:05:32', 0),
-(116, 45, 'Default', ' W/ PLUMBIN PIPES READY FOR WC INSTALLATION', '0', 0, '2019-04-08 18:05:49', 0),
-(117, 45, 'Single Flush', ' ', '10000', 0, '2019-04-08 18:06:16', 0),
-(118, 29, 'Granite Tile 1', ' ', '40000', 0, '2019-06-05 17:58:27', 0),
-(119, 29, 'Granite Tile 2', ' ', '56000', 0, '2019-06-05 17:59:20', 0),
-(120, 30, 'Granite Tile 1', ' ', '38000', 0, '2019-06-05 18:01:34', 0),
-(121, 30, 'Granite Tile 2', ' ', '55000', 0, '2019-06-05 18:02:20', 0),
-(122, 30, 'Natural Vinyl', ' ', '67000', 0, '2019-06-05 18:03:14', 0),
-(123, 31, 'Granite Tile 1', ' ', '15500', 0, '2019-06-05 18:05:17', 0),
-(124, 31, 'Granite Tile 2', ' ', '23000', 0, '2019-06-05 18:05:37', 0),
-(125, 32, 'Pebble Finish', ' ', '22000', 0, '2019-06-05 18:07:36', 0),
-(126, 32, 'Stone Tile', ' ', '39000', 0, '2019-06-05 18:08:12', 0),
-(127, 33, 'Granite Tile 1', ' ', '11000', 0, '2019-06-05 18:09:43', 0),
-(128, 33, 'Granite Tile 2', ' ', '16000', 0, '2019-06-05 18:10:06', 0),
-(129, 39, 'Drop Ceiling', ' ', '265500', 0, '2019-06-05 18:14:43', 0),
-(130, 37, 'Solid Door 1', ' ', '36000', 0, '2019-06-05 18:16:19', 0),
-(131, 37, 'Solid Door 2', ' ', '64000', 0, '2019-06-05 18:16:37', 0),
-(132, 42, 'Panasonic Brand', ' ', '4000', 0, '2019-06-05 18:18:48', 0),
-(133, 34, 'Finished Paint', ' ', '75000', 0, '2019-06-05 18:20:17', 0),
-(134, 41, 'Pin Light LED', ' ', '6500', 0, '2019-06-05 18:21:31', 0),
-(135, 41, 'Branded LED', ' ', '13000', 0, '2019-06-05 18:21:56', 0),
-(136, 44, 'Longspan G.I. Roof', ' ', '75000', 0, '2019-06-05 18:23:32', 0),
-(137, 44, 'Stone Chip', ' ', '100000', 0, '2019-06-05 18:23:47', 0),
-(138, 40, 'Wood Planks - Stainless', ' ', '45000', 0, '2019-06-05 18:24:51', 0),
-(139, 40, 'Wood Planks - Glass', ' ', '60000', 0, '2019-06-05 18:25:00', 0),
-(140, 38, 'U-PVC', ' ', '95000', 0, '2019-06-05 18:27:14', 0),
-(141, 38, 'Laminated U-PVC', ' ', '110000', 0, '2019-06-05 18:27:26', 0),
-(142, 46, 'Vessel 1', ' ', '10000', 0, '2019-06-05 18:29:06', 0),
-(143, 46, 'Vessel 2', ' ', '22000', 0, '2019-06-05 18:29:20', 0),
-(144, 46, 'Kohler Pedestal', 'Kohler', '45000', 0, '2019-06-05 18:30:20', 0),
-(145, 47, 'Shower Mixer Set 1', ' ', '12000', 0, '2019-06-05 18:32:52', 0),
-(146, 47, 'Shower Mixer Set 2', ' ', '22000', 0, '2019-06-05 18:33:23', 0),
-(147, 48, 'Glass Enclosure - Aluminum', ' ', '10000', 0, '2019-06-05 18:35:02', 0),
-(148, 45, 'Dual Flush 1', ' ', '15000', 0, '2019-06-05 18:35:33', 0),
-(149, 45, 'Dual Flush 2', ' ', '54000', 0, '2019-06-05 18:35:53', 0),
-(150, 35, 'Ceramic Tile 1', ' ', '110000', 0, '2019-06-05 18:38:05', 0),
-(151, 35, 'Ceramic Tile 2', ' ', '130000', 0, '2019-06-05 18:38:40', 0),
-(152, 36, 'Ceramic Tile 1', ' ', '110000', 0, '2019-06-05 18:39:20', 0),
-(153, 36, 'Ceramic Tile 2', ' ', '130000', 0, '2019-06-05 18:39:33', 0),
-(158, 36, 'Concrete', '123 ', '12', 1, '2019-06-09 10:36:35', 0);
+INSERT INTO `material` (`Material_Id`, `Part_Id`, `Material_Name`, `Material_Description`, `Material_Price`, `Material_PriceType`, `Unit_Id`, `Material_Width`, `Material_Height`, `Material_DateCreated`, `Material_Status`) VALUES
+(17, 4, 'Material 2', ' Material 2 Description', '1', 0, 1, 1, 1, '2019-02-17 09:00:30', 0),
+(19, 4, 'Material 1', ' Material Desciption', '123', 0, 1, 1, 1, '2019-02-17 09:10:39', 0),
+(20, 4, 'Material 3', ' Material 3 Material 3Material 3', '3456', 0, 1, 1, 1, '2019-02-17 10:01:33', 0),
+(21, 7, 'Material 1 - 3', ' Material 1 - 3 Material 1 - 3', '1307', 0, 1, 1, 1, '2019-02-18 05:39:45', 0),
+(23, 7, 'Material 4', ' Material 4 Piece', '43', 1, 1, 1, 1, '2019-03-05 21:03:22', 0),
+(24, 9, 'mat1', ' asd', '12', 0, 1, 1, 1, '2019-03-06 11:20:43', 0),
+(25, 9, 'mat2', ' ', '200', 1, 1, 1, 1, '2019-03-06 11:21:02', 0),
+(26, 11, 'Default', 'Default selection. \r\n\r\nComes with Plumbing pipes ready for lavatory installation.', '100', 1, 1, 1, 1, '2019-04-02 05:18:29', 0),
+(27, 11, 'Wall-hung', 'Uleya Brand\r\n\r\nColor(s): White', '990', 1, 1, 1, 1, '2019-04-02 05:21:35', 0),
+(28, 11, 'Vessel 1', 'Uleya Brand. Color(s): White, Black', '1825', 1, 1, 1, 1, '2019-04-02 05:22:16', 0),
+(29, 11, 'Vessel 2', ' Depot Brand. Color(s): White, Black', '4875', 1, 1, 1, 1, '2019-04-02 05:23:20', 0),
+(30, 12, 'Default', ' Default selection. Comes with Plumbing pipes ready for shower installation.\r\n', '100', 1, 1, 1, 1, '2019-04-02 05:34:55', 0),
+(31, 12, 'Shower Head', ' Depot Brand', '630', 1, 1, 1, 1, '2019-04-02 05:35:27', 0),
+(32, 12, 'Shower Mixer Set 1', ' Depot Brand. Color(s): White, Black', '3500', 1, 1, 1, 1, '2019-04-02 05:52:08', 0),
+(33, 12, 'Shower Mixer Set 2', ' Depot Brand. Color(s): White, Black', '15000', 1, 1, 1, 1, '2019-04-02 05:52:44', 0),
+(34, 13, 'Aluminum Frame', ' ', '5800', 1, 1, 1, 1, '2019-04-02 06:02:38', 0),
+(35, 13, 'Tempered Glass Enclosure (Frameless)', ' ', '9000', 1, 1, 1, 1, '2019-04-02 06:04:25', 0),
+(36, 10, 'Default', ' Default selection. Comes with Plumbing pipes ready for Water Closet installation.\r\n', '100', 1, 1, 1, 1, '2019-04-02 06:05:31', 0),
+(37, 10, 'Single Flush', ' ', '2850', 1, 1, 1, 1, '2019-04-02 06:05:56', 0),
+(38, 10, 'Dual Flush 1', ' ', '4950', 1, 1, 1, 1, '2019-04-02 06:06:13', 0),
+(39, 10, 'Dual Flush 2', ' ', '15800', 1, 1, 1, 1, '2019-04-02 06:06:26', 0),
+(40, 14, 'Default', 'Main Door Included Only', '0', 0, 1, 1, 1, '2019-04-02 06:17:13', 0),
+(41, 14, 'Flush Door', ' ', '1970', 1, 1, 1, 1, '2019-04-02 06:17:33', 0),
+(42, 14, 'Solid Door 1', ' ', '3790', 1, 1, 1, 1, '2019-04-02 06:18:31', 0),
+(43, 14, 'Solid Door 2', ' ', '6990', 1, 1, 1, 1, '2019-04-02 06:18:56', 0),
+(44, 15, 'Default', ' Default Material', '0', 0, 1, 1, 1, '2019-04-02 06:24:31', 0),
+(45, 15, 'Ceramic Tile', ' ', '40000', 0, 1, 1, 1, '2019-04-02 06:25:01', 0),
+(46, 15, 'Granite Tile 1', ' ', '550', 0, 1, 1, 1, '2019-04-02 06:25:22', 0),
+(47, 15, 'Granite Tile 2', ' ', '800', 0, 1, 1, 1, '2019-04-02 06:25:38', 0),
+(48, 16, 'Default', ' Default Material', '0', 0, 1, 1, 1, '2019-04-02 06:26:33', 0),
+(49, 16, 'Ceramic Tile', ' ', '35000', 0, 1, 1, 1, '2019-04-02 06:26:55', 0),
+(50, 16, 'Granite Tile 1', ' ', '550', 0, 1, 1, 1, '2019-04-02 06:27:07', 0),
+(51, 16, 'Granite Tile 2', ' ', '800', 1, 1, 1, 1, '2019-04-02 06:27:19', 0),
+(52, 16, 'Natural Vinyl', ' ', '980', 0, 1, 1, 1, '2019-04-02 06:27:34', 0),
+(53, 17, 'Default', ' Concrete Slab Ready for Tile Installation', '0', 0, 1, 1, 1, '2019-04-02 06:32:34', 0),
+(54, 17, 'Rough Cement', ' ', '25000', 0, 1, 1, 1, '2019-04-02 06:32:53', 0),
+(55, 17, 'Pebble Finish', ' ', '560', 0, 1, 1, 1, '2019-04-02 06:33:22', 0),
+(56, 17, 'Stone Tile', ' ', '990', 0, 1, 1, 1, '2019-04-02 06:33:32', 0),
+(57, 18, 'Default', ' Concrete Slab w/ Tubular Rail Ready for Tile Installation', '0', 0, 1, 1, 1, '2019-04-02 06:35:47', 0),
+(58, 18, 'Ceramic Tile', ' ', '24000', 0, 1, 1, 1, '2019-04-02 06:36:01', 0),
+(59, 18, 'Granite Tile 1', ' ', '550', 0, 1, 1, 1, '2019-04-02 06:36:13', 0),
+(60, 18, 'Granite Tile 2', ' ', '800', 0, 1, 1, 1, '2019-04-02 06:36:23', 0),
+(61, 19, 'Skim Coat', ' ', '400', 0, 1, 1, 1, '2019-04-03 16:13:54', 0),
+(62, 19, 'Finished Paint', ' ', '500', 0, 1, 1, 1, '2019-04-03 16:14:10', 0),
+(63, 21, 'Royu Switch 1', ' ', '20', 1, 1, 1, 1, '2019-04-03 16:18:30', 0),
+(64, 21, 'Royu Switch 2', ' ', '90', 1, 1, 1, 1, '2019-04-03 16:18:40', 0),
+(65, 21, 'Royu Modern Switch', ' ', '150', 1, 1, 1, 1, '2019-04-03 16:18:58', 0),
+(66, 21, 'Panasonic Branded Switch', ' ', '350', 1, 1, 1, 1, '2019-04-03 16:19:20', 0),
+(67, 20, 'Royu Switch 1', ' ', '20', 1, 1, 1, 1, '2019-04-03 16:20:44', 0),
+(68, 20, 'Royu Switch 2', ' ', '90', 1, 1, 1, 1, '2019-04-03 16:20:53', 0),
+(69, 20, 'Royu Moden Switch', ' ', '150', 1, 1, 1, 1, '2019-04-03 16:21:06', 0),
+(70, 20, 'Panasonic Branded Switch', ' ', '350', 1, 1, 1, 1, '2019-04-03 16:21:19', 0),
+(71, 22, 'Concrete Stairs', ' ', '350', 0, 1, 1, 1, '2019-04-03 16:25:35', 0),
+(72, 22, 'Tile Floor Finish', ' ', '400', 0, 1, 1, 1, '2019-04-03 16:25:50', 0),
+(73, 22, 'Wood Planks - Stainless', ' ', '450', 0, 1, 1, 1, '2019-04-03 16:26:16', 0),
+(74, 22, 'Wood Planks - Glass', ' ', '450', 0, 1, 1, 1, '2019-04-03 16:26:35', 0),
+(75, 24, 'Flush door', ' ', '500', 0, 1, 1, 1, '2019-04-04 16:20:24', 0),
+(76, 25, 'Default', 'With Concrete Wall Ready for Tile Installation ', '0', 0, 1, 1, 1, '2019-04-08 16:44:28', 0),
+(77, 26, 'Default', ' With Concrete Wall Ready for Tile Installation', '0', 0, 1, 1, 1, '2019-04-08 16:46:01', 0),
+(78, 27, 'None', 'No Cabinets Included. ', '0', 0, 1, 1, 1, '2019-04-08 16:47:11', 0),
+(79, 28, 'Default', ' Rough Cement Only', '0', 0, 1, 1, 1, '2019-04-08 17:25:41', 0),
+(80, 28, 'Ceramic Tile', ' ', '10000', 0, 1, 1, 1, '2019-04-08 17:28:01', 0),
+(81, 29, 'Default', ' Default flooring material', '0', 0, 1, 1, 1, '2019-04-08 17:31:46', 0),
+(82, 29, 'Ceramic Tile', 'Mariwasa Brand Cream', '25000', 0, 1, 1, 1, '2019-04-08 17:32:29', 0),
+(83, 30, 'Default', ' Default Material Used', '0', 0, 1, 1, 1, '2019-04-08 17:35:25', 0),
+(84, 30, 'Ceramic Tile', ' ', '24000', 0, 1, 1, 1, '2019-04-08 17:46:09', 0),
+(85, 32, 'Default', ' ', '0', 0, 1, 1, 1, '2019-04-08 17:47:08', 0),
+(86, 32, 'Rough Cement', ' ', '25000', 0, 1, 1, 1, '2019-04-08 17:47:29', 0),
+(87, 31, 'Default', ' ', '0', 0, 1, 1, 1, '2019-04-08 17:47:45', 0),
+(88, 31, 'Ceramic Tile', ' with Tubular Railing', '10000', 0, 1, 1, 1, '2019-04-08 17:48:13', 0),
+(89, 33, 'Default', ' Rough Cement Only', '0', 0, 1, 1, 1, '2019-04-08 17:48:41', 0),
+(90, 33, 'Ceramic Tile', ' ', '10000', 0, 1, 1, 1, '2019-04-08 17:49:04', 0),
+(91, 34, 'Default', ' Default Skim Coat', '0', 0, 1, 1, 1, '2019-04-08 17:50:16', 0),
+(92, 34, 'Skim Coat With Primer', ' ', '50000', 0, 1, 1, 1, '2019-04-08 17:50:34', 0),
+(93, 36, 'Default', ' ', '0', 0, 1, 1, 1, '2019-04-08 17:51:13', 0),
+(94, 35, 'Default', ' ', '0', 0, 1, 1, 1, '2019-04-08 17:51:29', 0),
+(95, 35, 'Concrete Molds', ' per piece', '75000', 1, 1, 1, 1, '2019-04-08 17:51:51', 0),
+(96, 37, 'Main Door Only', ' ', '0', 0, 1, 1, 1, '2019-04-08 17:52:37', 0),
+(97, 37, 'Flush Doors', ' ', '20000', 0, 1, 1, 1, '2019-04-08 17:52:54', 0),
+(98, 38, 'Default', ' U-PVC White', '0', 0, 1, 1, 1, '2019-04-08 17:53:37', 0),
+(99, 38, 'Aluminum', ' ', '85000', 0, 1, 1, 1, '2019-04-08 17:54:09', 0),
+(100, 39, 'Default', 'WITH METAL FURRING READY FOR CEILING INSTALLATION', '0', 0, 1, 1, 1, '2019-04-08 17:55:06', 0),
+(101, 39, 'Flat Ceiling', ' ', '160000', 0, 1, 1, 1, '2019-04-08 17:55:26', 0),
+(102, 40, 'Default', 'Concrete Stairs ', '0', 0, 1, 1, 1, '2019-04-08 17:56:02', 0),
+(103, 40, 'Tile Floor Finish', ' ', '35000', 0, 1, 1, 1, '2019-04-08 17:56:22', 0),
+(104, 41, 'Default', 'Default Depot White ', '0', 0, 1, 1, 1, '2019-04-08 17:57:10', 0),
+(105, 41, 'Pin Bulb', ' Depot Cool White', '2000', 0, 1, 1, 1, '2019-04-08 17:57:56', 0),
+(106, 42, 'Default', 'Royu Brand Default', '0', 0, 1, 1, 1, '2019-04-08 17:58:42', 0),
+(107, 42, 'Royu Brand Classic', ' ', '2500', 0, 1, 1, 1, '2019-04-08 17:59:12', 0),
+(108, 43, 'Default', 'No Cabinets Included ', '0', 0, 1, 1, 1, '2019-04-08 18:00:14', 0),
+(109, 43, 'Kitchen Area', 'Duco Finish - Kitchen Area', '10000', 0, 1, 1, 1, '2019-04-08 18:00:57', 0),
+(110, 44, 'Default', 'G.I. Roof ', '50000', 0, 1, 1, 1, '2019-04-08 18:01:48', 0),
+(111, 46, 'Default', 'W/ PLUMBIN PIPES READY FOR LAVATORY INSTALLATION', '0', 0, 1, 1, 1, '2019-04-08 18:03:13', 0),
+(112, 46, 'Wall-hung', ' ', '5000', 0, 1, 1, 1, '2019-04-08 18:04:21', 0),
+(113, 47, 'Default', ' W/ PLUMBING PIPES READY FOR SHOWER INSTALLATION', '0', 0, 1, 1, 1, '2019-04-08 18:04:47', 0),
+(114, 47, 'Shower Head', ' ', '2200', 0, 1, 1, 1, '2019-04-08 18:05:14', 0),
+(115, 48, 'Default', ' ', '0', 0, 1, 1, 1, '2019-04-08 18:05:32', 0),
+(116, 45, 'Default', ' W/ PLUMBIN PIPES READY FOR WC INSTALLATION', '0', 0, 1, 1, 1, '2019-04-08 18:05:49', 0),
+(117, 45, 'Single Flush', ' ', '10000', 0, 1, 1, 1, '2019-04-08 18:06:16', 0),
+(118, 29, 'Granite Tile 1', ' ', '40000', 0, 1, 1, 1, '2019-06-05 17:58:27', 0),
+(119, 29, 'Granite Tile 2', ' ', '56000', 0, 1, 1, 1, '2019-06-05 17:59:20', 0),
+(120, 30, 'Granite Tile 1', ' ', '38000', 0, 1, 1, 1, '2019-06-05 18:01:34', 0),
+(121, 30, 'Granite Tile 2', ' ', '55000', 0, 1, 1, 1, '2019-06-05 18:02:20', 0),
+(122, 30, 'Natural Vinyl', ' ', '67000', 0, 1, 1, 1, '2019-06-05 18:03:14', 0),
+(123, 31, 'Granite Tile 1', ' ', '15500', 0, 1, 1, 1, '2019-06-05 18:05:17', 0),
+(124, 31, 'Granite Tile 2', ' ', '23000', 0, 1, 1, 1, '2019-06-05 18:05:37', 0),
+(125, 32, 'Pebble Finish', ' ', '22000', 0, 1, 1, 1, '2019-06-05 18:07:36', 0),
+(126, 32, 'Stone Tile', ' ', '39000', 0, 1, 1, 1, '2019-06-05 18:08:12', 0),
+(127, 33, 'Granite Tile 1', ' ', '11000', 0, 1, 1, 1, '2019-06-05 18:09:43', 0),
+(128, 33, 'Granite Tile 2', ' ', '16000', 0, 1, 1, 1, '2019-06-05 18:10:06', 0),
+(129, 39, 'Drop Ceiling', ' ', '265500', 0, 1, 1, 1, '2019-06-05 18:14:43', 0),
+(130, 37, 'Solid Door 1', ' ', '36000', 0, 1, 1, 1, '2019-06-05 18:16:19', 0),
+(131, 37, 'Solid Door 2', ' ', '64000', 0, 1, 1, 1, '2019-06-05 18:16:37', 0),
+(132, 42, 'Panasonic Brand', ' ', '4000', 0, 1, 1, 1, '2019-06-05 18:18:48', 0),
+(133, 34, 'Finished Paint', ' ', '75000', 0, 1, 1, 1, '2019-06-05 18:20:17', 0),
+(134, 41, 'Pin Light LED', ' ', '6500', 0, 1, 1, 1, '2019-06-05 18:21:31', 0),
+(135, 41, 'Branded LED', ' ', '13000', 0, 1, 1, 1, '2019-06-05 18:21:56', 0),
+(136, 44, 'Longspan G.I. Roof', ' ', '75000', 0, 1, 1, 1, '2019-06-05 18:23:32', 0),
+(137, 44, 'Stone Chip', ' ', '100000', 0, 1, 1, 1, '2019-06-05 18:23:47', 0),
+(138, 40, 'Wood Planks - Stainless', ' ', '45000', 0, 1, 1, 1, '2019-06-05 18:24:51', 0),
+(139, 40, 'Wood Planks - Glass', ' ', '60000', 0, 1, 1, 1, '2019-06-05 18:25:00', 0),
+(140, 38, 'U-PVC', ' ', '95000', 0, 1, 1, 1, '2019-06-05 18:27:14', 0),
+(141, 38, 'Laminated U-PVC', ' ', '110000', 0, 1, 1, 1, '2019-06-05 18:27:26', 0),
+(142, 46, 'Vessel 1', ' ', '10000', 0, 1, 1, 1, '2019-06-05 18:29:06', 0),
+(143, 46, 'Vessel 2', ' ', '22000', 0, 1, 1, 1, '2019-06-05 18:29:20', 0),
+(144, 46, 'Kohler Pedestal', 'Kohler', '45000', 0, 1, 1, 1, '2019-06-05 18:30:20', 0),
+(145, 47, 'Shower Mixer Set 1', ' ', '12000', 0, 1, 1, 1, '2019-06-05 18:32:52', 0),
+(146, 47, 'Shower Mixer Set 2', ' ', '22000', 0, 1, 1, 1, '2019-06-05 18:33:23', 0),
+(147, 48, 'Glass Enclosure - Aluminum', ' ', '10000', 0, 1, 1, 1, '2019-06-05 18:35:02', 0),
+(148, 45, 'Dual Flush 1', ' ', '15000', 0, 1, 1, 1, '2019-06-05 18:35:33', 0),
+(149, 45, 'Dual Flush 2', ' ', '54000', 0, 1, 1, 1, '2019-06-05 18:35:53', 0),
+(150, 35, 'Ceramic Tile 1', ' ', '110000', 0, 1, 1, 1, '2019-06-05 18:38:05', 0),
+(151, 35, 'Ceramic Tile 2', ' ', '130000', 0, 1, 1, 1, '2019-06-05 18:38:40', 0),
+(152, 36, 'Ceramic Tile 1', ' ', '110000', 0, 1, 1, 1, '2019-06-05 18:39:20', 0),
+(153, 36, 'Ceramic Tile 2', ' ', '130000', 0, 1, 1, 1, '2019-06-05 18:39:33', 0),
+(158, 36, 'Concrete', '123 ', '12', 1, 1, 1, 1, '2019-06-09 10:36:35', 0),
+(159, 50, 'material 1', ' 2', '1', 0, 1, 1, 1, '2019-06-25 13:57:06', 0),
+(160, 50, 'material 2', ' 4', '3', 1, 1, 1, 1, '2019-06-25 13:57:30', 0),
+(163, 50, '1', ' 3', '2', 0, 1, 6, 7, '2019-06-25 14:15:03', 0),
+(164, 50, 'Area Material', '30x20', '20', 0, 1, 30, 20, '2019-06-25 14:21:45', 0);
 
 -- --------------------------------------------------------
 
@@ -728,6 +739,7 @@ CREATE TABLE `part` (
   `Category_Id` int(11) NOT NULL,
   `Part_Name` varchar(100) NOT NULL,
   `Part_Area` decimal(10,2) NOT NULL,
+  `Unit_Id` int(11) NOT NULL,
   `Part_Piece` decimal(10,2) NOT NULL DEFAULT '0.00',
   `Part_DateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Part_Status` tinyint(1) NOT NULL DEFAULT '0'
@@ -737,50 +749,51 @@ CREATE TABLE `part` (
 -- Dumping data for table `part`
 --
 
-INSERT INTO `part` (`Part_Id`, `Category_Id`, `Part_Name`, `Part_Area`, `Part_Piece`, `Part_DateCreated`, `Part_Status`) VALUES
-(3, 4, 'Part 1', '1.00', '0.00', '2019-02-17 07:14:13', 0),
-(4, 2, 'Part 1', '0.00', '0.00', '2019-02-17 07:25:42', 0),
-(7, 2, 'Part 3', '1.00', '1.00', '2019-02-17 08:16:57', 0),
-(8, 2, 'Part 4', '120.00', '20.00', '2019-03-05 20:53:02', 0),
-(9, 2, 'try', '100.00', '12.00', '2019-03-06 11:20:24', 0),
-(10, 20, 'Water Closet', '0.00', '3.00', '2019-04-02 05:13:15', 0),
-(11, 20, 'Lavatory', '0.00', '3.00', '2019-04-02 05:13:46', 0),
-(12, 20, 'Shower', '0.00', '3.00', '2019-04-02 05:13:55', 0),
-(13, 20, 'Shower Enclosure', '0.00', '3.00', '2019-04-02 05:14:13', 0),
-(14, 10, 'Exterior', '1.00', '1.00', '2019-04-02 06:15:45', 0),
-(15, 7, 'Ground Floor', '70.00', '0.00', '2019-04-02 06:21:29', 0),
-(16, 7, 'Second Floor', '68.00', '0.00', '2019-04-02 06:22:03', 0),
-(17, 7, 'Garage Floor', '39.00', '0.00', '2019-04-02 06:22:15', 0),
-(18, 7, 'Balcony Floor', '28.00', '0.00', '2019-04-02 06:22:24', 0),
-(19, 8, 'Interior', '138.00', '0.00', '2019-04-03 16:12:52', 0),
-(20, 15, 'Interior', '0.00', '11.00', '2019-04-03 16:17:46', 0),
-(21, 15, 'Exterior', '0.00', '4.00', '2019-04-03 16:17:58', 0),
-(22, 13, 'Interior', '13.00', '0.00', '2019-04-03 16:25:03', 0),
-(23, 17, 'Exterior', '68.00', '0.00', '2019-04-03 16:27:42', 0),
-(25, 9, 'Exterior', '1.00', '1.00', '2019-04-08 16:43:49', 0),
-(26, 9, 'Interior', '1.00', '1.00', '2019-04-08 16:43:52', 0),
-(27, 16, 'Interior', '1.00', '1.00', '2019-04-08 16:46:40', 0),
-(28, 7, 'Porch', '1.00', '1.00', '2019-04-08 17:24:41', 0),
-(29, 24, 'Ground Floor', '5.00', '6.00', '2019-04-08 17:31:24', 0),
-(30, 24, 'Second Floor', '1.00', '1.00', '2019-04-08 17:34:15', 0),
-(31, 24, 'Balcony', '1.00', '1.00', '2019-04-08 17:46:25', 0),
-(32, 24, 'Garage', '1.00', '1.00', '2019-04-08 17:46:39', 0),
-(33, 24, 'Porch', '1.00', '1.00', '2019-04-08 17:46:43', 0),
-(34, 25, 'Overall', '1.00', '1.00', '2019-04-08 17:49:55', 0),
-(35, 26, 'Exterior', '1.00', '1.00', '2019-04-08 17:50:59', 0),
-(36, 26, 'Interior', '2.00', '3.00', '2019-04-08 17:51:03', 0),
-(37, 27, 'Overall', '1.00', '1.00', '2019-04-08 17:52:14', 0),
-(38, 28, 'Overall', '1.00', '1.00', '2019-04-08 17:53:14', 0),
-(39, 29, 'Overall', '1.00', '1.00', '2019-04-08 17:54:43', 0),
-(40, 30, 'Interior', '1.00', '1.00', '2019-04-08 17:55:44', 0),
-(41, 31, 'All', '1.00', '1.00', '2019-04-08 17:56:42', 0),
-(42, 32, 'All', '1.00', '1.00', '2019-04-08 17:58:18', 0),
-(43, 33, 'Interior', '1.00', '1.00', '2019-04-08 17:59:56', 0),
-(44, 34, 'All', '1.00', '1.00', '2019-04-08 18:01:26', 0),
-(45, 35, 'Watercloset', '1.00', '1.00', '2019-04-08 18:02:28', 0),
-(46, 35, 'Lavatory', '1.00', '1.00', '2019-04-08 18:02:32', 0),
-(47, 35, 'Shower', '1.00', '1.00', '2019-04-08 18:02:35', 0),
-(48, 35, 'Shower Enclosure', '1.00', '1.00', '2019-04-08 18:02:39', 0);
+INSERT INTO `part` (`Part_Id`, `Category_Id`, `Part_Name`, `Part_Area`, `Unit_Id`, `Part_Piece`, `Part_DateCreated`, `Part_Status`) VALUES
+(3, 4, 'Part 1', '1.00', 1, '0.00', '2019-02-17 07:14:13', 0),
+(4, 2, 'Part 1', '1.00', 1, '0.00', '2019-02-17 07:25:42', 0),
+(7, 2, 'Part 3', '1.00', 1, '1.00', '2019-02-17 08:16:57', 0),
+(8, 2, 'Part 4', '120.00', 1, '20.00', '2019-03-05 20:53:02', 0),
+(9, 2, 'try', '100.00', 1, '12.00', '2019-03-06 11:20:24', 0),
+(10, 20, 'Water Closet', '1.00', 1, '3.00', '2019-04-02 05:13:15', 0),
+(11, 20, 'Lavatory', '1.00', 1, '3.00', '2019-04-02 05:13:46', 0),
+(12, 20, 'Shower', '1.00', 1, '3.00', '2019-04-02 05:13:55', 0),
+(13, 20, 'Shower Enclosure', '1.00', 1, '3.00', '2019-04-02 05:14:13', 0),
+(14, 10, 'Exterior', '1.00', 1, '1.00', '2019-04-02 06:15:45', 0),
+(15, 7, 'Ground Floor', '70.00', 1, '0.00', '2019-04-02 06:21:29', 0),
+(16, 7, 'Second Floor', '68.00', 1, '0.00', '2019-04-02 06:22:03', 0),
+(17, 7, 'Garage Floor', '39.00', 1, '0.00', '2019-04-02 06:22:15', 0),
+(18, 7, 'Balcony Floor', '28.00', 1, '0.00', '2019-04-02 06:22:24', 0),
+(19, 8, 'Interior', '138.00', 1, '0.00', '2019-04-03 16:12:52', 0),
+(20, 15, 'Interior', '1.00', 1, '11.00', '2019-04-03 16:17:46', 0),
+(21, 15, 'Exterior', '1.00', 1, '4.00', '2019-04-03 16:17:58', 0),
+(22, 13, 'Interior', '13.00', 1, '0.00', '2019-04-03 16:25:03', 0),
+(23, 17, 'Exterior', '68.00', 1, '0.00', '2019-04-03 16:27:42', 0),
+(25, 9, 'Exterior', '1.00', 1, '1.00', '2019-04-08 16:43:49', 0),
+(26, 9, 'Interior', '1.00', 1, '1.00', '2019-04-08 16:43:52', 0),
+(27, 16, 'Interior', '1.00', 1, '1.00', '2019-04-08 16:46:40', 0),
+(28, 7, 'Porch', '1.00', 1, '1.00', '2019-04-08 17:24:41', 0),
+(29, 24, 'Ground Floor', '5.00', 1, '6.00', '2019-04-08 17:31:24', 0),
+(30, 24, 'Second Floor', '1.00', 1, '1.00', '2019-04-08 17:34:15', 0),
+(31, 24, 'Balcony', '1.00', 1, '1.00', '2019-04-08 17:46:25', 0),
+(32, 24, 'Garage', '1.00', 1, '1.00', '2019-04-08 17:46:39', 0),
+(33, 24, 'Porch', '1.00', 1, '1.00', '2019-04-08 17:46:43', 0),
+(34, 25, 'Overall', '1.00', 1, '1.00', '2019-04-08 17:49:55', 0),
+(35, 26, 'Exterior', '1.00', 1, '1.00', '2019-04-08 17:50:59', 0),
+(36, 26, 'Interior', '2.00', 1, '3.00', '2019-04-08 17:51:03', 0),
+(37, 27, 'Overall', '1.00', 1, '1.00', '2019-04-08 17:52:14', 0),
+(38, 28, 'Overall', '1.00', 1, '1.00', '2019-04-08 17:53:14', 0),
+(39, 29, 'Overall', '1.00', 1, '1.00', '2019-04-08 17:54:43', 0),
+(40, 30, 'Interior', '1.00', 1, '1.00', '2019-04-08 17:55:44', 0),
+(41, 31, 'All', '1.00', 1, '1.00', '2019-04-08 17:56:42', 0),
+(42, 32, 'All', '1.00', 1, '1.00', '2019-04-08 17:58:18', 0),
+(43, 33, 'Interior', '1.00', 1, '1.00', '2019-04-08 17:59:56', 0),
+(44, 34, 'All', '1.00', 1, '1.00', '2019-04-08 18:01:26', 0),
+(45, 35, 'Watercloset', '1.00', 1, '1.00', '2019-04-08 18:02:28', 0),
+(46, 35, 'Lavatory', '1.00', 1, '1.00', '2019-04-08 18:02:32', 0),
+(47, 35, 'Shower', '1.00', 1, '1.00', '2019-04-08 18:02:35', 0),
+(48, 35, 'Shower Enclosure', '1.00', 1, '1.00', '2019-04-08 18:02:39', 0),
+(50, 26, 'part 2', '5.00', 2, '5.00', '2019-06-25 10:08:06', 0);
 
 -- --------------------------------------------------------
 
@@ -1042,6 +1055,34 @@ CREATE TABLE `transaction_type` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `unit`
+--
+
+CREATE TABLE `unit` (
+  `Unit_Id` int(11) NOT NULL,
+  `Unit_Name` varchar(100) NOT NULL,
+  `Unit_Nickname` varchar(50) NOT NULL,
+  `Unit_Conversion` int(11) NOT NULL,
+  `Unit_DateCreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Unit_Status` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `unit`
+--
+
+INSERT INTO `unit` (`Unit_Id`, `Unit_Name`, `Unit_Nickname`, `Unit_Conversion`, `Unit_DateCreated`, `Unit_Status`) VALUES
+(1, 'Inch', 'in', 25400, '2019-06-25 16:39:03', 0),
+(2, 'Feet', 'ft', 304800, '2019-06-25 16:40:04', 0),
+(3, 'Yard', 'yd', 914400, '2019-06-25 16:41:02', 0),
+(4, 'Meter', 'm', 1000000, '2019-06-25 16:43:18', 0),
+(5, 'Kilometer', 'km', 1000000000, '2019-06-25 16:43:55', 0),
+(6, 'Centimeter', 'cm', 10000, '2019-06-25 16:44:21', 0),
+(7, 'Millimeter', 'mm', 1000, '2019-06-25 16:44:49', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `upgrade`
 --
 
@@ -1052,6 +1093,9 @@ CREATE TABLE `upgrade` (
   `Upgrade_Description` text NOT NULL,
   `Upgrade_Price` decimal(10,0) NOT NULL,
   `Upgrade_PriceType` tinyint(1) NOT NULL DEFAULT '0',
+  `Upgrade_Width` int(11) NOT NULL,
+  `Upgrade_Height` int(11) NOT NULL,
+  `Unit_Id` int(11) NOT NULL,
   `Upgrade_DateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Upgrade_Status` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1060,18 +1104,21 @@ CREATE TABLE `upgrade` (
 -- Dumping data for table `upgrade`
 --
 
-INSERT INTO `upgrade` (`Upgrade_Id`, `Part_Id`, `Upgrade_Name`, `Upgrade_Description`, `Upgrade_Price`, `Upgrade_PriceType`, `Upgrade_DateCreated`, `Upgrade_Status`) VALUES
-(3, 4, 'Upgrade 3', ' Upgrade 3 Description ', '111', 0, '2019-02-17 09:53:50', 0),
-(5, 4, 'Upgrade 1', ' Upgrade 1Upgrade 1', '123', 0, '2019-02-17 10:01:13', 0),
-(7, 7, 'Upgrade 1', ' Upgrade 1 desc', '123', 0, '2019-03-05 21:12:34', 0),
-(8, 7, 'Upgrade 2', ' Upgrade 2Upgrade 2', '234', 1, '2019-03-05 21:12:52', 0),
-(9, 11, 'Kohler Lavatory Pedestal', ' ', '16000', 1, '2019-04-02 05:25:18', 0),
-(10, 11, 'Kohler Undermount Sink with Cabinet', ' ', '25000', 1, '2019-04-02 05:28:49', 0),
-(11, 11, 'Kohler Undermount Sink', ' ', '20000', 1, '2019-04-02 05:30:04', 0),
-(12, 12, 'Centralized Water Heater', ' ', '3000', 1, '2019-04-02 05:56:12', 0),
-(13, 12, 'Kohler Portrait Digital Interface', ' ', '8300', 1, '2019-04-02 05:57:30', 0),
-(14, 29, 'Carpet Flooring', ' ', '105000', 0, '2019-06-05 18:00:29', 0),
-(15, 47, 'Centralized Water Heater', ' ', '8000', 0, '2019-06-05 18:33:50', 0);
+INSERT INTO `upgrade` (`Upgrade_Id`, `Part_Id`, `Upgrade_Name`, `Upgrade_Description`, `Upgrade_Price`, `Upgrade_PriceType`, `Upgrade_Width`, `Upgrade_Height`, `Unit_Id`, `Upgrade_DateCreated`, `Upgrade_Status`) VALUES
+(3, 4, 'Upgrade 3', ' Upgrade 3 Description ', '111', 0, 1, 1, 1, '2019-02-17 09:53:50', 0),
+(5, 4, 'Upgrade 1', ' Upgrade 1Upgrade 1', '123', 0, 1, 1, 1, '2019-02-17 10:01:13', 0),
+(7, 7, 'Upgrade 1', ' Upgrade 1 desc', '123', 0, 1, 1, 1, '2019-03-05 21:12:34', 0),
+(8, 7, 'Upgrade 2', ' Upgrade 2Upgrade 2', '234', 1, 1, 1, 1, '2019-03-05 21:12:52', 0),
+(9, 11, 'Kohler Lavatory Pedestal', ' ', '16000', 1, 1, 1, 1, '2019-04-02 05:25:18', 0),
+(10, 11, 'Kohler Undermount Sink with Cabinet', ' ', '25000', 1, 1, 1, 1, '2019-04-02 05:28:49', 0),
+(11, 11, 'Kohler Undermount Sink', ' ', '20000', 1, 1, 1, 1, '2019-04-02 05:30:04', 0),
+(12, 12, 'Centralized Water Heater', ' ', '3000', 1, 1, 1, 1, '2019-04-02 05:56:12', 0),
+(13, 12, 'Kohler Portrait Digital Interface', ' ', '8300', 1, 1, 1, 1, '2019-04-02 05:57:30', 0),
+(14, 29, 'Carpet Flooring', ' ', '105000', 0, 1, 1, 1, '2019-06-05 18:00:29', 0),
+(15, 47, 'Centralized Water Heater', ' ', '8000', 0, 1, 1, 1, '2019-06-05 18:33:50', 0),
+(16, 50, '12', ' 34', '23', 1, 45, 56, 3, '2019-06-25 14:19:55', 0),
+(17, 50, 'area', ' 234', '666', 0, 999, 888, 5, '2019-06-25 15:22:06', 0),
+(18, 50, 'piece', '444', '555', 1, 666, 777, 3, '2019-06-25 15:22:22', 0);
 
 -- --------------------------------------------------------
 
@@ -1310,7 +1357,9 @@ INSERT INTO `userproject` (`UserProject_Id`, `Project_Id`, `Material_Id`, `Upgra
 (1554, 70, 84, 0),
 (1555, 70, 123, 0),
 (1556, 70, 126, 0),
-(1557, 70, 90, 0);
+(1557, 70, 90, 0),
+(1558, 69, 164, 0),
+(1559, 69, 0, 17);
 
 -- --------------------------------------------------------
 
@@ -1336,7 +1385,7 @@ CREATE TABLE `user_account` (
 
 INSERT INTO `user_account` (`user_id`, `ip_address`, `user_email`, `user_pass`, `full_name`, `birthdate`, `gender`, `contact`, `address`) VALUES
 (16, '112.207.5.148', 'alfer.coronel@gmail.com', '123', 'Alfer Lance A. Coronel', '1996-02-14', 'male', '09568177846', 'Guadalupe Nuevo, Makati City'),
-(17, '122.54.108.202', 'anneereyes10@gmail.com', '123', 'Anne Reyes', '1999-12-10', 'female', '09281236549', 'Las Pinas'),
+(17, '122.54.108.202', '2@2', '2', 'Anne Reyes', '1999-12-10', 'female', '09281236549', 'Las Pinas'),
 (18, '112.207.5.148', 'alfer.lance.coronel@gmail.com', '123', 'Alfer Coronel', '1996-02-14', 'male', '9568177846', 'Cabanatuan City, Nueva Ecija');
 
 -- --------------------------------------------------------
@@ -1501,6 +1550,12 @@ ALTER TABLE `transaction_type`
   ADD PRIMARY KEY (`user_id`);
 
 --
+-- Indexes for table `unit`
+--
+ALTER TABLE `unit`
+  ADD PRIMARY KEY (`Unit_Id`);
+
+--
 -- Indexes for table `upgrade`
 --
 ALTER TABLE `upgrade`
@@ -1545,7 +1600,7 @@ ALTER TABLE `user_account_p`
 -- AUTO_INCREMENT for table `admin_account`
 --
 ALTER TABLE `admin_account`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `appointment`
@@ -1575,19 +1630,19 @@ ALTER TABLE `finishitem`
 -- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
-  MODIFY `Image_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=243;
+  MODIFY `Image_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=246;
 
 --
 -- AUTO_INCREMENT for table `material`
 --
 ALTER TABLE `material`
-  MODIFY `Material_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+  MODIFY `Material_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
 
 --
 -- AUTO_INCREMENT for table `part`
 --
 ALTER TABLE `part`
-  MODIFY `Part_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `Part_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `payment`
@@ -1644,10 +1699,16 @@ ALTER TABLE `transaction_type`
   MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `unit`
+--
+ALTER TABLE `unit`
+  MODIFY `Unit_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `upgrade`
 --
 ALTER TABLE `upgrade`
-  MODIFY `Upgrade_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `Upgrade_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `upload`
@@ -1665,7 +1726,7 @@ ALTER TABLE `uploadplace`
 -- AUTO_INCREMENT for table `userproject`
 --
 ALTER TABLE `userproject`
-  MODIFY `UserProject_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1558;
+  MODIFY `UserProject_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1560;
 
 --
 -- AUTO_INCREMENT for table `user_account`

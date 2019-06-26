@@ -2,6 +2,7 @@
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Functions.php");
 require_once ("../App_Code/Part.php");
+require_once ("../App_Code/Unit.php");
 require_once ("../App_Code/Material.php");
 require_once ("../App_Code/Upgrade.php");
 require_once ("../App_Code/Image.php");
@@ -33,6 +34,9 @@ if(isset($_POST['Name'])){
 		$err2 .= $clsFn->setForm('Description',$mdlMaterial,true);
 		$err2 .= $clsFn->setForm('Price',$mdlMaterial,true);
 		$err2 .= $clsFn->setForm('PriceType',$mdlMaterial,true);
+		$err2 .= $clsFn->setForm('Width',$mdlMaterial,true);
+		$err2 .= $clsFn->setForm('Height',$mdlMaterial,true);
+		$err2 .= $clsFn->setForm('Unit_Id',$mdlMaterial,true);
 
 		if($err2 == ""){
 			$duplicate = $clsMaterial->IsExist($mdlMaterial);
@@ -90,6 +94,9 @@ if(isset($_POST['Name'])){
 		$err3 .= $clsFn->setForm('Description',$mdlUpgrade,true);
 		$err3 .= $clsFn->setForm('Price',$mdlUpgrade,true);
 		$err3 .= $clsFn->setForm('PriceType',$mdlUpgrade,true);
+		$err3 .= $clsFn->setForm('Width',$mdlUpgrade,true);
+		$err3 .= $clsFn->setForm('Height',$mdlUpgrade,true);
+		$err3 .= $clsFn->setForm('Unit_Id',$mdlUpgrade,true);
 
 		if($err3 == ""){
 			$duplicate = $clsUpgrade->IsExist($mdlUpgrade);
@@ -286,14 +293,14 @@ if(isset($_POST['Name'])){
                 <div class="card-body">
                   <div class="row">
                     <div class="form-group col-md-12">
-                      <label class="form-control-label" for="inputName"><b>Rename Part Name:</b></label>
-                      <p class="form-control" readonly><?php echo $mdlPart->getName(); ?></p>
+                      <label class="form-control-label" for="inputName">Name:</label>
+                      <p class="font-weight-bold"><?php echo $mdlPart->getName(); ?></p>
                     </div>
                   </div>
                   <div class="row mb-2">
                     <div class="col-12">
                       <label class="form-control-label" for="inputArea">Area:</label>
-                      <p class="font-weight-bold"><?php echo $mdlPart->getArea(); ?></p>
+                      <p class="font-weight-bold"><?php echo $mdlPart->getArea() . ' sq. ' . $clsUnit->GetNicknameById($mdlPart->getUnit_Id()); ?></p>
                     </div>
                   </div>
                   <div class="row mb-2">
@@ -318,14 +325,11 @@ if(isset($_POST['Name'])){
 
 					<div class="row mt-4">
 						<div class="col-12">
-
-						    <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                  <h6 class="m-0 font-weight-bold text-primary">Material</h6>
-                                </div>
-									<?php echo $msg2; ?>
-
-
+					    <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Material</h6>
+                </div>
+								<?php echo $msg2; ?>
 								<div class="card-body">
 									<div class="row m-4">
 										<div class="col-sm-12">
@@ -356,7 +360,43 @@ if(isset($_POST['Name'])){
 														<textarea type="text" class="form-control" id="inputDescription" name="Description" placeholder="Description"><?php echo $mdlMaterial->getDescription(); ?> </textarea>
 														<small id="notif-inputDescription" class="invalid-feedback">This is required</small>
 		  										</div>
-												</div><br>
+												</div>
+												<div class="row">
+													<div class="col-sm-12">
+														<div class="card mb-3">
+														  <div class="card-header">Details needed if Price Type is per Area</div>
+														  <div class="card-body text-secondary">
+																<div class="row">
+																	<div class="form-group col-md-4">
+						  											<label class="form-control-label" for="inputWidth"><b>Width:</b> </label>
+																		<input type="text" class="form-control" id="inputWidth" name="Width" placeholder="Width" value="<?php echo $mdlMaterial->getWidth(); ?>" onblur="checkInput('inputWidth')">
+																		<small id="notif-inputWidth" class="invalid-feedback">This is required</small>
+						  										</div>
+																	<div class="form-group col-md-4">
+						  											<label class="form-control-label" for="inputHeight"><b>Height:</b> </label>
+																		<input type="text" class="form-control" id="inputHeight" name="Height" placeholder="Height" value="<?php echo $mdlMaterial->getHeight(); ?>" onblur="checkInput('inputHeight')">
+																		<small id="notif-inputHeight" class="invalid-feedback">This is required</small>
+						  										</div>
+																	<div class="form-group col-md-4">
+						  											<label class="form-control-label" for="inputUnit"><b>Unit:</b> </label>
+																		<select class="form-control" id="inputUnit" name="Unit_Id">
+																			<?php
+																			$lstUnit = $clsUnit->Get();
+																			foreach ($lstUnit as $mdlUnit) {
+																				if ($mdlMaterial->getUnit_Id() == $mdlUnit->getId()) {
+																					echo '<option value="'.$mdlUnit->getId().'" selected>'.$mdlUnit->getName().'</option>';
+																				} else {
+																					echo '<option value="'.$mdlUnit->getId().'">'.$mdlUnit->getName().'</option>';
+																				}
+																			}
+																			?>
+																		</select>
+																	</div>
+															  </div>
+														  </div>
+														</div>
+													</div>
+												</div>
 		  									<div class="row mb-2">
 		  										<div class="form-group col-md-12">
 	  										    <center>
@@ -454,13 +494,11 @@ if(isset($_POST['Name'])){
 
 					<div class="row mt-4">
 						<div class="col-12">
-
-						    <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                  <h6 class="m-0 font-weight-bold text-primary">Upgrade</h6>
-                                </div>
-									<?php echo $msg3; ?>
-
+					    <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Upgrade</h6>
+                </div>
+								<?php echo $msg3; ?>
 								<div class="card-body">
 									<div class="row m-4">
 										<div class="col-sm-12">
@@ -492,17 +530,54 @@ if(isset($_POST['Name'])){
 														<small id="notif-inputDescription" class="invalid-feedback">This is required</small>
 		  										</div>
 												</div>
+												<div class="row">
+													<div class="col-sm-12">
+														<div class="card mb-3">
+														  <div class="card-header">Details needed if Price Type is per Area</div>
+														  <div class="card-body text-secondary">
+																<div class="row">
+																	<div class="form-group col-md-4">
+						  											<label class="form-control-label" for="inputWidth"><b>Width:</b> </label>
+																		<input type="text" class="form-control" id="inputWidth" name="Width" placeholder="Width" value="<?php echo $mdlUpgrade->getWidth(); ?>" onblur="checkInput('inputWidth')">
+																		<small id="notif-inputWidth" class="invalid-feedback">This is required</small>
+						  										</div>
+																	<div class="form-group col-md-4">
+						  											<label class="form-control-label" for="inputHeight"><b>Height:</b> </label>
+																		<input type="text" class="form-control" id="inputHeight" name="Height" placeholder="Height" value="<?php echo $mdlUpgrade->getHeight(); ?>" onblur="checkInput('inputHeight')">
+																		<small id="notif-inputHeight" class="invalid-feedback">This is required</small>
+						  										</div>
+																	<div class="form-group col-md-4">
+						  											<label class="form-control-label" for="inputUnit"><b>Unit:</b> </label>
+																		<select class="form-control" id="inputUnit" name="Unit_Id">
+																			<?php
+																			$lstUnit = $clsUnit->Get();
+																			foreach ($lstUnit as $mdlUnit) {
+																				if ($mdlUpgrade->getUnit_Id() == $mdlUnit->getId()) {
+																					echo '<option value="'.$mdlUnit->getId().'" selected>'.$mdlUnit->getName().'</option>';
+																				} else {
+																					echo '<option value="'.$mdlUnit->getId().'">'.$mdlUnit->getName().'</option>';
+																				}
+																			}
+																			?>
+																		</select>
+																	</div>
+															  </div>
+														  </div>
+														</div>
+													</div>
+												</div>
 		  									<div class="row mb-2">
-
-		  										<div class="form-group col-md-12"><center>
+		  										<div class="form-group col-md-12">
+														<center>
 		  										    <div class="card" style="width: 18rem;">
-                                                         <div class="card-body">
-		  											<label class="form-control-label" for="inputImage"><b>Picture: </b></label>
-		  											<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
-		  										</div></div></div></center>
-
+	                            	<div class="card-body">
+					  											<label class="form-control-label" for="inputImage"><b>Picture: </b></label>
+					  											<input type="file" class="form-control-file" id="inputImage" accept="image/*" name="fileToUpload"/>
+					  										</div>
+															</div>
+														</div>
+													</center>
 		  									</div>
-
 												<div class="row">
 		  										<div class="col-sm-4 offset-sm-5">
 		  											<button type="submit" id="submit" class="btn btn-primary w-full">Submit</button>
