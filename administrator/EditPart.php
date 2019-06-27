@@ -111,17 +111,17 @@ if(isset($_POST['Name'])){
   									<div class="row">
   										<div class="form-group col-md-12">
   											<label class="form-control-label" for="inputName"><b>Rename Part Details Name: </b></label>
-  											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPart->getName(); ?>" onblur="checkInput('inputName')">
+  											<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPart->getName(); ?>">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
-  									<div class="row mb-2">
+  									<div class="row mb-2" id="div_area">
   										<div class="col-6">
   											<label class="form-control-label" for="inputArea">Area</label>
-  											<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Area" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
+  											<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Area" value="<?php echo $mdlPart->getArea(); ?>">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
-  										<div class="col-6">
+  										<div class="col-6" >
 												<label class="form-control-label" for="inputArea">Unit of Area: </label>
 												<select class="form-control" id="inputUnit" name="Unit_Id">
 													<?php
@@ -138,10 +138,10 @@ if(isset($_POST['Name'])){
 												<small id="notif-inputArea" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
-  									<div class="row mb-2">
+  									<div class="row mb-2" id="div_pieces">
   										<div class="col-12">
   											<label class="form-control-label" for="inputPiece">Pieces</label>
-  											<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Piece" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
+  											<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Piece" value="<?php echo $mdlPart->getPiece(); ?>">
   											<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
@@ -194,6 +194,29 @@ if(isset($_POST['Name'])){
     <script src="styles/js/sb-admin.min.js"></script>
 
     <!-- JumEE Plugin -->
+		<script>
+		$("#sel_Type").change(function () {
+			$("#sel_Type option:selected").each(function() {
+				if ($(this).val() == "1") {
+					console.log("1");
+					$("#div_area").removeClass("d-none");
+					$("#div_pieces").addClass("d-none");
+
+					$("#inputArea").val("");
+					$("#inputUnit").val("1");
+					$("#inputPiece").val("1");
+				} else {
+					console.log("2");
+					$("#div_area").addClass("d-none");
+					$("#div_pieces").removeClass("d-none");
+
+					$("#inputArea").val("1");
+					$("#inputUnit").val("1");
+					$("#inputPiece").val("");
+				}
+			});
+		}).change();
+		</script>
 
   </body>
 

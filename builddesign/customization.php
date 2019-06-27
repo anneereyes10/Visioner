@@ -779,7 +779,7 @@ $err = "";
                                                 </ul>
                                               </ul>
                                               <?php
-                                						}else{
+                                						} else if ($mdlMaterial->getPriceType() == "1") {
                                 							$PMprice = $mdlMaterial->getPrice() * $mdlPart->getPiece();
                                 							$totalPrice += $PMprice;
                                               ?>
@@ -795,6 +795,29 @@ $err = "";
                                                   </li>
                                                   <li>
                                                     Needed: <?php echo $mdlPart->getPiece().' piece/s. '; ?>
+                                                  </li>
+                                                  <li>
+                                                    Total: Php <?php echo $PMprice; ?>
+                                                  </li>
+                                                </ul>
+                                              </ul>
+                                              <?php
+                                						} else {
+                                							$PMprice = $mdlMaterial->getPrice() * $mdlPart->getArea();
+                                							$totalPrice += $PMprice;
+                                              ?>
+                                              <ul>
+                                                <li>
+                                                  <i>Material: <?php echo $mdlMaterial->getName(); ?></i>
+                                                </li>
+                                                <ul>
+                                                  <li>
+                                                    Price:
+                                                    <?php echo 'Php '.$mdlMaterial->getPrice().' / sq. '.$clsUnit->GetNicknameById($mdlPart->getUnit_Id());
+                                                    ?>
+                                                  </li>
+                                                  <li>
+                                                    Needed: <?php echo $mdlPart->getArea().' sq. '.$clsUnit->GetNicknameById($mdlPart->getUnit_Id()); ?>
                                                   </li>
                                                   <li>
                                                     Total: Php <?php echo $PMprice; ?>
@@ -848,7 +871,7 @@ $err = "";
                                                 </ul>
                                               </ul>
                                               <?php
-                                						}else{
+                                						} else if ($mdlUpgrade->getPriceType() == "1") {
                                 							$PUprice = $mdlUpgrade->getPrice() * $mdlPart->getPiece();
                                 							$totalPrice += $PUprice;
                                               ?>
@@ -864,6 +887,29 @@ $err = "";
                                                   </li>
                                                   <li>
                                                     Needed: <?php echo $mdlPart->getPiece().' piece/s. '; ?>
+                                                  </li>
+                                                  <li>
+                                                    Total: Php <?php echo $PUprice; ?>
+                                                  </li>
+                                                </ul>
+                                              </ul>
+                                              <?php
+                                						} else {
+                                							$PUprice = $mdlUpgrade->getPrice() * $mdlPart->getArea();
+                                							$totalPrice += $PUprice;
+                                              ?>
+                                              <ul>
+                                                <li>
+                                                  <i>Upgrade: <?php echo $mdlUpgrade->getName(); ?></i>
+                                                </li>
+                                                <ul>
+                                                  <li>
+                                                    Price:
+                                                    <?php echo 'Php '.$mdlUpgrade->getPrice().' / sq. '.$clsUnit->GetNicknameById($mdlPart->getUnit_Id());
+                                                    ?>
+                                                  </li>
+                                                  <li>
+                                                    Needed: <?php echo $mdlPart->getArea().' sq. '.$clsUnit->GetNicknameById($mdlPart->getUnit_Id()); ?>
                                                   </li>
                                                   <li>
                                                     Total: Php <?php echo $PUprice; ?>

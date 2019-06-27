@@ -179,7 +179,17 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
 									<div class="row mb-2">
                     <div class="col-12">
                       <label class="form-control-label" for="inputPriceType"><b>PriceType:</b></label>
-                      <p class="form-control" readonly><?php echo ($mdlMaterial->getPriceType() == "0")?'per Area':'per Piece'; ?></p>
+											<?php
+											$priceType = "";
+											if ($mdlMaterial->getPriceType() == "0") {
+												$priceType = "per Item Area";
+											} else if ($mdlMaterial->getPriceType() == "1") {
+												$priceType = "per Piece";
+											} else {
+												$priceType = "per Base Area";
+											}
+											?>
+                      <p class="form-control" readonly><?php echo $priceType; ?></p>
                     </div>
                   </div>
 									<?php

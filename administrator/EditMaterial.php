@@ -27,9 +27,15 @@ if(isset($_POST['Name'])){
 	$err .= $clsFn->setForm('Description',$mdlMaterial,true);
 	$err .= $clsFn->setForm('Price',$mdlMaterial,true);
 	$err .= $clsFn->setForm('PriceType',$mdlMaterial,true);
-	$err .= $clsFn->setForm('Width',$mdlMaterial,true);
-	$err .= $clsFn->setForm('Height',$mdlMaterial,true);
+	$err .= $clsFn->setForm('Width',$mdlMaterial);
+	$err .= $clsFn->setForm('Height',$mdlMaterial);
 	$err .= $clsFn->setForm('Unit_Id',$mdlMaterial,true);
+	if ($mdlMaterial->getWidth() == "") {
+		$mdlMaterial->setWidth("1");
+	}
+	if ($mdlMaterial->getHeight() == "") {
+		$mdlMaterial->setHeight("1");
+	}
 
 	if($err == ""){
 		$duplicate = $clsMaterial->IsExist($mdlMaterial);
@@ -148,7 +154,8 @@ if(isset($_POST['Name'])){
   										<div class="col-12">
   											<label class="form-control-label" for="inputPriceType">Price Type</label>
 												<select class="form-control" id="inputPriceType" name="PriceType" onblur="checkInput('inputPriceType')">
-													<option value="0" <?php echo ($mdlMaterial->getPriceType() == "0")?'selected':''; ?>>per Area</option>
+													<option value="0" <?php echo ($mdlMaterial->getPriceType() == "0")?'selected':''; ?>>per Item Area</option>
+													<option value="2" <?php echo ($mdlMaterial->getPriceType() == "2")?'selected':''; ?>>per Base Area</option>
 													<option value="1" <?php echo ($mdlMaterial->getPriceType() == "1")?'selected':''; ?>>per Piece</option>
 												</select>
 												<small id="notif-inputName" class="invalid-feedback">This is required</small>
@@ -157,7 +164,7 @@ if(isset($_POST['Name'])){
 										<div class="row">
 											<div class="col-sm-12">
 												<div class="card mb-3">
-													<div class="card-header">Details needed if Price Type is per Area</div>
+													<div class="card-header">Details needed if Price Type is per Item Area</div>
 													<div class="card-body text-secondary">
 														<div class="row">
 															<div class="form-group col-md-4">

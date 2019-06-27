@@ -308,17 +308,37 @@ function displayPart($Category_Id){
 function displayMaterial($Part_Id){
 	$clsMaterial = new Material();
 	$mdlMaterial = new MaterialModel();
+	$clsPart = new Part();
+	$mdlPart = new PartModel();
+	$clsUnit = new Unit();
+	$mdlUnit = new UnitModel();
 	$clsImage = new Image();
 	$mdlImage = new ImageModel();
 	$clsUP = new UserProject();
 	$mdlUP = new UserProjectModel();
 
+	$mdlPart = $clsPart->GetById($Part_Id);
   $lstMaterial = $clsMaterial->GetByPart_Id($Part_Id);
 
   if (empty($lstMaterial)) {
     echo 'No Material Attached';
   }else{
 		foreach ($lstMaterial as $mdlMaterial) {
+			$price = 0;
+			if ($mdlMaterial->getPriceType() == "0") {
+				$M_width = $mdlMaterial->getWidth() * $clsUnit->getConversionById($mdlMaterial->getUnit_Id());
+				$M_height = $mdlMaterial->getHeight() * $clsUnit->getConversionById($mdlMaterial->getUnit_Id());
+				$M_area = $M_width * $M_height;
+
+				$P_area = $mdlPart->getArea() * pow($clsUnit->getConversionById($mdlPart->getUnit_Id()),2);
+				$Needed = ceil($P_area / $M_area);
+
+				$price = $Needed * $mdlMaterial->getPrice();
+			} else if ($mdlMaterial->getPriceType() == "1") {
+				$price = $mdlMaterial->getPrice() * $mdlPart->getPiece();
+			} else {
+				$price = $mdlMaterial->getPrice() * $mdlPart->getArea();
+			}
 			$imgLocation = "";
 			$lstImage = $clsImage->GetByDetail("material",$mdlMaterial->getId(),"original");
 
@@ -356,7 +376,7 @@ function displayMaterial($Part_Id){
 								<?php echo $mdlMaterial->getName(); ?>
 							</strong>
 							<p>
-								+ <?php echo $mdlMaterial->getPrice(); ?> Php
+								+ <?php	echo $price; ?> Php
 							</p>
 						</label>
 					</center>
@@ -391,12 +411,16 @@ function displayMaterial($Part_Id){
 function displayUpgrade($Part_Id){
 	$clsUpgrade = new Upgrade();
 	$mdlUpgrade = new UpgradeModel();
+	$clsPart = new Part();
+	$mdlPart = new PartModel();
+	$clsUnit = new Unit();
+	$mdlUnit = new UnitModel();
 	$clsImage = new Image();
 	$mdlImage = new ImageModel();
 	$clsUP = new UserProject();
 	$mdlUP = new UserProjectModel();
 
-
+	$mdlPart = $clsPart->GetById($Part_Id);
   $lstUpgrade = $clsUpgrade->GetByPart_Id($Part_Id);
   if (empty($lstUpgrade)) {
     echo 'No Upgrade Attached';
@@ -423,6 +447,21 @@ function displayUpgrade($Part_Id){
 
 		<?php
 		foreach ($lstUpgrade as $mdlUpgrade) {
+			$price = 0;
+			if ($mdlUpgrade->getPriceType() == "0") {
+				$M_width = $mdlUpgrade->getWidth() * $clsUnit->getConversionById($mdlUpgrade->getUnit_Id());
+				$M_height = $mdlUpgrade->getHeight() * $clsUnit->getConversionById($mdlUpgrade->getUnit_Id());
+				$M_area = $M_width * $M_height;
+
+				$P_area = $mdlPart->getArea() * pow($clsUnit->getConversionById($mdlPart->getUnit_Id()),2);
+				$Needed = ceil($P_area / $M_area);
+
+				$price = $Needed * $mdlUpgrade->getPrice();
+			} else if ($mdlUpgrade->getPriceType() == "1") {
+				$price = $mdlUpgrade->getPrice() * $mdlPart->getPiece();
+			} else {
+				$price = $mdlUpgrade->getPrice() * $mdlPart->getArea();
+			}
 			$imgLocation = "";
 			$lstImage = $clsImage->GetByDetail("upgrade",$mdlUpgrade->getId(),"original");
 
@@ -461,7 +500,7 @@ function displayUpgrade($Part_Id){
 								<?php echo $mdlUpgrade->getName(); ?>
 							</strong>
 							<p>
-								+ <?php echo $mdlUpgrade->getPrice(); ?> Php
+								+ <?php echo $price; ?> Php
 							</p>
 						</label>
 					</center>
@@ -565,8 +604,11 @@ function ProjectItem()
 
 							$PMprice = $Needed * $mdlM->getPrice();
 							$totalPrice += $PMprice;
-						}else{
+						} else if ($mdlM->getPriceType() == "1") {
 							$PMprice = $mdlM->getPrice() * $mdlP->getPiece();
+							$totalPrice += $PMprice;
+						} else {
+							$PMprice = $mdlM->getPrice() * $mdlP->getArea();
 							$totalPrice += $PMprice;
 						}
 						$txtout .= '<ul>';

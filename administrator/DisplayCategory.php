@@ -190,10 +190,9 @@ if(isset($_POST['Name'])){
 
 					<div class="row mt-4">
 						<div class="col-12">
-
-			<div class="card shadow mb-4">
+							<div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Part</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Part</h6>
                 </div>
 
                 <?php echo $msg2; ?>
@@ -205,15 +204,23 @@ if(isset($_POST['Name'])){
 		  									<div class="row">
 		  										<div class="form-group col-md-12">
 		  											<label class="form-control-label" for="inputName"><b>Name: </b></label>
-														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPart->getName(); ?>" onblur="checkInput('inputName')">
+														<input type="text" class="form-control" id="inputName" name="Name" placeholder="Name" value="<?php echo $mdlPart->getName(); ?>">
 														<small id="notif-inputName" class="invalid-feedback">This is required</small>
 													</div>
 													<div class="form-group col-md-4">
+														<label class="form-control-label" for="inputType">Type: </label>
+														<select id="sel_Type" class="form-control">
+															<option value="1">By Area</option>
+															<option value="2">By Pieces</option>
+														</select>
+														<small id="notif-inputType" class="invalid-feedback">This is required</small>
+													</div>
+													<div class="form-group col-md-4" id="div_area">
 														<label class="form-control-label" for="inputArea">Area: </label>
-														<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Value of area" value="<?php echo $mdlPart->getArea(); ?>" onblur="checkInput('inputArea')">
+														<input type="number" class="form-control" id="inputArea" name="Area" placeholder="Value of area" value="<?php echo $mdlPart->getArea(); ?>">
 														<small id="notif-inputArea" class="invalid-feedback">This is required</small>
 													</div>
-													<div class="form-group col-md-4">
+													<div class="form-group col-md-4" id="div_unit">
 														<label class="form-control-label" for="inputArea">Unit of Area: </label>
 														<select class="form-control" id="inputUnit" name="Unit_Id">
 															<?php
@@ -225,9 +232,9 @@ if(isset($_POST['Name'])){
 														</select>
 														<small id="notif-inputArea" class="invalid-feedback">This is required</small>
 													</div>
-		  										<div class="form-group col-md-4">
+		  										<div class="form-group col-md-4" id="div_pieces">
 		  											<label class="form-control-label" for="inputPiece">Pieces: </label>
-														<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Number of Pieces" value="<?php echo $mdlPart->getPiece(); ?>" onblur="checkInput('inputPiece')">
+														<input type="number" class="form-control" id="inputPiece" name="Piece" placeholder="Number of Pieces" value="<?php echo $mdlPart->getPiece(); ?>">
 														<small id="notif-inputPiece" class="invalid-feedback">This is required</small>
 													</div>
 												</div>
@@ -338,11 +345,36 @@ if(isset($_POST['Name'])){
 		<script type="text/javascript" src="../JumEE/js/jquery.dataTables.min.js"></script>
 		<script type="text/javascript" src="../JumEE/js/dataTables.bootstrap4.min.js"></script>
 
-		    <script>
-		    $(document).ready(function() {
-		        $('#example').DataTable();
-		    } );
-		    </script>
+    <script>
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+    </script>
+		<script>
+		$("#sel_Type").change(function () {
+			$("#sel_Type option:selected").each(function() {
+				if ($(this).val() == "1") {
+					console.log("1");
+					$("#div_area").removeClass("d-none");
+					$("#div_unit").removeClass("d-none");
+					$("#div_pieces").addClass("d-none");
+
+					$("#inputArea").val("");
+					$("#inputUnit").val("1");
+					$("#inputPiece").val("1");
+				} else {
+					console.log("2");
+					$("#div_area").addClass("d-none");
+					$("#div_unit").addClass("d-none");
+					$("#div_pieces").removeClass("d-none");
+
+					$("#inputArea").val("1");
+					$("#inputUnit").val("1");
+					$("#inputPiece").val("");
+				}
+			});
+		}).change();
+		</script>
 
   </body>
 

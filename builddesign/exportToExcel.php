@@ -84,12 +84,21 @@ require_once ("../App_Code/Payment.php");
               echo "\t";
               echo $mdlMaterial->getDescription() . "\t";
 
-            }else{
+            }else if ($mdlMaterial->getPriceType() == "1") {
               $PMprice = $mdlMaterial->getPrice() * $mdlPart->getPiece();
               $totalPrice += $PMprice;
               echo "1 pc" . "\t";
               echo "Php " . $mdlMaterial->getPrice() . "\t";
               echo $mdlPart->getPiece() . "sq. " . $unit_pN . "\t";
+              echo "Php " . $PMprice . "\t";
+              echo "\t";
+              echo $mdlMaterial->getDescription() . "\t";
+            }else{
+              $PMprice = $mdlMaterial->getPrice() * $mdlPart->getArea();
+              $totalPrice += $PMprice;
+              echo "1 sq. " . $unit_pN . "\t";
+              echo "Php " . $mdlMaterial->getPrice() . "\t";
+              echo $mdlPart->getArea() . "sq. " . $unit_pN . "\t";
               echo "Php " . $PMprice . "\t";
               echo "\t";
               echo $mdlMaterial->getDescription() . "\t";
@@ -129,12 +138,21 @@ require_once ("../App_Code/Payment.php");
                 echo "Php " . $PUprice . "\t";
                 echo "\t";
                 echo $mdlUpgrade->getDescription() . "\t";
-              }else{
+              }else if ($mdlUpgrade->getPriceType() == "1") {
                 $PUprice = $mdlUpgrade->getPrice() * $mdlPart->getPiece();
                 $totalPrice += $PUprice;
                 echo "1 pc" . "\t";
                 echo "Php " . $mdlUpgrade->getPrice() . "\t";
                 echo $mdlPart->getPiece() . "sq. " . $unit_pN . "\t";
+                echo "Php " . $PUprice . "\t";
+                echo "\t";
+                echo $mdlUpgrade->getDescription() . "\t";
+              }else{
+                $PUprice = $mdlUpgrade->getPrice() * $mdlPart->getArea();
+                $totalPrice += $PUprice;
+                echo "1 sq. " . $unit_pN . "\t";
+                echo "Php " . $mdlUpgrade->getPrice() . "\t";
+                echo $mdlPart->getArea() . "sq. " . $unit_pN . "\t";
                 echo "Php " . $PUprice . "\t";
                 echo "\t";
                 echo $mdlUpgrade->getDescription() . "\t";
