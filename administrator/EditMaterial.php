@@ -161,7 +161,7 @@ if(isset($_POST['Name'])){
 												<small id="notif-inputName" class="invalid-feedback">This is required</small>
   										</div>
   									</div>
-										<div class="row">
+										<div class="row" id="area">
 											<div class="col-sm-12">
 												<div class="card mb-3">
 													<div class="card-header">Details needed if Price Type is per Item Area</div>
@@ -254,6 +254,17 @@ if(isset($_POST['Name'])){
     <script src="styles/js/sb-admin.min.js"></script>
 
     <!-- JumEE Plugin -->
+		<script>
+		$("#inputPriceType").change(function () {
+			$("#inputPriceType option:selected").each(function() {
+				if ($(this).val() == "0") {
+					$("#area").removeClass("d-none");
+				} else {
+					$("#area").addClass("d-none");
+				}
+			});
+		}).change();
+		</script>
 
   </body>
 

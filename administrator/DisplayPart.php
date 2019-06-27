@@ -374,7 +374,7 @@ if(isset($_POST['Name'])){
 														<small id="notif-inputDescription" class="invalid-feedback">This is required</small>
 		  										</div>
 												</div>
-												<div class="row">
+												<div class="row" id="area">
 													<div class="col-sm-12">
 														<div class="card mb-3">
 														  <div class="card-header">Details needed if Price Type is Item Area</div>
@@ -721,6 +721,17 @@ if(isset($_POST['Name'])){
         $('#table2').DataTable();
     } );
     </script>
+		<script>
+		$("#inputPriceType").change(function () {
+			$("#inputPriceType option:selected").each(function() {
+				if ($(this).val() == "0") {
+					$("#area").removeClass("d-none");
+				} else {
+					$("#area").addClass("d-none");
+				}
+			});
+		}).change();
+		</script>
 
   </body>
 
