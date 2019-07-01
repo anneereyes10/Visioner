@@ -1,6 +1,7 @@
 <?php
 require_once ("../App_Code/Database.php");
 require_once ("../App_Code/Material.php");
+require_once ("../App_Code/Part.php");
 require_once ("../App_Code/Unit.php");
 require_once ("../App_Code/Image.php");
 if(!isset($_SESSION['email'])){
@@ -21,112 +22,112 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+	<head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
 
-    <title>Administrator Account for Visioner Design and Builders</title>
+		<title>Administrator Account for Visioner Design and Builders</title>
 
-    <!-- Bootstrap core CSS-->
-    <link href="styles/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Bootstrap core CSS-->
+		<link href="styles/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom fonts for this template-->
-    <link href="styles/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+		<!-- Custom fonts for this template-->
+		<link href="styles/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-    <!-- Page level plugin CSS-->
-    <link href="styles/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+		<!-- Page level plugin CSS-->
+		<link href="styles/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="styles/css/sb-admin.css" rel="stylesheet">
+		<!-- Custom styles for this template-->
+		<link href="styles/css/sb-admin.css" rel="stylesheet">
 
 		<!-- JumEE Css -->
-    <link href="../JumEE/css/bootstrap-extended.css" rel="stylesheet">
+		<link href="../JumEE/css/bootstrap-extended.css" rel="stylesheet">
 
 
-				<script>
+		<script>
+			function add(pid, cid) {
+				var xmlhttp = new XMLHttpRequest();
+				var url = "";
+				var btn = "";
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						location.reload();
+					}
+				};
+				url = "../Ajax/DisplayMaterial.php";
+				url += "?call=add";
+				url += "&pid=" + pid;
+				url += "&cid=" + cid;
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send();
 
-				function add(pid,cid) {
-					var xmlhttp = new XMLHttpRequest();
-					var url = "";
-					var btn = "";
-					xmlhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							location.reload();
-						}
-					};
-					url = "../Ajax/DisplayMaterial.php";
-					url += "?call=add";
-					url += "&pid=" + pid;
-					url += "&cid=" + cid;
-					xmlhttp.open("GET", url, true);
-					xmlhttp.send();
+			}
 
-				}
+			function remove(id) {
+				console.log(id);
+				var xmlhttp = new XMLHttpRequest();
+				var url = "";
+				var btn = "";
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						location.reload();
+					}
+				};
+				url = "../Ajax/DisplayMaterial.php";
+				url += "?call=remove";
+				url += "&Id=" + id;
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send();
 
-				function remove(id) {
-					console.log(id);
-					var xmlhttp = new XMLHttpRequest();
-					var url = "";
-					var btn = "";
-					xmlhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							location.reload();
-						}
-					};
-					url = "../Ajax/DisplayMaterial.php";
-					url += "?call=remove";
-					url += "&Id=" + id;
-					xmlhttp.open("GET", url, true);
-					xmlhttp.send();
+			}
 
-				}
+			function deleteShow(MaterialId) {
+				var modal = document.getElementById("ModalWrapper");
+				modal.classList.remove("modal-success");
+				modal.classList.add("modal-danger");
 
-				function deleteShow(MaterialId) {
-					var modal = document.getElementById("ModalWrapper");
-					modal.classList.remove("modal-success");
-					modal.classList.add("modal-danger");
+				var xmlhttp = new XMLHttpRequest();
+				var url = "";
+				var btn = "";
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						document.getElementById("modalContent").innerHTML = this.responseText;
+					}
+				};
+				url = "../Ajax/ViewMaterial.php";
+				url += "?call=deleteShow";
+				url += "&Id=" + MaterialId;
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send();
 
-					var xmlhttp = new XMLHttpRequest();
-					var url = "";
-					var btn = "";
-					xmlhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							document.getElementById("modalContent").innerHTML = this.responseText;
-						}
-					};
-					url = "../Ajax/ViewMaterial.php";
-					url += "?call=deleteShow";
-					url += "&Id=" + MaterialId;
-					xmlhttp.open("GET", url, true);
-					xmlhttp.send();
+			}
 
-				}
-				function deleteMaterial(MaterialId) {
-					var modal = document.getElementById("ModalWrapper");
-					modal.classList.add("modal-success");
-					modal.classList.remove("modal-danger");
+			function deleteMaterial(MaterialId) {
+				var modal = document.getElementById("ModalWrapper");
+				modal.classList.add("modal-success");
+				modal.classList.remove("modal-danger");
 
-					var xmlhttp = new XMLHttpRequest();
-					var url = "";
-					var btn = "";
-					xmlhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							document.getElementById("modalContent").innerHTML = this.responseText;
-						}
-					};
-					url = "../Ajax/ViewMaterial.php";
-					url += "?call=deleteDisplay";
-					url += "&Id=" + MaterialId;
-					xmlhttp.open("GET", url, true);
-					xmlhttp.send();
+				var xmlhttp = new XMLHttpRequest();
+				var url = "";
+				var btn = "";
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						document.getElementById("modalContent").innerHTML = this.responseText;
+					}
+				};
+				url = "../Ajax/ViewMaterial.php";
+				url += "?call=deleteDisplay";
+				url += "&Id=" + MaterialId;
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send();
 
-				}
-				</script>
-  </head>
+			}
+		</script>
+	</head>
 
   <body id="page-top">
     <?php include 'nav.php'; ?>
@@ -194,6 +195,13 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
                   </div>
 									<?php
 									if ($mdlMaterial->getPriceType() == "0") {
+										$mdlPart = $clsPart->GetById($mdlMaterial->getPart_Id());
+										$M_width = $mdlMaterial->getWidth() * $clsUnit->getConversionById($mdlMaterial->getUnit_Id());
+										$M_height = $mdlMaterial->getHeight() * $clsUnit->getConversionById($mdlMaterial->getUnit_Id());
+										$M_area = $M_width * $M_height;
+
+										$P_area = $mdlPart->getArea() * pow($clsUnit->getConversionById($mdlPart->getUnit_Id()),2);
+										$Needed = ceil($P_area / $M_area);
 										?>
 										<div class="row mb-2">
 	                    <div class="col-4">
@@ -207,6 +215,12 @@ if(isset($_GET['Id']) && $_GET['Id'] != ""){
 	                    <div class="col-4">
 	                      <label class="form-control-label" for="inputUnit_Id"><b>Unit:</b></label>
 	                      <p class="form-control" readonly><?php echo $clsUnit->GetNameById($mdlMaterial->getUnit_Id()); ?></p>
+	                    </div>
+	                  </div>
+										<div class="row mb-2">
+	                    <div class="col-12">
+	                      <label class="form-control-label" for="inputWidth"><b>Needed:</b></label>
+	                      <p class="form-control" readonly><?php echo $Needed; ?> pieces</p>
 	                    </div>
 	                  </div>
 										<?php
